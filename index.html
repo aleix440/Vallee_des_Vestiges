@@ -178,9 +178,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
 
-        .skill-node.acquired { border-left-color: var(--acquired); background: #f0faf4; }
+        .skill-node.acquired  { border-left-color: var(--acquired); background: #f0faf4; }
         .skill-node.available { border-left-color: var(--available); }
         .skill-node.locked    { border-left-color: var(--locked); opacity: 0.55; }
+        .skill-node.knowledge { border-left-color: #8e44ad; }
+        .skill-node.knowledge.available { border-left-color: #8e44ad; }
+        .skill-node.knowledge .skill-level-badge { background: #8e44ad; }
+        .knowledge-cost { color: #8e44ad !important; }
+        .btn-purchase.knowledge-btn { background-color: #8e44ad; }
 
         .skill-level-badge {
             display: inline-block;
@@ -238,6 +243,71 @@
             }
         }
 
+        /* --- Onglets Joueur --- */
+        .player-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0e6ed;
+        }
+        .player-tab-btn {
+            padding: 0.55rem 1.4rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #888;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            border-radius: 4px 4px 0 0;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .player-tab-btn.active {
+            color: var(--secondary);
+            font-weight: bold;
+            border-bottom-color: #8e44ad;
+        }
+
+        /* --- Page Connaissances --- */
+        #knowledge-container { display: flex; flex-direction: column; gap: 2rem; }
+
+        .knowledge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            padding: 0.75rem 1rem;
+        }
+        .knowledge-node {
+            background: var(--card-bg);
+            border-radius: 6px;
+            padding: 0.65rem 0.8rem;
+            border-left: 4px solid var(--locked);
+            min-width: 175px;
+            max-width: 230px;
+            flex: 1;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .knowledge-node.available:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        .knowledge-node.acquired  { border-left-color: var(--acquired); background: #f0faf4; }
+        .knowledge-node.available { border-left-color: #8e44ad; }
+        .knowledge-node.locked    { border-left-color: var(--locked); opacity: 0.55; }
+        .knowledge-name  { font-weight: 600; font-size: 0.88rem; color: var(--secondary); }
+        .knowledge-desc  { font-size: 0.76rem; color: #777; margin: 0; line-height: 1.35; flex-grow: 1; }
+        .knowledge-count {
+            font-size: 0.75rem;
+            color: #8e44ad;
+            font-weight: 600;
+            text-align: right;
+            margin-top: 0.1rem;
+        }
+
         /* --- Vue Admin --- */
         #admin-view h2 { margin-top: 0; }
         .admin-card {
@@ -255,11 +325,14 @@
             margin-bottom: 1rem;
         }
 
-        .admin-form-group input, .admin-form-group select {
+        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
         }
+        .admin-form-group textarea { resize: vertical; }
 
         .admin-btn {
             background-color: var(--secondary);
@@ -387,35 +460,30 @@
             </div>
         </div>
 
-        <div id="skill-tree-container">
-            </div>
+        <div class="player-tabs">
+            <button id="tab-skills"     class="player-tab-btn active" onclick="switchPlayerTab('skills')">Compétences</button>
+            <button id="tab-knowledge"  class="player-tab-btn"        onclick="switchPlayerTab('knowledge')">Connaissances</button>
+        </div>
+
+        <div id="skill-tree-container"></div>
+
+        <div id="knowledge-container" class="hidden"></div>
     </section>
 
     <section id="admin-view" class="hidden">
         <h2>Panneau d'Animation</h2>
 
         <div class="admin-card">
-            <h3>Distribuer XP à tous les joueurs</h3>
-            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les XP, sauf ceux cochés.</p>
+            <h3>Distribuer des Points à tous les joueurs</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les points indiqués, sauf ceux cochés.</p>
             <div class="admin-form-group">
-                <input type="number" id="admin-dist-amount" placeholder="Quantité de XP à distribuer" min="1">
+                <input type="number" id="admin-dist-xp"        placeholder="XP à distribuer (0 si aucun)" min="0" value="0">
+                <input type="number" id="admin-dist-knowledge" placeholder="Connaissance à distribuer (0 si aucun)" min="0" value="0">
             </div>
-            <div id="admin-exclude-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
+            <div id="admin-exclude-dist-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
                 <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
             </div>
-            <button class="admin-btn" onclick="adminDistributeXP()">Distribuer XP</button>
-        </div>
-
-        <div class="admin-card">
-            <h3>Distribuer Connaissance à tous les joueurs</h3>
-            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les points de connaissance, sauf ceux cochés.</p>
-            <div class="admin-form-group">
-                <input type="number" id="admin-dist-knowledge" placeholder="Quantité de Connaissance à distribuer" min="1">
-            </div>
-            <div id="admin-exclude-knowledge-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
-                <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
-            </div>
-            <button class="admin-btn" style="background:#8e44ad;" onclick="adminDistributeKnowledge()">Distribuer Connaissance</button>
+            <button class="admin-btn" onclick="adminDistributePoints()">Distribuer les Points</button>
         </div>
 
         <div class="admin-card">
@@ -429,19 +497,61 @@
         </div>
 
         <div class="admin-card">
+            <h3>Retirer des Points à tous les joueurs</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs perdent les points indiqués, sauf ceux cochés.</p>
+            <div class="admin-form-group">
+                <input type="number" id="admin-remove-xp" placeholder="XP à retirer (0 si aucun)" min="0" value="0">
+                <input type="number" id="admin-remove-kp" placeholder="Connaissance à retirer (0 si aucun)" min="0" value="0">
+            </div>
+            <div id="admin-exclude-remove-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
+                <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
+            </div>
+            <button class="admin-btn" style="background:#e74c3c;" onclick="adminRemovePoints()">Retirer les Points</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Annuler une Connaissance Acquise</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Pour corriger un achat de connaissance fait par erreur. Le point peut être remboursé.</p>
+            <div class="admin-form-group">
+                <div style="display:flex;gap:0.5rem;">
+                    <input type="text" id="admin-revoke-player" placeholder="Nom exact du joueur" style="flex:1;">
+                    <button class="admin-btn" style="width:auto;padding:8px 14px;white-space:nowrap;" onclick="loadPlayerKnowledges()">Charger</button>
+                </div>
+                <select id="admin-revoke-select" style="display:none;">
+                    <option value="">-- Choisir une connaissance --</option>
+                </select>
+                <label id="admin-revoke-refund-label" style="display:none;align-items:center;gap:0.5rem;font-size:0.9rem;cursor:pointer;">
+                    <input type="checkbox" id="admin-revoke-refund" checked> Rembourser le point de connaissance
+                </label>
+            </div>
+            <button id="admin-revoke-btn" class="admin-btn" style="background:#e74c3c;" onclick="adminRevokeKnowledge()" disabled>Retirer la Connaissance</button>
+        </div>
+
+        <div class="admin-card">
             <h3>Joueurs Enregistrés</h3>
             <div id="admin-player-list"><p style="color:#888">Chargement...</p></div>
         </div>
 
         <div class="admin-card">
-            <h3>Ajouter une Compétence Simple</h3>
-            <p>Simule l'ajout d'une compétence à la branche 'Combat' pour démontrer la structure JSON.</p>
+            <h3>Ajouter une Compétence</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Laissez le coût à 0 si la compétence n'utilise pas cette devise.</p>
             <div class="admin-form-group">
+                <select id="admin-skill-branch">
+                    <option value="Combat">Combat</option>
+                    <option value="Furtivité">Furtivité</option>
+                    <option value="Corps &amp; Santé">Corps &amp; Santé</option>
+                    <option value="Social">Social</option>
+                    <option value="Magie &amp; Religion">Magie &amp; Religion</option>
+                    <option value="Arts &amp; Métiers">Arts &amp; Métiers</option>
+                    <option value="Connaissances">Connaissances</option>
+                </select>
                 <input type="text" id="admin-skill-name" placeholder="Nom de la compétence">
-                <input type="number" id="admin-skill-cost" placeholder="Coût en XP">
-                <input type="text" id="admin-skill-desc" placeholder="Description courte">
+                <input type="number" id="admin-skill-cost" placeholder="Coût en XP (0 si connaissance uniquement)" min="0" value="0">
+                <input type="number" id="admin-skill-knowledge-cost" placeholder="Coût en Connaissance (0 si XP uniquement)" min="0" value="0">
+                <input type="text" id="admin-skill-prereq" placeholder="ID du prérequis (optionnel, ex: arme1)">
+                <textarea id="admin-skill-desc" placeholder="Description de la compétence" rows="3"></textarea>
             </div>
-            <button class="admin-btn" onclick="adminAddSkill()">Ajouter à Combat</button>
+            <button class="admin-btn" onclick="adminAddSkill()">Ajouter la Compétence</button>
         </div>
     </section>
 </main>
@@ -465,9 +575,10 @@
 
 <script>
     // --- ÉTAT ---
-    let playerData  = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [] };
-    let cachedTree  = [];
-    let adminKey    = "";
+    let playerData    = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [], acquiredKnowledges: [] };
+    let cachedTree    = [];
+    let allKnowledges = [];
+    let adminKey      = "";
 
     // --- UTILITAIRES API ---
     async function api(path, method = 'GET', body = null) {
@@ -485,22 +596,27 @@
         const nameInput = document.getElementById('player-name-input').value.trim();
         if (!nameInput) { alert("Veuillez entrer un nom."); return; }
         try {
-            const [record, tree] = await Promise.all([
+            const [record, tree, kList] = await Promise.all([
                 api(`/api/player/${encodeURIComponent(nameInput)}`),
-                api('/api/skills')
+                api('/api/skills'),
+                api('/api/knowledges')
             ]);
-            playerData = record;
-            cachedTree = tree;
+            playerData    = record;
+            cachedTree    = tree;
+            allKnowledges = kList;
             document.getElementById('login-section').classList.add('hidden');
             switchRole('player');
+            switchPlayerTab('skills');
             renderPlayerInfo();
             renderSkillTree();
         } catch (e) { alert("Erreur de connexion : " + e.message); }
     }
 
     function disconnectPlayer() {
-        playerData = { name: "", points: 0, acquiredSkills: [] };
-        cachedTree = [];
+        playerData    = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [], acquiredKnowledges: [] };
+        cachedTree    = [];
+        allKnowledges = [];
+        switchPlayerTab('skills');
         document.getElementById('player-name-input').value = '';
         document.getElementById('player-view').classList.add('hidden');
         document.getElementById('login-section').classList.remove('hidden');
@@ -630,19 +746,34 @@
 
                     const isAcquired  = playerData.acquiredSkills.includes(skill.id);
                     const prereqOk    = !skill.prereq || playerData.acquiredSkills.includes(skill.prereq);
-                    const canAfford   = playerData.points >= skill.cost;
+                    const hasXPCost   = skill.cost > 0;
+                    const hasKPCost   = (skill.knowledge_cost ?? 0) > 0;
+                    const canAffordXP = !hasXPCost || playerData.points >= skill.cost;
+                    const canAffordKP = !hasKPCost || (playerData.knowledgePoints ?? 0) >= skill.knowledge_cost;
+                    const canAfford   = canAffordXP && canAffordKP;
                     const isAvailable = !isAcquired && prereqOk && canAfford;
                     const isLocked    = !isAcquired && (!prereqOk || !canAfford);
+                    const isKnowledge = hasKPCost && !hasXPCost;
 
                     const nodeEl = document.createElement('div');
                     nodeEl.classList.add('skill-node');
                     if (isAcquired)  nodeEl.classList.add('acquired');
                     if (isAvailable) nodeEl.classList.add('available');
                     if (isLocked)    nodeEl.classList.add('locked');
+                    if (isKnowledge) nodeEl.classList.add('knowledge');
+
+                    let costHtml;
+                    if (hasXPCost && hasKPCost) {
+                        costHtml = `<div class="skill-cost">${skill.cost} XP + <span class="knowledge-cost">${skill.knowledge_cost} Conn.</span></div>`;
+                    } else if (hasKPCost) {
+                        costHtml = `<div class="skill-cost knowledge-cost">${skill.knowledge_cost} Conn.</div>`;
+                    } else {
+                        costHtml = `<div class="skill-cost">${skill.cost} XP</div>`;
+                    }
 
                     nodeEl.innerHTML = `
                         ${isMulti ? `<span class="skill-level-badge">Niveau ${levelSuffix || 'I'}</span>` : ''}
-                        <div class="skill-cost">${skill.cost} XP</div>
+                        ${costHtml}
                         <p class="skill-desc">${skill.desc}</p>
                     `;
 
@@ -652,6 +783,7 @@
                         btn.textContent = "Acquis"; btn.disabled = true;
                     } else if (isAvailable) {
                         btn.textContent = "Acheter";
+                        if (isKnowledge) btn.classList.add('knowledge-btn');
                         btn.onclick = () => purchaseSkill(skill.id);
                     } else {
                         btn.textContent = "Verrouillé"; btn.disabled = true;
@@ -669,6 +801,99 @@
         });
     }
 
+    // --- ONGLETS JOUEUR ---
+    function switchPlayerTab(tab) {
+        document.getElementById('tab-skills').classList.toggle('active',    tab === 'skills');
+        document.getElementById('tab-knowledge').classList.toggle('active', tab === 'knowledge');
+        document.getElementById('skill-tree-container').classList.toggle('hidden', tab !== 'skills');
+        document.getElementById('knowledge-container').classList.toggle('hidden',  tab !== 'knowledge');
+        if (tab === 'knowledge') renderKnowledges();
+    }
+
+    // --- CONNAISSANCES ---
+    function renderKnowledges() {
+        const container = document.getElementById('knowledge-container');
+        container.innerHTML = '';
+
+        const acquired = playerData.acquiredKnowledges ?? [];
+        const kp       = playerData.knowledgePoints ?? 0;
+        const total    = acquired.length;
+
+        // Résumé en haut
+        const summaryEl = document.createElement('div');
+        summaryEl.style.cssText = 'background:#fff;border-radius:8px;padding:1rem 1.2rem;box-shadow:0 2px 5px rgba(0,0,0,0.08);display:flex;gap:2rem;flex-wrap:wrap;';
+        summaryEl.innerHTML = `
+            <div><span style="color:#888;font-size:0.85rem;">Points disponibles</span><br>
+                 <strong style="font-size:1.4rem;color:#8e44ad;">${kp}</strong></div>
+            <div><span style="color:#888;font-size:0.85rem;">Connaissances acquises</span><br>
+                 <strong style="font-size:1.4rem;color:var(--acquired);">${total}</strong></div>
+            <div style="flex:1;display:flex;align-items:center;font-size:0.82rem;color:#999;">
+                Toutes les connaissances coûtent <strong style="color:#8e44ad;margin:0 4px;">1 point</strong>.
+                Les connaissances marquées <em>(3 par point)</em> ou <em>(1 par point)</em>
+                demandent de préciser votre choix avec l'animation.
+            </div>`;
+        container.appendChild(summaryEl);
+
+        allKnowledges.forEach(cat => {
+            const blockEl = document.createElement('div');
+            blockEl.classList.add('branch-block');
+
+            const titleEl = document.createElement('div');
+            titleEl.classList.add('branch-title');
+            const catAcquired = cat.knowledges.filter(k => acquired.includes(k.id)).length;
+            titleEl.innerHTML = `${cat.category} <span style="font-size:0.8rem;font-weight:normal;opacity:0.7;">(${catAcquired}/${cat.knowledges.length})</span>`;
+            blockEl.appendChild(titleEl);
+
+            const gridEl = document.createElement('div');
+            gridEl.classList.add('knowledge-grid');
+
+            cat.knowledges.forEach(k => {
+                const isAcquired = acquired.includes(k.id);
+                const canAfford  = kp >= 1;
+
+                const nodeEl = document.createElement('div');
+                nodeEl.classList.add('knowledge-node');
+                if (isAcquired)       nodeEl.classList.add('acquired');
+                else if (canAfford)   nodeEl.classList.add('available');
+                else                  nodeEl.classList.add('locked');
+
+                nodeEl.innerHTML = `
+                    <div class="knowledge-name">${k.name}</div>
+                    ${k.description ? `<p class="knowledge-desc">${k.description}</p>` : ''}
+                `;
+
+                const btn = document.createElement('button');
+                btn.classList.add('btn-purchase');
+                if (isAcquired) {
+                    btn.textContent = 'Acquise'; btn.disabled = true;
+                    btn.style.backgroundColor = 'var(--acquired)';
+                } else if (canAfford) {
+                    btn.textContent = 'Acheter (1 Conn.)';
+                    btn.classList.add('knowledge-btn');
+                    btn.onclick = () => buyKnowledge(k.id);
+                } else {
+                    btn.textContent = 'Conn. insuffisante'; btn.disabled = true;
+                    btn.style.backgroundColor = 'var(--locked)';
+                }
+                nodeEl.appendChild(btn);
+                gridEl.appendChild(nodeEl);
+            });
+
+            blockEl.appendChild(gridEl);
+            container.appendChild(blockEl);
+        });
+    }
+
+    async function buyKnowledge(knowledgeId) {
+        try {
+            const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/buy-knowledge`, 'POST', { knowledgeId });
+            playerData.knowledgePoints    = result.knowledgePoints;
+            playerData.acquiredKnowledges = result.acquiredKnowledges;
+            renderPlayerInfo();
+            renderKnowledges();
+        } catch (e) { alert(e.message); }
+    }
+
     function getSkillName(id) {
         for (const b of cachedTree) {
             const s = b.skills.find(x => x.id === id);
@@ -681,8 +906,9 @@
     async function purchaseSkill(skillId) {
         try {
             const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/purchase`, 'POST', { skillId });
-            playerData.points         = result.points;
-            playerData.acquiredSkills = result.acquiredSkills;
+            playerData.points          = result.points;
+            playerData.knowledgePoints = result.knowledgePoints;
+            playerData.acquiredSkills  = result.acquiredSkills;
             renderPlayerInfo();
             renderSkillTree();
         } catch (e) { alert(e.message); }
@@ -711,8 +937,8 @@
             const players = await api('/api/admin/players');
             if (players.length === 0) {
                 listEl.innerHTML = "<p style='color:#888'>Aucun joueur enregistré.</p>";
-                buildExcludeList([], 'admin-exclude-list', 'excl');
-                buildExcludeList([], 'admin-exclude-knowledge-list', 'exclk');
+                buildExcludeList([], 'admin-exclude-dist-list',   'excld');
+                buildExcludeList([], 'admin-exclude-remove-list', 'exclr');
                 return;
             }
             listEl.innerHTML = players.map(p => `
@@ -722,8 +948,8 @@
                         onclick="adminResetPlayer('${p.name}')">Réinitialiser</button>
                 </div>`).join('');
 
-            buildExcludeList(players, 'admin-exclude-list', 'excl');
-            buildExcludeList(players, 'admin-exclude-knowledge-list', 'exclk');
+            buildExcludeList(players, 'admin-exclude-dist-list',   'excld');
+            buildExcludeList(players, 'admin-exclude-remove-list', 'exclr');
         } catch (e) { listEl.innerHTML = `<p style='color:red'>${e.message}</p>`; }
     }
 
@@ -739,45 +965,42 @@
         });
     }
 
-    async function adminDistributeXP() {
-        const amount = parseInt(document.getElementById('admin-dist-amount').value);
-        if (isNaN(amount) || amount <= 0) { alert("Entrez une quantité valide."); return; }
-        const exclude = getExcluded('admin-exclude-list');
+    async function adminDistributePoints() {
+        const xp      = parseInt(document.getElementById('admin-dist-xp').value) || 0;
+        const kp      = parseInt(document.getElementById('admin-dist-knowledge').value) || 0;
+        if (xp === 0 && kp === 0) { alert("Entrez au moins une quantité à distribuer."); return; }
+        if (xp < 0 || kp < 0) { alert("Entrez des valeurs positives."); return; }
+        const exclude = getExcluded('admin-exclude-dist-list');
+        const parts   = [];
+        if (xp > 0) parts.push(`${xp} XP`);
+        if (kp > 0) parts.push(`${kp} Connaissance`);
         const msg = exclude.length > 0
-            ? `Donner ${amount} XP à tous sauf : ${exclude.join(', ')} ?`
-            : `Donner ${amount} XP à TOUS les joueurs ?`;
+            ? `Donner ${parts.join(' et ')} à tous sauf : ${exclude.join(', ')} ?`
+            : `Donner ${parts.join(' et ')} à TOUS les joueurs ?`;
         if (!confirm(msg)) return;
         try {
-            const result = await api('/api/admin/distribute-xp', 'POST', { amount, exclude });
-            alert(`${amount} XP distribués à ${result.count} joueur(s).${result.skipped.length ? '\nExclus : ' + result.skipped.join(', ') : ''}`);
-            document.getElementById('admin-dist-amount').value = '';
-            clearExcludeList('admin-exclude-list');
-            if (playerData.name && !exclude.includes(playerData.name)) {
-                playerData.points += amount;
-                renderPlayerInfo();
-                renderSkillTree();
+            let alertMsg = '';
+            if (xp > 0) {
+                const r = await api('/api/admin/distribute-xp', 'POST', { amount: xp, exclude });
+                alertMsg += `${xp} XP distribués à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}\n`;
+                if (playerData.name && !exclude.includes(playerData.name)) {
+                    playerData.points += xp;
+                    renderPlayerInfo();
+                    renderSkillTree();
+                }
             }
-            renderPlayerList();
-        } catch (e) { alert(e.message); }
-    }
-
-    async function adminDistributeKnowledge() {
-        const amount = parseInt(document.getElementById('admin-dist-knowledge').value);
-        if (isNaN(amount) || amount <= 0) { alert("Entrez une quantité valide."); return; }
-        const exclude = getExcluded('admin-exclude-knowledge-list');
-        const msg = exclude.length > 0
-            ? `Donner ${amount} Connaissance à tous sauf : ${exclude.join(', ')} ?`
-            : `Donner ${amount} Connaissance à TOUS les joueurs ?`;
-        if (!confirm(msg)) return;
-        try {
-            const result = await api('/api/admin/distribute-knowledge', 'POST', { amount, exclude });
-            alert(`${amount} Connaissance distribués à ${result.count} joueur(s).${result.skipped.length ? '\nExclus : ' + result.skipped.join(', ') : ''}`);
-            document.getElementById('admin-dist-knowledge').value = '';
-            clearExcludeList('admin-exclude-knowledge-list');
-            if (playerData.name && !exclude.includes(playerData.name)) {
-                playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) + amount;
-                renderPlayerInfo();
+            if (kp > 0) {
+                const r = await api('/api/admin/distribute-knowledge', 'POST', { amount: kp, exclude });
+                alertMsg += `${kp} Connaissance distribués à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}`;
+                if (playerData.name && !exclude.includes(playerData.name)) {
+                    playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) + kp;
+                    renderPlayerInfo();
+                }
             }
+            alert(alertMsg.trim());
+            document.getElementById('admin-dist-xp').value = '0';
+            document.getElementById('admin-dist-knowledge').value = '0';
+            clearExcludeList('admin-exclude-dist-list');
             renderPlayerList();
         } catch (e) { alert(e.message); }
     }
@@ -807,31 +1030,135 @@
         } catch (e) { alert(e.message); }
     }
 
-    async function adminAddSkill() {
-        const name = document.getElementById('admin-skill-name').value.trim();
-        const cost = parseInt(document.getElementById('admin-skill-cost').value);
-        const desc = document.getElementById('admin-skill-desc').value.trim();
-        if (!name || isNaN(cost) || !desc) { alert("Remplissez tous les champs."); return; }
+    async function adminRemovePoints() {
+        const xp      = parseInt(document.getElementById('admin-remove-xp').value) || 0;
+        const kp      = parseInt(document.getElementById('admin-remove-kp').value) || 0;
+        if (xp === 0 && kp === 0) { alert("Entrez au moins une quantité à retirer."); return; }
+        if (xp < 0 || kp < 0) { alert("Entrez des valeurs positives."); return; }
+        const exclude = getExcluded('admin-exclude-remove-list');
+        const parts   = [];
+        if (xp > 0) parts.push(`${xp} XP`);
+        if (kp > 0) parts.push(`${kp} Connaissance`);
+        const msg = exclude.length > 0
+            ? `Retirer ${parts.join(' et ')} à tous sauf : ${exclude.join(', ')} ?`
+            : `Retirer ${parts.join(' et ')} à TOUS les joueurs ?`;
+        if (!confirm(msg)) return;
         try {
-            await api('/api/skills', 'POST', { branch: 'Combat', name, cost, desc });
+            let alertMsg = '';
+            if (xp > 0) {
+                const r = await api('/api/admin/distribute-xp', 'POST', { amount: -xp, exclude });
+                alertMsg += `${xp} XP retirés à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}\n`;
+                if (playerData.name && !exclude.includes(playerData.name)) {
+                    playerData.points -= xp;
+                    renderPlayerInfo();
+                    renderSkillTree();
+                }
+            }
+            if (kp > 0) {
+                const r = await api('/api/admin/distribute-knowledge', 'POST', { amount: -kp, exclude });
+                alertMsg += `${kp} Connaissance retirée à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}`;
+                if (playerData.name && !exclude.includes(playerData.name)) {
+                    playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) - kp;
+                    renderPlayerInfo();
+                }
+            }
+            alert(alertMsg.trim());
+            document.getElementById('admin-remove-xp').value = '0';
+            document.getElementById('admin-remove-kp').value = '0';
+            clearExcludeList('admin-exclude-remove-list');
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function loadPlayerKnowledges() {
+        const name = document.getElementById('admin-revoke-player').value.trim();
+        if (!name) { alert("Entrez le nom du joueur."); return; }
+        try {
+            if (allKnowledges.length === 0) allKnowledges = await api('/api/knowledges');
+            const record = await api(`/api/player/${encodeURIComponent(name)}`);
+            const select = document.getElementById('admin-revoke-select');
+            const btn    = document.getElementById('admin-revoke-btn');
+            const lbl    = document.getElementById('admin-revoke-refund-label');
+            select.innerHTML = '<option value="">-- Choisir une connaissance --</option>';
+            if (!record.acquiredKnowledges || record.acquiredKnowledges.length === 0) {
+                alert(`${name} n'a aucune connaissance acquise.`);
+                select.style.display = 'none'; lbl.style.display = 'none'; btn.disabled = true;
+                return;
+            }
+            const kMap = {};
+            allKnowledges.forEach(cat => cat.knowledges.forEach(k => kMap[k.id] = k.name));
+            record.acquiredKnowledges.forEach(kid => {
+                const opt = document.createElement('option');
+                opt.value = kid;
+                opt.textContent = kMap[kid] || kid;
+                select.appendChild(opt);
+            });
+            select.style.display = '';
+            lbl.style.display    = 'flex';
+            btn.disabled         = false;
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminRevokeKnowledge() {
+        const name   = document.getElementById('admin-revoke-player').value.trim();
+        const kid    = document.getElementById('admin-revoke-select').value;
+        const refund = document.getElementById('admin-revoke-refund').checked;
+        if (!name || !kid) { alert("Sélectionnez un joueur et une connaissance."); return; }
+        const kMap = {};
+        allKnowledges.forEach(cat => cat.knowledges.forEach(k => kMap[k.id] = k.name));
+        const kName = kMap[kid] || kid;
+        if (!confirm(`Retirer "${kName}" à ${name} ?${refund ? '\nLe point sera remboursé.' : '\nAucun remboursement.'}`)) return;
+        try {
+            const r = await api(`/api/admin/player/${encodeURIComponent(name)}/remove-knowledge`, 'POST', { knowledgeId: kid, refund });
+            if (name === playerData.name) {
+                playerData.knowledgePoints    = r.knowledgePoints;
+                playerData.acquiredKnowledges = r.acquiredKnowledges;
+                renderPlayerInfo();
+                renderKnowledges();
+            }
+            alert(`"${kName}" retirée de ${name}.${refund ? ` Point remboursé. Total : ${r.knowledgePoints}` : ''}`);
+            document.getElementById('admin-revoke-select').style.display = 'none';
+            document.getElementById('admin-revoke-select').innerHTML = '<option value="">-- Choisir --</option>';
+            document.getElementById('admin-revoke-refund-label').style.display = 'none';
+            document.getElementById('admin-revoke-btn').disabled = true;
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminAddSkill() {
+        const branch        = document.getElementById('admin-skill-branch').value;
+        const name          = document.getElementById('admin-skill-name').value.trim();
+        const cost          = parseInt(document.getElementById('admin-skill-cost').value) || 0;
+        const knowledgeCost = parseInt(document.getElementById('admin-skill-knowledge-cost').value) || 0;
+        const prereq        = document.getElementById('admin-skill-prereq').value.trim() || null;
+        const desc          = document.getElementById('admin-skill-desc').value.trim();
+        if (!name || !desc) { alert("Remplissez le nom et la description."); return; }
+        if (cost === 0 && knowledgeCost === 0) { alert("Définissez au moins un coût (XP ou Connaissance)."); return; }
+        try {
+            await api('/api/skills', 'POST', { branch, name, cost, knowledge_cost: knowledgeCost, desc, prereq });
             cachedTree = await api('/api/skills');
             if (playerData.name) renderSkillTree();
-            alert(`Compétence '${name}' ajoutée.`);
+            alert(`Compétence '${name}' ajoutée dans la branche ${branch}.`);
             document.getElementById('admin-skill-name').value = '';
-            document.getElementById('admin-skill-cost').value = '';
+            document.getElementById('admin-skill-cost').value = '0';
+            document.getElementById('admin-skill-knowledge-cost').value = '0';
+            document.getElementById('admin-skill-prereq').value = '';
             document.getElementById('admin-skill-desc').value = '';
         } catch (e) { alert(e.message); }
     }
 
     async function adminResetPlayer(name) {
-        if (!confirm(`Réinitialiser ${name} ? (10 XP, compétences effacées)`)) return;
+        if (!confirm(`Réinitialiser ${name} ? (9 XP, 3 Connaissance, compétences et connaissances effacées)`)) return;
         try {
             await api(`/api/admin/reset/${encodeURIComponent(name)}`, 'POST');
             if (name === playerData.name) {
-                playerData.points = 10;
-                playerData.acquiredSkills = [];
+                playerData.points             = 9;
+                playerData.knowledgePoints    = 3;
+                playerData.acquiredSkills     = [];
+                playerData.acquiredKnowledges = [];
                 renderPlayerInfo();
                 renderSkillTree();
+                renderKnowledges();
             }
             renderPlayerList();
         } catch (e) { alert(e.message); }

@@ -1,0 +1,59 @@
+sequenceDiagram
+    actor Joueur
+    participant UI as Interface Web<br/>(index.html)
+    participant JS as JavaScript<br/>(connectPlayer)
+    participant Flask as Serveur Flask<br/>(server.py)
+    participant DB as Base de Données<br/>(SQLite game.db)
+
+    Joueur->>UI: Saisit son nom dans le champ de connexion
+    Joueur->>UI: Clique sur "Connexion"
+
+    UI->>JS: connectPlayer()
+
+    JS->>JS: Récupère la valeur du champ nom
+    JS->>JS: Vide les données précédentes (playerData = null)
+
+    par Requête joueur et compétences en parallèle
+        JS->>Flask: GET /api/player/{nom}
+        Flask->>DB: SELECT name, points, knowledge_points FROM players WHERE name = ?
+        alt Joueur existant
+            DB-->>Flask: Retourne les données du joueur
+        else Nouveau joueur
+            Flask->>DB: INSERT INTO players (name, points, knowledge_points) VALUES (?, 10, 3)
+            DB-->>Flask: Joueur créé (points=10, knowledge=3)
+        end
+        Flask->>DB: SELECT skill_id FROM player_skills WHERE player_name = ?
+        DB-->>Flask: Liste des compétences acquises
+        Flask-->>JS: 200 OK — { name, points, knowledgePoints, acquiredSkills[] }
+
+    and
+        JS->>Flask: GET /api/skills
+        Flask->>DB: SELECT branch, id, name, cost, desc, prereq, sort_order FROM skills ORDER BY branch, sort_order
+        DB-->>Flask: Toutes les compétences (320+)
+        Flask-->>JS: 200 OK — [ { branchName, skills[] }[] ]
+    end
+
+    JS->>JS: Stocke playerData (nom, points, knowledgePoints, acquiredSkills)
+    JS->>JS: Stocke allSkills (toutes les branches et compétences)
+
+    JS->>UI: Affiche le nom du joueur
+    JS->>UI: Affiche les points d'XP
+    JS->>UI: Affiche les points de connaissance
+
+    loop Pour chaque branche de compétences
+        JS->>JS: Groupe les compétences par nom de base (ex: arme I, II, III)
+        loop Pour chaque compétence dans la branche
+            JS->>JS: isAcquired = acquiredSkills.includes(skill.id)
+            JS->>JS: prereqOk = !skill.prereq OR acquiredSkills.includes(skill.prereq)
+            JS->>JS: canAfford = playerData.points >= skill.cost
+            alt Compétence acquise
+                JS->>UI: Affiche en VERT (bouton désactivé — "Acquise")
+            else Disponible (prérequis OK + XP suffisante)
+                JS->>UI: Affiche en BLEU (bouton actif — "Acheter Xpt")
+            else Verrouillée
+                JS->>UI: Affiche en GRIS (bouton désactivé — "Verrouillée")
+            end
+        end
+    end
+
+    UI-->>Joueur: Arbre de compétences complet affiché avec ses données
