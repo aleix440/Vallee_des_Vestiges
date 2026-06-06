@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GN Skill Tree - Plateforme Joueur & Admin</title>
+    <style>
+        /* --- Styles Généraux --- */
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #f1c40f;
+            --acquired: #2ecc71;
+            --available: #3498db;
+            --locked: #bdc3c7;
+            --bg: #ecf0f1;
+            --text: #333;
+            --card-bg: #fff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--secondary);
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 { margin: 0; font-size: 1.5rem; }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-role {
+            background: none;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .btn-role.active {
+            background-color: #fff;
+            color: var(--secondary);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- Section Login --- */
+        #login-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 5rem;
+        }
+
+        #login-section input {
+            padding: 10px;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* --- Vue Joueur --- */
+        #player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .player-info h2 { margin: 0; }
+        .player-points { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+
+        /* Arbre de Compétences - Rangées par compétence */
+        #skill-tree-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .branch-block {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .branch-title {
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.7rem 1.2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        /* Une rangée = une compétence (tous ses niveaux) */
+        .skill-row {
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid #eee;
+            min-height: 80px;
+        }
+        .skill-row:last-child { border-bottom: none; }
+
+        .skill-row-label {
+            width: 190px;
+            min-width: 190px;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            background: #f7f9fb;
+            border-right: 1px solid #e0e6ed;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Niveaux d'une compétence côte à côte */
+        .skill-levels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .skill-node {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            padding: 0.6rem 0.75rem;
+            border-left: 4px solid var(--locked);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.15s, box-shadow 0.15s;
+            min-width: 150px;
+            max-width: 210px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+
+        .skill-node:not(.acquired):not(.locked):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .skill-node.acquired { border-left-color: var(--acquired); background: #f0faf4; }
+        .skill-node.available { border-left-color: var(--available); }
+        .skill-node.locked    { border-left-color: var(--locked); opacity: 0.55; }
+
+        .skill-level-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #fff;
+            background: var(--secondary);
+            border-radius: 3px;
+            padding: 1px 5px;
+            margin-bottom: 0.3rem;
+            width: fit-content;
+        }
+        .skill-node.acquired .skill-level-badge { background: var(--acquired); }
+        .skill-node.available .skill-level-badge { background: var(--available); }
+
+        .skill-cost {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-desc {
+            font-size: 0.78rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            flex-grow: 1;
+            line-height: 1.35;
+        }
+
+        .btn-purchase {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 5px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .skill-node.acquired .btn-purchase { background-color: var(--acquired); cursor: default; }
+        .skill-node.locked   .btn-purchase { background-color: var(--locked); cursor: not-allowed; }
+        .btn-purchase:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Mobile: label au-dessus des niveaux */
+        @media (max-width: 600px) {
+            .skill-row { flex-direction: column; }
+            .skill-row-label {
+                width: 100%;
+                min-width: unset;
+                border-right: none;
+                border-bottom: 1px solid #e0e6ed;
+            }
+        }
+
+        /* --- Vue Admin --- */
+        #admin-view h2 { margin-top: 0; }
+        .admin-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .admin-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-form-group input, .admin-form-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .admin-btn {
+            background-color: var(--secondary);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: #888;
+            font-size: 0.8rem;
+            background-color: #f9f9f9;
+        }
+
+        /* --- Modal Mot de Passe Admin --- */
+        #admin-login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        #admin-login-box {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            width: 320px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #admin-login-box h3 {
+            margin: 0;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        #admin-password-input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #admin-login-error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            text-align: center;
+            min-height: 1.2em;
+        }
+
+        .admin-login-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-cancel-admin {
+            background: #bdc3c7;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Cases à cocher d'exclusion */
+        .exclude-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 0.3rem;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        .exclude-item:last-child { border-bottom: none; }
+        .exclude-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+        .exclude-item label { cursor: pointer; flex: 1; }
+        .exclude-item label.excluded { text-decoration: line-through; color: #aaa; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>GN Skill Tree</h1>
+    <div class="role-selector">
+        <button id="btn-player" class="btn-role active" onclick="switchRole('player')">Joueur</button>
+        <button id="btn-admin" class="btn-role" onclick="switchRole('admin')">Animation</button>
+    </div>
+</header>
+
+<main>
+    <section id="login-section">
+        <h2>Entrez votre nom de joueur</h2>
+        <input type="text" id="player-name-input" placeholder="Ex: Galar le Barbare">
+        <button class="btn-purchase" onclick="connectPlayer()">Connexion</button>
+    </section>
+
+    <section id="player-view" class="hidden">
+        <div id="player-header">
+            <div class="player-info">
+                <h2 id="player-display-name">Joueur</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                <div class="player-points">
+                    XP : <span id="player-points-count">0</span>
+                </div>
+                <div class="player-points" style="color:#8e44ad;">
+                    Connaissance : <span id="player-knowledge-count">0</span>
+                </div>
+                <button class="btn-role" style="border-color:#e74c3c;color:#e74c3c;" onclick="disconnectPlayer()">Déconnexion</button>
+            </div>
+        </div>
+
+        <div id="skill-tree-container">
+            </div>
+    </section>
+
+    <section id="admin-view" class="hidden">
+        <h2>Panneau d'Animation</h2>
+
+        <div class="admin-card">
+            <h3>Distribuer XP à tous les joueurs</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les XP, sauf ceux cochés.</p>
+            <div class="admin-form-group">
+                <input type="number" id="admin-dist-amount" placeholder="Quantité de XP à distribuer" min="1">
+            </div>
+            <div id="admin-exclude-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
+                <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
+            </div>
+            <button class="admin-btn" onclick="adminDistributeXP()">Distribuer XP</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Distribuer Connaissance à tous les joueurs</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les points de connaissance, sauf ceux cochés.</p>
+            <div class="admin-form-group">
+                <input type="number" id="admin-dist-knowledge" placeholder="Quantité de Connaissance à distribuer" min="1">
+            </div>
+            <div id="admin-exclude-knowledge-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
+                <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
+            </div>
+            <button class="admin-btn" style="background:#8e44ad;" onclick="adminDistributeKnowledge()">Distribuer Connaissance</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Donner des Points à un Joueur Précis</h3>
+            <div class="admin-form-group">
+                <input type="text" id="admin-player-target" placeholder="Nom du joueur exact">
+                <input type="number" id="admin-points-amount" placeholder="Quantité de XP">
+                <input type="number" id="admin-knowledge-amount" placeholder="Quantité de Connaissance (optionnel)">
+            </div>
+            <button class="admin-btn" onclick="adminGivePoints()">Attribuer Points</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Joueurs Enregistrés</h3>
+            <div id="admin-player-list"><p style="color:#888">Chargement...</p></div>
+        </div>
+
+        <div class="admin-card">
+            <h3>Ajouter une Compétence Simple</h3>
+            <p>Simule l'ajout d'une compétence à la branche 'Combat' pour démontrer la structure JSON.</p>
+            <div class="admin-form-group">
+                <input type="text" id="admin-skill-name" placeholder="Nom de la compétence">
+                <input type="number" id="admin-skill-cost" placeholder="Coût en XP">
+                <input type="text" id="admin-skill-desc" placeholder="Description courte">
+            </div>
+            <button class="admin-btn" onclick="adminAddSkill()">Ajouter à Combat</button>
+        </div>
+    </section>
+</main>
+
+<!-- Modal mot de passe Animation -->
+<div id="admin-login-overlay" class="hidden">
+    <div id="admin-login-box">
+        <h3>Accès Animation</h3>
+        <input type="password" id="admin-password-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter') confirmAdminLogin()">
+        <div id="admin-login-error"></div>
+        <div class="admin-login-buttons">
+            <button class="btn-cancel-admin" onclick="cancelAdminLogin()">Annuler</button>
+            <button class="admin-btn" style="flex:1;" onclick="confirmAdminLogin()">Connexion</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    GN Skill Tree — Backend Python/Flask · Base de données SQLite
+</footer>
+
+<script>
+    // --- ÉTAT ---
+    let playerData  = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [] };
+    let cachedTree  = [];
+    let adminKey    = "";
+
+    // --- UTILITAIRES API ---
+    async function api(path, method = 'GET', body = null) {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (adminKey) opts.headers['X-Admin-Key'] = adminKey;
+        if (body) opts.body = JSON.stringify(body);
+        const res = await fetch(path, opts);
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Erreur serveur');
+        return json;
+    }
+
+    // --- 1. CONNEXION ---
+    async function connectPlayer() {
+        const nameInput = document.getElementById('player-name-input').value.trim();
+        if (!nameInput) { alert("Veuillez entrer un nom."); return; }
+        try {
+            const [record, tree] = await Promise.all([
+                api(`/api/player/${encodeURIComponent(nameInput)}`),
+                api('/api/skills')
+            ]);
+            playerData = record;
+            cachedTree = tree;
+            document.getElementById('login-section').classList.add('hidden');
+            switchRole('player');
+            renderPlayerInfo();
+            renderSkillTree();
+        } catch (e) { alert("Erreur de connexion : " + e.message); }
+    }
+
+    function disconnectPlayer() {
+        playerData = { name: "", points: 0, acquiredSkills: [] };
+        cachedTree = [];
+        document.getElementById('player-name-input').value = '';
+        document.getElementById('player-view').classList.add('hidden');
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('btn-player').classList.add('active');
+        document.getElementById('btn-admin').classList.remove('active');
+    }
+
+    function switchRole(role) {
+        if (role === 'admin' && !adminKey) {
+            openAdminLogin();
+            return;
+        }
+
+        document.getElementById('btn-player').classList.remove('active');
+        document.getElementById('btn-admin').classList.remove('active');
+        document.getElementById('player-view').classList.add('hidden');
+        document.getElementById('admin-view').classList.add('hidden');
+        document.getElementById('login-section').classList.add('hidden');
+
+        if (role === 'player') {
+            document.getElementById('btn-player').classList.add('active');
+            if (playerData.name) {
+                document.getElementById('player-view').classList.remove('hidden');
+            } else {
+                document.getElementById('login-section').classList.remove('hidden');
+            }
+        } else {
+            document.getElementById('btn-admin').classList.add('active');
+            document.getElementById('admin-view').classList.remove('hidden');
+            renderPlayerList();
+        }
+    }
+
+    function openAdminLogin() {
+        document.getElementById('admin-password-input').value = '';
+        document.getElementById('admin-login-error').textContent = '';
+        document.getElementById('admin-login-overlay').classList.remove('hidden');
+        setTimeout(() => document.getElementById('admin-password-input').focus(), 50);
+    }
+
+    function cancelAdminLogin() {
+        document.getElementById('admin-login-overlay').classList.add('hidden');
+        document.getElementById('btn-player').classList.add('active');
+        document.getElementById('btn-admin').classList.remove('active');
+    }
+
+    async function confirmAdminLogin() {
+        const pwd = document.getElementById('admin-password-input').value;
+        const errEl = document.getElementById('admin-login-error');
+        errEl.textContent = '';
+        try {
+            await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pwd })
+            }).then(async res => {
+                if (!res.ok) {
+                    const j = await res.json();
+                    throw new Error(j.error || 'Mot de passe incorrect');
+                }
+            });
+            adminKey = pwd;
+            document.getElementById('admin-login-overlay').classList.add('hidden');
+            switchRole('admin');
+        } catch (e) {
+            errEl.textContent = e.message;
+            document.getElementById('admin-password-input').value = '';
+            document.getElementById('admin-password-input').focus();
+        }
+    }
+
+    // --- 2. RENDU JOUEUR ---
+    function renderPlayerInfo() {
+        document.getElementById('player-display-name').textContent = playerData.name;
+        document.getElementById('player-points-count').textContent = playerData.points;
+        document.getElementById('player-knowledge-count').textContent = playerData.knowledgePoints ?? 0;
+    }
+
+    // Retire le suffixe romain pour grouper les niveaux d'une même compétence
+    function getBaseName(name) {
+        return name.replace(/\s+[IVX]+$/, '').trim();
+    }
+
+    function getLevelSuffix(name) {
+        const m = name.match(/\s+([IVX]+)$/);
+        return m ? m[1] : null;
+    }
+
+    function renderSkillTree() {
+        const container = document.getElementById('skill-tree-container');
+        container.innerHTML = "";
+
+        cachedTree.forEach(branch => {
+            // Bloc de branche
+            const blockEl = document.createElement('div');
+            blockEl.classList.add('branch-block');
+
+            const titleEl = document.createElement('div');
+            titleEl.classList.add('branch-title');
+            titleEl.textContent = branch.branchName;
+            blockEl.appendChild(titleEl);
+
+            // Grouper les compétences par nom de base (ordre préservé)
+            const groups = new Map();
+            branch.skills.forEach(skill => {
+                const base = getBaseName(skill.name);
+                if (!groups.has(base)) groups.set(base, []);
+                groups.get(base).push(skill);
+            });
+
+            // Une rangée par compétence
+            groups.forEach((skills, baseName) => {
+                const rowEl = document.createElement('div');
+                rowEl.classList.add('skill-row');
+
+                const labelEl = document.createElement('div');
+                labelEl.classList.add('skill-row-label');
+                labelEl.textContent = baseName;
+                rowEl.appendChild(labelEl);
+
+                const levelsEl = document.createElement('div');
+                levelsEl.classList.add('skill-levels');
+
+                skills.forEach(skill => {
+                    const levelSuffix = getLevelSuffix(skill.name);
+                    const isMulti     = skills.length > 1;
+
+                    const isAcquired  = playerData.acquiredSkills.includes(skill.id);
+                    const prereqOk    = !skill.prereq || playerData.acquiredSkills.includes(skill.prereq);
+                    const canAfford   = playerData.points >= skill.cost;
+                    const isAvailable = !isAcquired && prereqOk && canAfford;
+                    const isLocked    = !isAcquired && (!prereqOk || !canAfford);
+
+                    const nodeEl = document.createElement('div');
+                    nodeEl.classList.add('skill-node');
+                    if (isAcquired)  nodeEl.classList.add('acquired');
+                    if (isAvailable) nodeEl.classList.add('available');
+                    if (isLocked)    nodeEl.classList.add('locked');
+
+                    nodeEl.innerHTML = `
+                        ${isMulti ? `<span class="skill-level-badge">Niveau ${levelSuffix || 'I'}</span>` : ''}
+                        <div class="skill-cost">${skill.cost} XP</div>
+                        <p class="skill-desc">${skill.desc}</p>
+                    `;
+
+                    const btn = document.createElement('button');
+                    btn.classList.add('btn-purchase');
+                    if (isAcquired) {
+                        btn.textContent = "Acquis"; btn.disabled = true;
+                    } else if (isAvailable) {
+                        btn.textContent = "Acheter";
+                        btn.onclick = () => purchaseSkill(skill.id);
+                    } else {
+                        btn.textContent = "Verrouillé"; btn.disabled = true;
+                    }
+
+                    nodeEl.appendChild(btn);
+                    levelsEl.appendChild(nodeEl);
+                });
+
+                rowEl.appendChild(levelsEl);
+                blockEl.appendChild(rowEl);
+            });
+
+            container.appendChild(blockEl);
+        });
+    }
+
+    function getSkillName(id) {
+        for (const b of cachedTree) {
+            const s = b.skills.find(x => x.id === id);
+            if (s) return s.name;
+        }
+        return "Inconnu";
+    }
+
+    // --- 3. ACHAT ---
+    async function purchaseSkill(skillId) {
+        try {
+            const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/purchase`, 'POST', { skillId });
+            playerData.points         = result.points;
+            playerData.acquiredSkills = result.acquiredSkills;
+            renderPlayerInfo();
+            renderSkillTree();
+        } catch (e) { alert(e.message); }
+    }
+
+    // --- 4. ADMIN ---
+    function buildExcludeList(players, containerId, prefix) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        if (players.length === 0) {
+            el.innerHTML = "<p style='color:#aaa;font-size:0.85rem;margin:0;'>Aucun joueur enregistré.</p>";
+            return;
+        }
+        el.innerHTML = players.map(p => `
+            <div class="exclude-item">
+                <input type="checkbox" id="${prefix}-${p.name}" value="${p.name}"
+                    onchange="document.querySelector('label[for=${prefix}-${CSS.escape(p.name)}]').classList.toggle('excluded', this.checked)">
+                <label for="${prefix}-${p.name}">${p.name} — ${p.points} XP / ${p.knowledgePoints ?? 0} Conn.</label>
+            </div>`).join('');
+    }
+
+    async function renderPlayerList() {
+        const listEl = document.getElementById('admin-player-list');
+        if (!listEl) return;
+        try {
+            const players = await api('/api/admin/players');
+            if (players.length === 0) {
+                listEl.innerHTML = "<p style='color:#888'>Aucun joueur enregistré.</p>";
+                buildExcludeList([], 'admin-exclude-list', 'excl');
+                buildExcludeList([], 'admin-exclude-knowledge-list', 'exclk');
+                return;
+            }
+            listEl.innerHTML = players.map(p => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;">
+                    <span><strong>${p.name}</strong> — ${p.points} XP — <span style="color:#8e44ad;">${p.knowledgePoints ?? 0} Conn.</span> — ${p.skillCount} compétence(s)</span>
+                    <button class="admin-btn" style="width:auto;padding:5px 10px;"
+                        onclick="adminResetPlayer('${p.name}')">Réinitialiser</button>
+                </div>`).join('');
+
+            buildExcludeList(players, 'admin-exclude-list', 'excl');
+            buildExcludeList(players, 'admin-exclude-knowledge-list', 'exclk');
+        } catch (e) { listEl.innerHTML = `<p style='color:red'>${e.message}</p>`; }
+    }
+
+    function getExcluded(containerId) {
+        return Array.from(document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`)).map(cb => cb.value);
+    }
+
+    function clearExcludeList(containerId) {
+        document.querySelectorAll(`#${containerId} input[type="checkbox"]`).forEach(cb => {
+            cb.checked = false;
+            const lbl = document.querySelector(`label[for="${cb.id}"]`);
+            if (lbl) lbl.classList.remove('excluded');
+        });
+    }
+
+    async function adminDistributeXP() {
+        const amount = parseInt(document.getElementById('admin-dist-amount').value);
+        if (isNaN(amount) || amount <= 0) { alert("Entrez une quantité valide."); return; }
+        const exclude = getExcluded('admin-exclude-list');
+        const msg = exclude.length > 0
+            ? `Donner ${amount} XP à tous sauf : ${exclude.join(', ')} ?`
+            : `Donner ${amount} XP à TOUS les joueurs ?`;
+        if (!confirm(msg)) return;
+        try {
+            const result = await api('/api/admin/distribute-xp', 'POST', { amount, exclude });
+            alert(`${amount} XP distribués à ${result.count} joueur(s).${result.skipped.length ? '\nExclus : ' + result.skipped.join(', ') : ''}`);
+            document.getElementById('admin-dist-amount').value = '';
+            clearExcludeList('admin-exclude-list');
+            if (playerData.name && !exclude.includes(playerData.name)) {
+                playerData.points += amount;
+                renderPlayerInfo();
+                renderSkillTree();
+            }
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminDistributeKnowledge() {
+        const amount = parseInt(document.getElementById('admin-dist-knowledge').value);
+        if (isNaN(amount) || amount <= 0) { alert("Entrez une quantité valide."); return; }
+        const exclude = getExcluded('admin-exclude-knowledge-list');
+        const msg = exclude.length > 0
+            ? `Donner ${amount} Connaissance à tous sauf : ${exclude.join(', ')} ?`
+            : `Donner ${amount} Connaissance à TOUS les joueurs ?`;
+        if (!confirm(msg)) return;
+        try {
+            const result = await api('/api/admin/distribute-knowledge', 'POST', { amount, exclude });
+            alert(`${amount} Connaissance distribués à ${result.count} joueur(s).${result.skipped.length ? '\nExclus : ' + result.skipped.join(', ') : ''}`);
+            document.getElementById('admin-dist-knowledge').value = '';
+            clearExcludeList('admin-exclude-knowledge-list');
+            if (playerData.name && !exclude.includes(playerData.name)) {
+                playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) + amount;
+                renderPlayerInfo();
+            }
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminGivePoints() {
+        const target = document.getElementById('admin-player-target').value.trim();
+        const xp     = parseInt(document.getElementById('admin-points-amount').value) || 0;
+        const kp     = parseInt(document.getElementById('admin-knowledge-amount').value) || 0;
+        if (!target || (xp === 0 && kp === 0)) { alert("Remplissez le nom et au moins une quantité."); return; }
+        try {
+            let msg = '';
+            if (xp !== 0) {
+                const r = await api('/api/admin/give-points', 'POST', { player: target, amount: xp });
+                if (target === playerData.name) { playerData.points = r.points; }
+                msg += `${xp} XP attribués. Total XP : ${r.points}\n`;
+            }
+            if (kp !== 0) {
+                const r = await api('/api/admin/give-knowledge', 'POST', { player: target, amount: kp });
+                if (target === playerData.name) { playerData.knowledgePoints = r.knowledgePoints; }
+                msg += `${kp} Connaissance attribués. Total Conn. : ${r.knowledgePoints}`;
+            }
+            alert(msg.trim());
+            document.getElementById('admin-points-amount').value = '';
+            document.getElementById('admin-knowledge-amount').value = '';
+            if (target === playerData.name) { renderPlayerInfo(); renderSkillTree(); }
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminAddSkill() {
+        const name = document.getElementById('admin-skill-name').value.trim();
+        const cost = parseInt(document.getElementById('admin-skill-cost').value);
+        const desc = document.getElementById('admin-skill-desc').value.trim();
+        if (!name || isNaN(cost) || !desc) { alert("Remplissez tous les champs."); return; }
+        try {
+            await api('/api/skills', 'POST', { branch: 'Combat', name, cost, desc });
+            cachedTree = await api('/api/skills');
+            if (playerData.name) renderSkillTree();
+            alert(`Compétence '${name}' ajoutée.`);
+            document.getElementById('admin-skill-name').value = '';
+            document.getElementById('admin-skill-cost').value = '';
+            document.getElementById('admin-skill-desc').value = '';
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminResetPlayer(name) {
+        if (!confirm(`Réinitialiser ${name} ? (10 XP, compétences effacées)`)) return;
+        try {
+            await api(`/api/admin/reset/${encodeURIComponent(name)}`, 'POST');
+            if (name === playerData.name) {
+                playerData.points = 10;
+                playerData.acquiredSkills = [];
+                renderPlayerInfo();
+                renderSkillTree();
+            }
+            renderPlayerList();
+        } catch (e) { alert(e.message); }
+    }
+</script>
+
+</body>
+</html>
