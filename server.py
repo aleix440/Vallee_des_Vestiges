@@ -1,15 +1,36 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+import secrets
 import sqlite3
 import os
 import time
 
-app = Flask(__name__)
-DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'game.db')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH  = os.path.join(BASE_DIR, 'data', 'game.db')
 
-# ─── MOT DE PASSE DE L'ANIMATION (changez-le ici) ───────────────────────────
-ADMIN_PASSWORD = "animation2025"
+# ─── CONFIGURATION (variables d'environnement sur le serveur) ───────────────
+ADMIN_PASSWORD      = os.environ.get('ADMIN_PASSWORD', "animation2025")
+HOST                = os.environ.get('HOST', '0.0.0.0')
+PORT                = int(os.environ.get('PORT', 5000))
+MIN_PASSWORD_LENGTH = 4
 # ─────────────────────────────────────────────────────────────────────────────
+
+def load_secret_key():
+    """Clé de signature des sessions : SECRET_KEY si défini, sinon générée une fois et conservée dans data/."""
+    if os.environ.get('SECRET_KEY'):
+        return os.environ['SECRET_KEY']
+    path = os.path.join(BASE_DIR, 'data', 'secret_key')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    if not os.path.exists(path):
+        with open(path, 'w') as f:
+            f.write(secrets.token_hex(32))
+    with open(path) as f:
+        return f.read().strip()
+
+app = Flask(__name__)
+app.secret_key = load_secret_key()
+app.config.update(SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE='Lax')
 
 # ─── LISTE DES CONNAISSANCES (Livre des règles 2025 v2.1) ────────────────────
 KNOWLEDGES = [
@@ -108,6 +129,18 @@ def require_admin(f):
         return f(*args, **kwargs)
     return decorated
 
+def is_admin():
+    return request.headers.get('X-Admin-Key', '') == ADMIN_PASSWORD
+
+def require_player(f):
+    """Le joueur connecté ne peut agir que sur son propre compte."""
+    @wraps(f)
+    def decorated(name, *args, **kwargs):
+        if session.get('player') != name:
+            return jsonify({'error': 'Non connecté'}), 401
+        return f(name, *args, **kwargs)
+    return decorated
+
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     conn = get_db()
@@ -120,6 +153,10 @@ def init_db():
     # Migration : ajoute la colonne pour les BDs existantes
     try:
         c.execute('ALTER TABLE players ADD COLUMN knowledge_points INTEGER DEFAULT 3')
+    except Exception:
+        pass
+    try:
+        c.execute('ALTER TABLE players ADD COLUMN password_hash TEXT')
     except Exception:
         pass
     c.execute('''CREATE TABLE IF NOT EXISTS player_skills (
@@ -160,7 +197,7 @@ def init_db():
 # --- Servir le frontend ---
 @app.route('/')
 def serve_index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory(BASE_DIR, 'index.html')
 
 # --- Auth admin ---
 @app.route('/api/admin/login', methods=['POST'])
@@ -170,16 +207,79 @@ def admin_login():
         return jsonify({'ok': True})
     return jsonify({'error': 'Mot de passe incorrect'}), 401
 
+# --- Comptes joueurs ---
+def read_credentials():
+    data = request.json or {}
+    return (data.get('name') or '').strip(), data.get('password') or ''
+
+def password_too_short(password):
+    if len(password) < MIN_PASSWORD_LENGTH:
+        return jsonify({'error': f'Le mot de passe doit faire au moins {MIN_PASSWORD_LENGTH} caractères'}), 400
+    return None
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    name, password = read_credentials()
+    if not name:
+        return jsonify({'error': 'Nom requis'}), 400
+    if (err := password_too_short(password)):
+        return err
+    conn = get_db()
+    c = conn.cursor()
+    if c.execute('SELECT 1 FROM players WHERE name = ?', (name,)).fetchone():
+        conn.close(); return jsonify({'error': 'Ce nom est déjà utilisé'}), 400
+    c.execute('INSERT INTO players (name, points, knowledge_points, password_hash) VALUES (?, 9, 3, ?)',
+              (name, generate_password_hash(password)))
+    conn.commit()
+    conn.close()
+    session['player'] = name
+    return jsonify({'name': name})
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    name, password = read_credentials()
+    conn = get_db()
+    c = conn.cursor()
+    player = c.execute('SELECT password_hash FROM players WHERE name = ?', (name,)).fetchone()
+    if not player:
+        conn.close(); return jsonify({'error': 'Nom ou mot de passe incorrect'}), 401
+    if player['password_hash'] is None:
+        # Joueur créé avant les comptes : le premier mot de passe saisi devient le sien
+        if (err := password_too_short(password)):
+            conn.close(); return err
+        c.execute('UPDATE players SET password_hash = ? WHERE name = ?', (generate_password_hash(password), name))
+        conn.commit()
+    elif not check_password_hash(player['password_hash'], password):
+        conn.close(); return jsonify({'error': 'Nom ou mot de passe incorrect'}), 401
+    conn.close()
+    session['player'] = name
+    return jsonify({'name': name})
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.pop('player', None)
+    return jsonify({'ok': True})
+
+@app.route('/api/me', methods=['GET'])
+def me():
+    name = session.get('player')
+    if not name:
+        return jsonify({'error': 'Non connecté'}), 401
+    return get_player_data(name)
+
 # --- Joueur ---
 @app.route('/api/player/<name>', methods=['GET'])
 def get_player(name):
+    if session.get('player') != name and not is_admin():
+        return jsonify({'error': 'Non connecté'}), 401
+    return get_player_data(name)
+
+def get_player_data(name):
     conn = get_db()
     c = conn.cursor()
     player = c.execute('SELECT * FROM players WHERE name = ?', (name,)).fetchone()
     if not player:
-        c.execute('INSERT INTO players (name, points, knowledge_points) VALUES (?, 9, 3)', (name,))
-        conn.commit()
-        player = c.execute('SELECT * FROM players WHERE name = ?', (name,)).fetchone()
+        conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
     skills = [r['skill_id'] for r in c.execute(
         'SELECT skill_id FROM player_skills WHERE player_name = ?', (name,)
     ).fetchall()]
@@ -192,6 +292,7 @@ def get_player(name):
                     'acquiredSkills': skills, 'acquiredKnowledges': knowledges})
 
 @app.route('/api/player/<name>/purchase', methods=['POST'])
+@require_player
 def purchase_skill(name):
     skill_id = request.json.get('skillId')
     conn = get_db()
@@ -256,6 +357,7 @@ def get_knowledges():
     return jsonify([{'category': k, 'knowledges': v} for k, v in cats.items()])
 
 @app.route('/api/player/<name>/buy-knowledge', methods=['POST'])
+@require_player
 def buy_knowledge(name):
     knowledge_id = request.json.get('knowledgeId')
     conn = get_db()
@@ -353,9 +455,8 @@ def give_points():
     conn = get_db()
     c    = conn.cursor()
     if not c.execute('SELECT 1 FROM players WHERE name=?', (target,)).fetchone():
-        c.execute('INSERT INTO players (name, points) VALUES (?, ?)', (target, 9 + int(amount)))
-    else:
-        c.execute('UPDATE players SET points = points + ? WHERE name=?', (int(amount), target))
+        conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
+    c.execute('UPDATE players SET points = points + ? WHERE name=?', (int(amount), target))
     conn.commit()
     new_points = c.execute('SELECT points FROM players WHERE name=?', (target,)).fetchone()['points']
     conn.close()
@@ -371,9 +472,8 @@ def give_knowledge():
     conn = get_db()
     c    = conn.cursor()
     if not c.execute('SELECT 1 FROM players WHERE name=?', (target,)).fetchone():
-        c.execute('INSERT INTO players (name, points, knowledge_points) VALUES (?, 9, ?)', (target, 3 + int(amount)))
-    else:
-        c.execute('UPDATE players SET knowledge_points = knowledge_points + ? WHERE name=?', (int(amount), target))
+        conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
+    c.execute('UPDATE players SET knowledge_points = knowledge_points + ? WHERE name=?', (int(amount), target))
     conn.commit()
     new_kp = c.execute('SELECT knowledge_points FROM players WHERE name=?', (target,)).fetchone()['knowledge_points']
     conn.close()
@@ -415,6 +515,22 @@ def distribute_xp():
     conn.close()
     return jsonify({'updated': updated, 'skipped': list(exclude), 'count': len(updated)})
 
+@app.route('/api/admin/player/<name>/set-password', methods=['POST'])
+@require_admin
+def admin_set_password(name):
+    """Pour un joueur qui a oublié son mot de passe."""
+    password = (request.json or {}).get('password') or ''
+    if (err := password_too_short(password)):
+        return err
+    conn = get_db()
+    c    = conn.cursor()
+    if not c.execute('SELECT 1 FROM players WHERE name=?', (name,)).fetchone():
+        conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
+    c.execute('UPDATE players SET password_hash = ? WHERE name=?', (generate_password_hash(password), name))
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
 @app.route('/api/admin/reset/<name>', methods=['POST'])
 @require_admin
 def reset_player(name):
@@ -427,8 +543,13 @@ def reset_player(name):
     conn.close()
     return jsonify({'ok': True})
 
+# Initialisée à l'import pour fonctionner aussi derrière waitress-serve / gunicorn
+init_db()
+
 if __name__ == '__main__':
-    init_db()
-    print("\n  GN Skill Tree — http://localhost:5000")
-    print(f"  Mot de passe Animation : {ADMIN_PASSWORD}\n")
-    app.run(debug=True, port=5000)
+    from waitress import serve
+    print(f"\n  GN Skill Tree — http://{HOST}:{PORT}")
+    if 'ADMIN_PASSWORD' not in os.environ:
+        print("  ATTENTION : mot de passe Animation par défaut, définissez ADMIN_PASSWORD sur le serveur.")
+    print()
+    serve(app, host=HOST, port=PORT)

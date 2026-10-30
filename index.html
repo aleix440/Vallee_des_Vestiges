@@ -439,9 +439,14 @@
 
 <main>
     <section id="login-section">
-        <h2>Entrez votre nom de joueur</h2>
-        <input type="text" id="player-name-input" placeholder="Ex: Galar le Barbare">
-        <button class="btn-purchase" onclick="connectPlayer()">Connexion</button>
+        <h2>Connexion joueur</h2>
+        <input type="text" id="player-name-input" placeholder="Nom (ex: Galar le Barbare)" autocomplete="username">
+        <input type="password" id="player-password-input" placeholder="Mot de passe" autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') connectPlayer()">
+        <div style="display:flex;gap:0.5rem;">
+            <button class="btn-purchase" onclick="connectPlayer()">Connexion</button>
+            <button class="btn-purchase" style="background:#7f8c8d;" onclick="connectPlayer(true)">Créer un compte</button>
+        </div>
     </section>
 
     <section id="player-view" class="hidden">
@@ -592,12 +597,21 @@
     }
 
     // --- 1. CONNEXION ---
-    async function connectPlayer() {
+    async function connectPlayer(createAccount = false) {
         const nameInput = document.getElementById('player-name-input').value.trim();
-        if (!nameInput) { alert("Veuillez entrer un nom."); return; }
+        const password  = document.getElementById('player-password-input').value;
+        if (!nameInput || !password) { alert("Veuillez entrer un nom et un mot de passe."); return; }
+        try {
+            await api(createAccount ? '/api/register' : '/api/login', 'POST', { name: nameInput, password });
+            document.getElementById('player-password-input').value = '';
+            await loadPlayerSession();
+        } catch (e) { alert("Erreur de connexion : " + e.message); }
+    }
+
+    async function loadPlayerSession() {
         try {
             const [record, tree, kList] = await Promise.all([
-                api(`/api/player/${encodeURIComponent(nameInput)}`),
+                api('/api/me'),
                 api('/api/skills'),
                 api('/api/knowledges')
             ]);
@@ -612,7 +626,11 @@
         } catch (e) { alert("Erreur de connexion : " + e.message); }
     }
 
-    function disconnectPlayer() {
+    // Reprend la session si le joueur est déjà connecté (rechargement de la page)
+    fetch('/api/me').then(res => { if (res.ok) loadPlayerSession(); });
+
+    async function disconnectPlayer() {
+        await fetch('/api/logout', { method: 'POST' });
         playerData    = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [], acquiredKnowledges: [] };
         cachedTree    = [];
         allKnowledges = [];
@@ -944,8 +962,12 @@
             listEl.innerHTML = players.map(p => `
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;">
                     <span><strong>${p.name}</strong> — ${p.points} XP — <span style="color:#8e44ad;">${p.knowledgePoints ?? 0} Conn.</span> — ${p.skillCount} compétence(s)</span>
-                    <button class="admin-btn" style="width:auto;padding:5px 10px;"
-                        onclick="adminResetPlayer('${p.name}')">Réinitialiser</button>
+                    <span style="display:flex;gap:0.5rem;">
+                        <button class="admin-btn" style="width:auto;padding:5px 10px;background:#7f8c8d;"
+                            onclick="adminSetPassword('${p.name}')">Mot de passe</button>
+                        <button class="admin-btn" style="width:auto;padding:5px 10px;"
+                            onclick="adminResetPlayer('${p.name}')">Réinitialiser</button>
+                    </span>
                 </div>`).join('');
 
             buildExcludeList(players, 'admin-exclude-dist-list',   'excld');
@@ -1144,6 +1166,15 @@
             document.getElementById('admin-skill-knowledge-cost').value = '0';
             document.getElementById('admin-skill-prereq').value = '';
             document.getElementById('admin-skill-desc').value = '';
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminSetPassword(name) {
+        const password = prompt(`Nouveau mot de passe pour ${name} :`);
+        if (!password) return;
+        try {
+            await api(`/api/admin/player/${encodeURIComponent(name)}/set-password`, 'POST', { password });
+            alert(`Mot de passe de ${name} modifié.`);
         } catch (e) { alert(e.message); }
     }
 
