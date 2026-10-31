@@ -753,6 +753,17 @@
         </div>
 
         <div class="admin-card">
+            <h3>Modifier les Avantages et Désavantages</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Nom, type, catégorie, coûts possibles, liens et description. Les choix déjà faits par les joueurs restent tels quels ; un avantage choisi par un joueur ne peut pas être supprimé.</p>
+            <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.6rem;">
+                <input type="search" id="admin-trait-search" class="player-search" style="flex:1;margin:0;" placeholder="Rechercher un avantage ou désavantage…" oninput="renderAdminTraits()">
+                <button class="admin-small-btn" onclick="editAdminTrait('__new__')">+ Nouveau</button>
+            </div>
+            <div id="adm-trait-__new__"></div>
+            <div id="admin-trait-list" class="admin-edit-list"></div>
+        </div>
+
+        <div class="admin-card">
             <h3>Documents de Règles</h3>
             <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Remplace le PDF affiché aux joueurs dans les onglets « Livre des règles » et « Règlement de magie ».</p>
             <div class="admin-doc-row">
@@ -2295,6 +2306,7 @@
             renderAdminSkills();
             renderAdminSpells();
             renderAdminProvenanceSelect();
+            renderAdminTraits();
             if (playerData.name) renderSkillTree();
         } catch (e) { alert(e.message); }
     }
@@ -2522,6 +2534,88 @@
             await api('/api/admin/provenances/delete', 'POST', { name });
             characterRules = await api('/api/character-rules');
             renderAdminProvenanceSelect('');
+        } catch (e) { alert(e.message); }
+    }
+
+    // Avantages et désavantages : liste par type puis catégorie, formulaire déplié sous la ligne
+    const TRAIT_CATEGORIES = ['Physique', 'Mental', 'Sociale', 'Matériel', 'Surnaturel'];
+
+    function renderAdminTraits() {
+        const query  = normalizeSearch(document.getElementById('admin-trait-search').value.trim());
+        const traits = characterRules.traits.filter(t => matchesSearch(query, t.name, t.description, t.category, t.id));
+        const pts    = c => `${c} pt${c > 1 ? 's' : ''}`;
+        document.getElementById('admin-trait-list').innerHTML = TRAIT_KINDS.map(([kind, title]) =>
+            TRAIT_CATEGORIES.map(cat => {
+                const rows = traits.filter(t => t.kind === kind && t.category === cat)
+                                   .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+                if (!rows.length) return '';
+                return `<div class="admin-edit-group">${title} · ${cat}</div>` + rows.map(t => `
+                    <div class="admin-edit-row" id="adm-trait-${t.id}">
+                        <div class="admin-edit-head">
+                            <div class="info"><strong>${escapeHtml(t.name)}</strong>
+                                <small>${t.costs.map(pts).join(' / ')}${t.approval ? ' · à voir avec l\'Animation' : ''}</small></div>
+                            <button class="admin-small-btn" onclick="editAdminTrait('${t.id}')">Modifier</button>
+                            <button class="admin-small-btn danger" onclick="deleteAdminTrait('${t.id}')">Supprimer</button>
+                        </div>
+                    </div>`).join('');
+            }).join('')).join('') || '<p class="search-empty" style="padding:0.8rem;">Aucun avantage ou désavantage trouvé.</p>';
+    }
+
+    function editAdminTrait(id) {
+        const row = document.getElementById(`adm-trait-${id}`);
+        if (row.querySelector('.admin-edit-form')) { row.querySelector('.admin-edit-form').remove(); return; }
+        const t = traitById(id) ?? { id, kind: 'desavantage', category: 'Physique', name: '', costs: [1], description: '' };
+        const others = characterRules.traits.filter(x => x.id !== id)
+            .map(x => ({ id: x.id, name: `${x.name} (${x.kind === 'avantage' ? 'avantage' : 'désavantage'})` }))
+            .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+        const select = (f, options, value) => `<select data-f="${f}">${options.map(([v, label]) =>
+            `<option value="${v}" ${v === value ? 'selected' : ''}>${label}</option>`).join('')}</select>`;
+        row.insertAdjacentHTML('beforeend', `
+            <div class="admin-edit-form">
+                ${fieldHtml('Nom', `<input data-f="name" value="${escapeHtml(t.name)}">`)}
+                ${fieldHtml('Type', select('kind', TRAIT_KINDS.map(([k]) => [k, k === 'avantage' ? 'Avantage' : 'Désavantage']), t.kind))}
+                ${fieldHtml('Catégorie', select('category', TRAIT_CATEGORIES.map(c => [c, c]), t.category))}
+                ${fieldHtml('Coûts possibles (séparés par des virgules)', `<input data-f="costs" value="${t.costs.join(', ')}">`)}
+                ${fieldHtml('Points de vie (+/-)', `<input type="number" data-f="pv" value="${t.stats?.pv ?? 0}">`)}
+                ${fieldHtml('Points d\'esprit (+/-)', `<input type="number" data-f="pe" value="${t.stats?.pe ?? 0}">`)}
+                <label class="wide" style="flex-direction:row;align-items:center;gap:0.4rem;">
+                    <input type="checkbox" data-f="approval" ${t.approval ? 'checked' : ''}> Doit être vu avec l'Animation</label>
+                ${fieldHtml('Se prend avec (au moins un de)', pickerHtml(`adm-trait-req-${id}`, others, t.requires ?? []), true)}
+                ${fieldHtml('Incompatible avec', pickerHtml(`adm-trait-inc-${id}`, others, t.incompatible ?? []), true)}
+                ${fieldHtml('Description', `<textarea data-f="description" rows="4">${escapeHtml(t.description)}</textarea>`, true)}
+                <div class="buttons">
+                    <button class="admin-small-btn" onclick="editAdminTrait('${id}')">Annuler</button>
+                    <button class="admin-btn" onclick="saveAdminTrait('${id}')">Enregistrer</button>
+                </div>
+            </div>`);
+        renderPicker(`adm-trait-req-${id}`);
+        renderPicker(`adm-trait-inc-${id}`);
+    }
+
+    async function saveAdminTrait(id) {
+        const form = document.querySelector(`#adm-trait-${id} .admin-edit-form`);
+        const data = readEditForm(form);
+        const body = {
+            name: data.name, kind: data.kind, category: data.category, description: data.description,
+            costs: data.costs.split(/[,;\s]+/).filter(Boolean).map(Number),
+            stats: { pv: data.pv || 0, pe: data.pe || 0 },
+            approval: form.querySelector('[data-f="approval"]').checked,
+            requires: pickers[`adm-trait-req-${id}`].selected, incompatible: pickers[`adm-trait-inc-${id}`].selected,
+        };
+        try {
+            await api(id === '__new__' ? '/api/admin/traits' : `/api/admin/traits/${encodeURIComponent(id)}`, 'POST', body);
+            if (id === '__new__') form.remove();
+            characterRules = await api('/api/character-rules');
+            renderAdminTraits();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function deleteAdminTrait(id) {
+        if (!confirm(`Supprimer « ${traitById(id).name} » ?`)) return;
+        try {
+            await api(`/api/admin/traits/${encodeURIComponent(id)}/delete`, 'POST');
+            characterRules = await api('/api/character-rules');
+            renderAdminTraits();
         } catch (e) { alert(e.message); }
     }
 

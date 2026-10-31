@@ -310,9 +310,10 @@ SKILL_NAME_ALIASES = {
 DISADVANTAGE_MIN = 3
 DISADVANTAGE_MAX = 12
 RUINED_TRAIT     = "d-ruiner"   # Ruiné : aucun avantage matériel
-with open(os.path.join(BASE_DIR, 'traits.json'), encoding='utf-8') as f:
-    TRAITS = json.load(f)
-TRAITS_BY_ID = {t['id']: t for t in TRAITS}
+# La liste est rangée dans la base (table traits, modifiable par l'Animation), chargée par reload_content
+TRAIT_KINDS      = ('avantage', 'desavantage')
+TRAIT_CATEGORIES = ('Physique', 'Mental', 'Sociale', 'Matériel', 'Surnaturel')
+TRAITS, TRAITS_BY_ID = [], {}
 
 # Compétences qui augmentent les points de vie / d'esprit
 SKILL_STAT_BONUSES = {
@@ -480,6 +481,11 @@ def init_db():
         position INTEGER NOT NULL DEFAULT 0,
         data     TEXT    NOT NULL   -- JSON : skills, knowledges, language_choice, extra_free_weapons, notes
     )''')
+    c.execute('''CREATE TABLE IF NOT EXISTS traits (
+        id       TEXT PRIMARY KEY,
+        position INTEGER NOT NULL DEFAULT 0,
+        data     TEXT    NOT NULL   -- JSON : kind, category, name, costs, description, approval, requires, incompatible, stats
+    )''')
     # Changements de contenu appliqués une seule fois : ensuite, la base (modifiable par l'Animation) fait foi
     c.execute('CREATE TABLE IF NOT EXISTS migrations (name TEXT PRIMARY KEY)')
     done = {r['name'] for r in c.execute('SELECT name FROM migrations').fetchall()}
@@ -547,17 +553,28 @@ def seed_provenances(c):
     c.executemany('INSERT OR IGNORE INTO provenances (name, position, data) VALUES (?, ?, ?)',
                   [(name, i, json.dumps(rules)) for i, (name, rules) in enumerate(PROVENANCES_SEED.items())])
 
+def seed_traits(c):
+    """Avantages et désavantages du Livre des règles (traits.json)."""
+    with open(os.path.join(BASE_DIR, 'traits.json'), encoding='utf-8') as f:
+        traits = json.load(f)
+    c.executemany('INSERT OR IGNORE INTO traits (id, position, data) VALUES (?, ?, ?)',
+                  [(t['id'], i, json.dumps({k: v for k, v in t.items() if k != 'id'})) for i, t in enumerate(traits)])
+
 CONTENT_MIGRATIONS = [  # (nom, fonction), dans l'ordre ; chacune n'est appliquée qu'une fois par base
     ('competences-de-base', seed_skills),
     ('regles-2025',         migrate_rules_2025),
     ('categories',          migrate_categories),
     ('sorts',               seed_spells),
     ('provenances',         seed_provenances),
+    ('avantages',           seed_traits),
 ]
 
 def reload_content(c):
-    """Recharge en mémoire les sorts et les provenances (au démarrage et après une modification par l'Animation)."""
-    global PROVENANCES, MAGIC_SCHOOLS, SCHOOL_SPELLS, SPELL_INFO
+    """Recharge en mémoire sorts, provenances et avantages (au démarrage et après une modification par l'Animation)."""
+    global PROVENANCES, MAGIC_SCHOOLS, SCHOOL_SPELLS, SPELL_INFO, TRAITS, TRAITS_BY_ID
+    TRAITS = [{'id': r['id'], **json.loads(r['data'])}
+              for r in c.execute('SELECT id, data FROM traits ORDER BY position, id').fetchall()]
+    TRAITS_BY_ID = {t['id']: t for t in TRAITS}
     PROVENANCES = {r['name']: json.loads(r['data'])
                    for r in c.execute('SELECT name, data FROM provenances ORDER BY position, name').fetchall()}
     fields = ('id', 'name', 'type', 'incantation', 'cible', 'portee', 'duree', 'resistance', 'description')
@@ -806,7 +823,7 @@ def traits_error(traits):
         if cost not in trait['costs']:
             return f'Coût invalide pour {trait["name"]}'
         if trait.get('requires') and not any(r in traits for r in trait['requires']):
-            names = ' ou '.join(TRAITS_BY_ID[r]['name'] for r in trait['requires'])
+            names = ' ou '.join(TRAITS_BY_ID[r]['name'] for r in trait['requires'] if r in TRAITS_BY_ID)
             return f'{trait["name"]} se prend avec {names}'
         for other in trait.get('incompatible', []):
             if other in traits:
@@ -1406,6 +1423,104 @@ def admin_delete_provenance():
     c.execute('DELETE FROM provenances WHERE name = ?', (name,))
     if c.rowcount == 0:
         conn.close(); return jsonify({'error': 'Provenance introuvable'}), 404
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'ok': True})
+
+def read_trait_fields(data, trait_id=None):
+    """Champs d'un avantage/désavantage envoyés par l'Animation ; renvoie (champs, erreur)."""
+    name        = (data.get('name') or '').strip()
+    description = (data.get('description') or '').strip()
+    if not name or not description:
+        return None, 'Le nom et la description sont obligatoires'
+    if data.get('kind') not in TRAIT_KINDS:
+        return None, 'Type invalide (avantage ou désavantage)'
+    if data.get('category') not in TRAIT_CATEGORIES:
+        return None, 'Catégorie inconnue'
+    try:
+        costs = sorted({int(c) for c in data.get('costs') or []})
+        stats = {k: int(v) for k, v in (data.get('stats') or {}).items() if k in ('pv', 'pe') and int(v)}
+    except (TypeError, ValueError):
+        return None, 'Coût ou bonus invalide'
+    if not costs or costs[0] <= 0:
+        return None, 'Indiquez au moins un coût, chacun supérieur à 0'
+    fields = {'kind': data['kind'], 'category': data['category'], 'name': name, 'costs': costs,
+              'description': description}
+    for key in ('requires', 'incompatible'):
+        ids = list(dict.fromkeys(data.get(key) or []))
+        if any(t not in TRAITS_BY_ID or t == trait_id for t in ids):
+            return None, 'Avantage ou désavantage lié inconnu'
+        if ids:
+            fields[key] = ids
+    if stats:
+        fields['stats'] = stats
+    if data.get('approval'):
+        fields['approval'] = True
+    return fields, None
+
+@app.route('/api/admin/traits', methods=['POST'])
+@require_admin
+def admin_create_trait():
+    fields, err = read_trait_fields(request.json or {})
+    if err:
+        return jsonify({'error': err}), 400
+    base   = ('a-' if fields['kind'] == 'avantage' else 'd-') + (skill_key(fields['name']) or 'x')
+    new_id = base
+    while new_id in TRAITS_BY_ID:
+        new_id = f'{base}-{int(time.time() * 1000) % 100000}'
+    conn = get_db()
+    c    = conn.cursor()
+    position = c.execute('SELECT COALESCE(MAX(position), 0) + 1 FROM traits').fetchone()[0]
+    c.execute('INSERT INTO traits (id, position, data) VALUES (?, ?, ?)', (new_id, position, json.dumps(fields)))
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'id': new_id})
+
+@app.route('/api/admin/traits/<trait_id>', methods=['POST'])
+@require_admin
+def admin_update_trait(trait_id):
+    """Modifie un avantage/désavantage ; les choix déjà faits par les joueurs sont conservés tels quels."""
+    if trait_id not in TRAITS_BY_ID:
+        return jsonify({'error': 'Avantage ou désavantage introuvable'}), 404
+    fields, err = read_trait_fields(request.json or {}, trait_id)
+    if err:
+        return jsonify({'error': err}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    c.execute('UPDATE traits SET data = ? WHERE id = ?', (json.dumps(fields), trait_id))
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/traits/<trait_id>/delete', methods=['POST'])
+@require_admin
+def admin_delete_trait(trait_id):
+    """Supprime un avantage/désavantage qu'aucun joueur n'a choisi ; il est retiré des liens des autres."""
+    if trait_id not in TRAITS_BY_ID:
+        return jsonify({'error': 'Avantage ou désavantage introuvable'}), 404
+    if trait_id == RUINED_TRAIT:
+        return jsonify({'error': f'{TRAITS_BY_ID[trait_id]["name"]} a un fonctionnement particulier : '
+                                 'il peut être modifié mais pas supprimé'}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    users = [r['name'] for r in c.execute('SELECT name, traits FROM players WHERE traits IS NOT NULL').fetchall()
+             if trait_id in json.loads(r['traits'])]
+    if users:
+        conn.close(); return jsonify({'error': 'Ces joueurs l\'ont choisi, retirez-le d\'abord de leur fiche : '
+                                               + ', '.join(users)}), 400
+    for t in TRAITS:
+        if trait_id in t.get('requires', []) + t.get('incompatible', []):
+            data = {k: v for k, v in t.items() if k != 'id'}
+            for key in ('requires', 'incompatible'):
+                if key in data:
+                    data[key] = [x for x in data[key] if x != trait_id]
+                    if not data[key]:
+                        del data[key]
+            c.execute('UPDATE traits SET data = ? WHERE id = ?', (json.dumps(data), t['id']))
+    c.execute('DELETE FROM traits WHERE id = ?', (trait_id,))
     conn.commit()
     reload_content(c)
     conn.close()
