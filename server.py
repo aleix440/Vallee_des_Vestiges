@@ -272,27 +272,35 @@ EXTRA_SKILLS = [
      "technologie1", 101),
 ]
 
-# Catégories d'affichage des compétences : un fichier texte par catégorie, une compétence par ligne.
-# La 1re ligne du fichier est ignorée (titre). Chaque compétence n'apparaît que dans une catégorie :
+# Catégories d'affichage des compétences, remplies par des fichiers texte (une compétence par ligne,
+# la 1re ligne du fichier est ignorée). Chaque compétence n'apparaît que dans une catégorie :
 # celle de SKILL_CATEGORY_CHOICES si elle y est, sinon celle du 1er fichier qui la cite.
-# Les étiquettes supplémentaires des fichiers (ex. « Assommement -m -u ») sont ignorées.
+# Dans utilité.txt, la dernière lettre de la ligne donne la catégorie (ex. « Camouflage -u m » → Martial).
 # Les compétences absentes des fichiers vont dans « Autres ».
-SKILL_CATEGORIES = [  # (fichier, nom affiché, étiquette)
-    ("martial.txt",  "Martial",  "m"),
-    ("magie.txt",    "Magie",    "ma"),
-    ("utilité.txt",  "Utilité",  "u"),
-    ("craft.txt",    "Craft",    "c"),
-    ("economie.txt", "Économie", "e"),
+SKILL_CATEGORIES = ["Martial", "Académique", "Économique"]
+CATEGORY_FILES = [  # (fichier, catégorie ; None : dernière lettre de chaque ligne)
+    ("martial.txt",  "Martial"),
+    ("magie.txt",    "Académique"),
+    ("utilité.txt",  None),
+    ("craft.txt",    "Économique"),
+    ("economie.txt", "Économique"),
 ]
+CATEGORY_LETTERS = {"m": "Martial", "a": "Académique", "e": "Économique"}
 OTHER_CATEGORY = "Autres"
-# Catégorie retenue pour les compétences qui ont plusieurs étiquettes dans les fichiers
+# Catégorie retenue pour les compétences qui ont plusieurs étiquettes dans les fichiers, ou aucune
 SKILL_CATEGORY_CHOICES = {
-    "assommement":         "Utilité",
-    "entretiendarme":      "Craft",
-    "inspiration":         "Utilité",
-    "prestation":          "Magie",
-    "ecrituredeparchemin": "Craft",
+    "assommement":         "Martial",
+    "entretiendarme":      "Économique",
+    "ecrituredeparchemin": "Économique",
+    "runisme":             "Académique",
+    "druidisme":           "Académique",
+    "medecine":            "Économique",
+    "messe":               "Économique",
+    "tatouage":            "Économique",
+    "harmonisationalchimique": "Martial",
 }
+# Anciennes catégories (avant Martial / Académique / Économique)
+OLD_CATEGORIES = {"Martial": "Martial", "Magie": "Académique", "Craft": "Économique", "Économie": "Économique"}
 # Nom écrit dans les fichiers → nom de la compétence dans l'arbre, quand ils diffèrent
 SKILL_NAME_ALIASES = {
     "symboldefoi":                  "symboledefoi",
@@ -362,14 +370,55 @@ def require_admin(f):
 def is_admin():
     return request.headers.get('X-Admin-Key', '') == ADMIN_PASSWORD
 
+def owns_character(name):
+    """Le personnage <name> appartient-il au compte connecté ?"""
+    account = session.get('player')
+    if not account:
+        return False
+    conn = get_db()
+    row  = conn.execute('SELECT 1 FROM players WHERE name = ? AND account = ?', (name, account)).fetchone()
+    conn.close()
+    return row is not None
+
 def require_player(f):
-    """Le joueur connecté ne peut agir que sur son propre compte."""
+    """Le joueur connecté ne peut agir que sur les personnages de son compte."""
     @wraps(f)
     def decorated(name, *args, **kwargs):
-        if session.get('player') != name:
+        if not owns_character(name):
             return jsonify({'error': 'Non connecté'}), 401
         return f(name, *args, **kwargs)
     return decorated
+
+def resolve_character(c, name):
+    """Pour l'Animation : un nom de compte désigne son personnage actif, sinon <name> est l'identifiant
+    d'un personnage. Renvoie l'identifiant du personnage ou None."""
+    row = c.execute('SELECT name FROM players WHERE account = ? AND active = 1', (name,)).fetchone()
+    if row:
+        return row['name']
+    row = c.execute('SELECT name FROM players WHERE name = ?', (name,)).fetchone()
+    return row['name'] if row else None
+
+def admin_target(f):
+    """Route d'Animation /…/<name>/… : <name> (compte ou personnage) est remplacé par l'identifiant du personnage."""
+    @wraps(f)
+    def decorated(name, *args, **kwargs):
+        conn = get_db()
+        target = resolve_character(conn.cursor(), name)
+        conn.close()
+        if not target:
+            return jsonify({'error': 'Joueur introuvable'}), 404
+        return f(target, *args, **kwargs)
+    return decorated
+
+def character_label(row):
+    """« Personnage (compte) » pour les messages de l'Animation."""
+    return f"{row['character_name'] or row['name']} ({row['account']})"
+
+def new_character_id(c):
+    while True:
+        cid = 'p' + secrets.token_hex(5)
+        if not c.execute('SELECT 1 FROM players WHERE name = ?', (cid,)).fetchone():
+            return cid
 
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -388,11 +437,23 @@ def init_db():
     for column in ('password_hash TEXT', 'race TEXT', 'provenance TEXT',
                    'human_bonus TEXT', "armor TEXT NOT NULL DEFAULT '{}'",
                    "provenance_languages TEXT NOT NULL DEFAULT '[]'", 'religion TEXT',
-                   'traits TEXT'):   # avantages/désavantages {id: coût}, NULL tant que non choisis
+                   'traits TEXT',    # avantages/désavantages {id: coût}, NULL tant que non choisis
+                   # Un compte (table accounts) a plusieurs personnages, un seul actif ; players.name est
+                   # l'identifiant du personnage (le nom du compte pour les fiches d'avant les comptes)
+                   'account TEXT', 'character_name TEXT', 'active INTEGER NOT NULL DEFAULT 0'):
         try:
             c.execute(f'ALTER TABLE players ADD COLUMN {column}')
         except Exception:
             pass
+    c.execute('''CREATE TABLE IF NOT EXISTS accounts (
+        name          TEXT PRIMARY KEY,
+        password_hash TEXT
+    )''')
+    # Fiches d'avant les comptes : chacune devient le personnage actif d'un compte du même nom
+    for r in c.execute('SELECT name, password_hash FROM players WHERE account IS NULL').fetchall():
+        c.execute('INSERT OR IGNORE INTO accounts (name, password_hash) VALUES (?, ?)', (r['name'], r['password_hash']))
+        c.execute('UPDATE players SET account = ?, character_name = ?, active = 1 WHERE name = ?',
+                  (r['name'], r['name'], r['name']))
     c.execute('''CREATE TABLE IF NOT EXISTS player_skills (
         player_name TEXT,
         skill_id    TEXT,
@@ -532,11 +593,30 @@ def migrate_rules_2025(c):
 
 def migrate_categories(c):
     """La catégorie de chaque compétence (fichiers martial.txt, magie.txt…) est enregistrée dans la base."""
-    placement = load_skill_categories()
-    names     = [name for _, name, _ in SKILL_CATEGORIES]
+    placement, _ = load_skill_categories()
     for r in c.execute('SELECT id, name, branch FROM skills').fetchall():
-        branch = placement.get(skill_key(r['name'])) or (r['branch'] if r['branch'] in names else OTHER_CATEGORY)
+        branch = placement.get(skill_key(r['name'])) or \
+                 (r['branch'] if r['branch'] in SKILL_CATEGORIES else OTHER_CATEGORY)
         c.execute('UPDATE skills SET branch = ? WHERE id = ?', (branch, r['id']))
+
+def migrate_three_categories(c):
+    """Martial / Académique / Économique : les anciennes catégories sont renommées (en gardant les choix de
+    l'Animation), les compétences d'Utilité et celles nommées dans SKILL_CATEGORY_CHOICES sont replacées."""
+    placement, lettered = load_skill_categories()
+    for r in c.execute('SELECT id, name, branch FROM skills').fetchall():
+        key = skill_key(r['name'])
+        if r['branch'] == 'Utilité' or key in lettered or key in SKILL_CATEGORY_CHOICES:
+            branch = placement.get(key, OTHER_CATEGORY)
+        else:
+            branch = OLD_CATEGORIES.get(r['branch'], r['branch'] if r['branch'] in SKILL_CATEGORIES else OTHER_CATEGORY)
+        c.execute('UPDATE skills SET branch = ? WHERE id = ?', (branch, r['id']))
+
+def migrate_other_category(c):
+    """Les compétences restées dans « Autres » (Médecine, Messe, Tatouage, Harmonisation alchimique) sont placées."""
+    for r in c.execute('SELECT id, name FROM skills WHERE branch = ?', (OTHER_CATEGORY,)).fetchall():
+        branch = SKILL_CATEGORY_CHOICES.get(skill_key(r['name']))
+        if branch:
+            c.execute('UPDATE skills SET branch = ? WHERE id = ?', (branch, r['id']))
 
 def seed_spells(c):
     """Sorts du Règlement de magie (spells.json)."""
@@ -567,6 +647,8 @@ CONTENT_MIGRATIONS = [  # (nom, fonction), dans l'ordre ; chacune n'est appliqu�
     ('sorts',               seed_spells),
     ('provenances',         seed_provenances),
     ('avantages',           seed_traits),
+    ('trois-categories',    migrate_three_categories),
+    ('categorie-autres',    migrate_other_category),
 ]
 
 def reload_content(c):
@@ -636,10 +718,10 @@ def register():
         return err
     conn = get_db()
     c = conn.cursor()
-    if c.execute('SELECT 1 FROM players WHERE name = ?', (name,)).fetchone():
+    if c.execute('SELECT 1 FROM accounts WHERE name = ?', (name,)).fetchone():
         conn.close(); return jsonify({'error': 'Ce nom est déjà utilisé'}), 400
-    c.execute('INSERT INTO players (name, points, knowledge_points, password_hash) VALUES (?, 9, 3, ?)',
-              (name, generate_password_hash(password)))
+    c.execute('INSERT INTO accounts (name, password_hash) VALUES (?, ?)', (name, generate_password_hash(password)))
+    create_character(c, name, 'Personnage 1')
     conn.commit()
     conn.close()
     session['player'] = name
@@ -650,14 +732,14 @@ def login():
     name, password = read_credentials()
     conn = get_db()
     c = conn.cursor()
-    player = c.execute('SELECT password_hash FROM players WHERE name = ?', (name,)).fetchone()
+    player = c.execute('SELECT password_hash FROM accounts WHERE name = ?', (name,)).fetchone()
     if not player:
         conn.close(); return jsonify({'error': 'Nom ou mot de passe incorrect'}), 401
     if player['password_hash'] is None:
-        # Joueur créé avant les comptes : le premier mot de passe saisi devient le sien
+        # Joueur créé avant les mots de passe : le premier mot de passe saisi devient le sien
         if (err := password_too_short(password)):
             conn.close(); return err
-        c.execute('UPDATE players SET password_hash = ? WHERE name = ?', (generate_password_hash(password), name))
+        c.execute('UPDATE accounts SET password_hash = ? WHERE name = ?', (generate_password_hash(password), name))
         conn.commit()
     elif not check_password_hash(player['password_hash'], password):
         conn.close(); return jsonify({'error': 'Nom ou mot de passe incorrect'}), 401
@@ -672,15 +754,88 @@ def logout():
 
 @app.route('/api/me', methods=['GET'])
 def me():
-    name = session.get('player')
-    if not name:
+    """Compte connecté et liste de ses personnages."""
+    account = session.get('player')
+    if not account:
         return jsonify({'error': 'Non connecté'}), 401
-    return get_player_data(name)
+    conn = get_db()
+    characters = account_characters(conn.cursor(), account)
+    conn.close()
+    return jsonify({'account': account, 'characters': characters})
+
+# --- Personnages du compte ---
+def account_characters(c, account):
+    return [{'id': r['name'], 'name': r['character_name'], 'race': r['race'], 'provenance': r['provenance'],
+             'active': bool(r['active'])}
+            for r in c.execute('SELECT name, character_name, race, provenance, active FROM players WHERE account = ? '
+                               'ORDER BY rowid', (account,)).fetchall()]
+
+def create_character(c, account, character_name):
+    """Nouvelle fiche (9 XP, 3 Connaissance) ; elle est active si c'est la première du compte."""
+    has_active = c.execute('SELECT 1 FROM players WHERE account = ? AND active = 1', (account,)).fetchone()
+    cid = new_character_id(c)
+    c.execute('INSERT INTO players (name, points, knowledge_points, account, character_name, active) '
+              'VALUES (?, 9, 3, ?, ?, ?)', (cid, account, character_name, 0 if has_active else 1))
+    return cid
+
+def read_character_name():
+    name = ((request.json or {}).get('name') or '').strip()
+    return name[:60]
+
+@app.route('/api/characters', methods=['POST'])
+def add_character():
+    account = session.get('player')
+    if not account:
+        return jsonify({'error': 'Non connecté'}), 401
+    name = read_character_name()
+    if not name:
+        return jsonify({'error': 'Donnez un nom au personnage'}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    cid  = create_character(c, account, name)
+    conn.commit()
+    characters = account_characters(c, account)
+    conn.close()
+    return jsonify({'id': cid, 'characters': characters})
+
+@app.route('/api/characters/<name>/activate', methods=['POST'])
+@require_player
+def activate_character(name):
+    """Un seul personnage actif par compte : c'est lui qui reçoit les points distribués par l'Animation."""
+    account = session['player']
+    conn = get_db()
+    c    = conn.cursor()
+    c.execute('UPDATE players SET active = (name = ?) WHERE account = ?', (name, account))
+    conn.commit()
+    characters = account_characters(c, account)
+    conn.close()
+    return jsonify({'characters': characters})
+
+@app.route('/api/characters/<name>/rename', methods=['POST'])
+@require_player
+def rename_character(name):
+    new_name = read_character_name()
+    if not new_name:
+        return jsonify({'error': 'Donnez un nom au personnage'}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    c.execute('UPDATE players SET character_name = ? WHERE name = ?', (new_name, name))
+    conn.commit()
+    characters = account_characters(c, session['player'])
+    conn.close()
+    return jsonify({'characters': characters})
 
 # --- Joueur ---
 @app.route('/api/player/<name>', methods=['GET'])
 def get_player(name):
-    if session.get('player') != name and not is_admin():
+    if is_admin():
+        conn = get_db()
+        target = resolve_character(conn.cursor(), name)
+        conn.close()
+        if not target:
+            return jsonify({'error': 'Joueur introuvable'}), 404
+        return get_player_data(target)
+    if not owns_character(name):
         return jsonify({'error': 'Non connecté'}), 401
     return get_player_data(name)
 
@@ -695,7 +850,8 @@ def get_player_data(name):
     grants  = provenance_grants(player)
     weapons = weapon_status(c, player)
     conn.close()
-    return jsonify({'name': name, 'points': player['points'],
+    return jsonify({'name': name, 'account': player['account'], 'characterName': player['character_name'],
+                    'active': bool(player['active']), 'points': player['points'],
                     'knowledgePoints': player['knowledge_points'],
                     'acquiredSkills': skills, **weapons, 'acquiredKnowledges': list(levels),
                     'knowledgeLevels': levels,
@@ -947,6 +1103,7 @@ def set_religion(name):
 
 @app.route('/api/admin/player/<name>/character', methods=['POST'])
 @require_admin
+@admin_target
 def admin_set_character(name):
     conn = get_db()
     c    = conn.cursor()
@@ -1136,9 +1293,10 @@ def skill_key(name):
     return SKILL_NAME_ALIASES.get(key, key)
 
 def load_skill_categories():
-    """{clé de compétence: catégorie} d'après les fichiers de catégories."""
-    placement = {}
-    for filename, category, _ in SKILL_CATEGORIES:
+    """({clé de compétence: catégorie}, clés placées par lettre) d'après les fichiers de catégories."""
+    placement = dict(SKILL_CATEGORY_CHOICES)
+    lettered  = set()
+    for filename, category in CATEGORY_FILES:
         path = os.path.join(BASE_DIR, filename)
         if not os.path.exists(path):
             continue
@@ -1146,8 +1304,15 @@ def load_skill_categories():
             lines = [l.strip() for l in f.read().splitlines()[1:] if l.strip()]
         for line in lines:
             key = skill_key(re.split(r'\s+-', line)[0])
-            placement.setdefault(key, SKILL_CATEGORY_CHOICES.get(key, category))
-    return placement
+            if category is None:
+                letter = CATEGORY_LETTERS.get(line.split()[-1].lstrip('-').lower())
+                if not letter:
+                    continue
+                lettered.add(key)
+                placement.setdefault(key, letter)
+            else:
+                placement.setdefault(key, category)
+    return placement, lettered
 
 def sort_name(name):
     """Ordre alphabétique sans accents, niveaux d'une même compétence regroupés."""
@@ -1155,7 +1320,7 @@ def sort_name(name):
     return ''.join(ch for ch in base if not unicodedata.combining(ch))
 
 def skill_category_names():
-    return [name for _, name, _ in SKILL_CATEGORIES] + [OTHER_CATEGORY]
+    return SKILL_CATEGORIES + [OTHER_CATEGORY]
 
 @app.route('/api/skills', methods=['GET'])
 def get_skills():
@@ -1327,8 +1492,9 @@ def admin_delete_skill(skill_id):
             c.execute('UPDATE provenances SET data = ? WHERE name = ?', (json.dumps(rules), prov))
     conn.commit()
     reload_content(c)
+    labels = {r['name']: character_label(r) for r in c.execute('SELECT * FROM players').fetchall()}
     conn.close()
-    return jsonify({'ok': True, 'refunded': owners})
+    return jsonify({'ok': True, 'refunded': [labels.get(o, o) for o in owners]})
 
 SPELL_TEXT_FIELDS = ('name', 'type', 'incantation', 'cible', 'portee', 'duree', 'resistance', 'description')
 
@@ -1417,7 +1583,7 @@ def admin_delete_provenance():
     name = (request.json or {}).get('name')
     conn = get_db()
     c    = conn.cursor()
-    users = [r['name'] for r in c.execute('SELECT name FROM players WHERE provenance = ?', (name,)).fetchall()]
+    users = [character_label(r) for r in c.execute('SELECT * FROM players WHERE provenance = ?', (name,)).fetchall()]
     if users:
         conn.close(); return jsonify({'error': 'Des joueurs proviennent de cette provenance : ' + ', '.join(users)}), 400
     c.execute('DELETE FROM provenances WHERE name = ?', (name,))
@@ -1506,7 +1672,7 @@ def admin_delete_trait(trait_id):
                                  'il peut être modifié mais pas supprimé'}), 400
     conn = get_db()
     c    = conn.cursor()
-    users = [r['name'] for r in c.execute('SELECT name, traits FROM players WHERE traits IS NOT NULL').fetchall()
+    users = [character_label(r) for r in c.execute('SELECT * FROM players WHERE traits IS NOT NULL').fetchall()
              if trait_id in json.loads(r['traits'])]
     if users:
         conn.close(); return jsonify({'error': 'Ces joueurs l\'ont choisi, retirez-le d\'abord de leur fiche : '
@@ -1542,6 +1708,7 @@ def admin_replace_document(doc):
 
 @app.route('/api/admin/player/<name>/remove-knowledge', methods=['POST'])
 @require_admin
+@admin_target
 def admin_remove_knowledge(name):
     knowledge_id = request.json.get('knowledgeId')
     refund       = bool(request.json.get('refund', True))
@@ -1567,15 +1734,19 @@ def admin_remove_knowledge(name):
 @app.route('/api/admin/players', methods=['GET'])
 @require_admin
 def get_all_players():
-    conn    = get_db()
-    players = conn.execute('SELECT * FROM players ORDER BY name').fetchall()
-    result  = []
-    for p in players:
-        skill_count = conn.execute(
-            'SELECT COUNT(*) FROM player_skills WHERE player_name=?', (p['name'],)
-        ).fetchone()[0]
-        result.append({'name': p['name'], 'points': p['points'],
-                       'knowledgePoints': p['knowledge_points'], 'skillCount': skill_count})
+    """Un élément par compte : les points et compétences sont ceux du personnage actif."""
+    conn   = get_db()
+    c      = conn.cursor()
+    result = []
+    for a in c.execute('SELECT name FROM accounts ORDER BY name COLLATE NOCASE').fetchall():
+        characters = account_characters(c, a['name'])
+        active = c.execute('SELECT * FROM players WHERE account = ? AND active = 1', (a['name'],)).fetchone()
+        skill_count = c.execute('SELECT COUNT(*) FROM player_skills WHERE player_name=?',
+                                (active['name'],)).fetchone()[0] if active else 0
+        result.append({'name': a['name'], 'character': active['character_name'] if active else None,
+                       'points': active['points'] if active else 0,
+                       'knowledgePoints': active['knowledge_points'] if active else 0,
+                       'skillCount': skill_count, 'characters': characters})
     conn.close()
     return jsonify(result)
 
@@ -1588,7 +1759,8 @@ def give_points():
         return jsonify({'error': 'Champs manquants'}), 400
     conn = get_db()
     c    = conn.cursor()
-    if not c.execute('SELECT 1 FROM players WHERE name=?', (target,)).fetchone():
+    target = resolve_character(c, target)
+    if not target:
         conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
     c.execute('UPDATE players SET points = points + ? WHERE name=?', (int(amount), target))
     conn.commit()
@@ -1605,7 +1777,8 @@ def give_knowledge():
         return jsonify({'error': 'Champs manquants'}), 400
     conn = get_db()
     c    = conn.cursor()
-    if not c.execute('SELECT 1 FROM players WHERE name=?', (target,)).fetchone():
+    target = resolve_character(c, target)
+    if not target:
         conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
     c.execute('UPDATE players SET knowledge_points = knowledge_points + ? WHERE name=?', (int(amount), target))
     conn.commit()
@@ -1616,17 +1789,17 @@ def give_knowledge():
 @app.route('/api/admin/distribute-knowledge', methods=['POST'])
 @require_admin
 def distribute_knowledge():
-    """Donne des points de connaissance à TOUS les joueurs SAUF ceux dans la liste exclude."""
+    """Donne des points de connaissance au personnage actif de chaque compte, SAUF les comptes de exclude."""
     amount  = int(request.json.get('amount', 1))
     exclude = set(request.json.get('exclude', []))
     conn = get_db()
     c    = conn.cursor()
-    players = [r['name'] for r in c.execute('SELECT name FROM players').fetchall()]
+    actives = c.execute('SELECT name, account FROM players WHERE active = 1').fetchall()
     updated = []
-    for name in players:
-        if name not in exclude:
-            c.execute('UPDATE players SET knowledge_points = knowledge_points + ? WHERE name=?', (amount, name))
-            updated.append(name)
+    for r in actives:
+        if r['account'] not in exclude:
+            c.execute('UPDATE players SET knowledge_points = knowledge_points + ? WHERE name=?', (amount, r['name']))
+            updated.append(r['account'])
     conn.commit()
     conn.close()
     return jsonify({'updated': updated, 'skipped': list(exclude), 'count': len(updated)})
@@ -1634,17 +1807,17 @@ def distribute_knowledge():
 @app.route('/api/admin/distribute-xp', methods=['POST'])
 @require_admin
 def distribute_xp():
-    """Donne des XP à TOUS les joueurs SAUF ceux dans la liste exclude."""
+    """Donne des XP au personnage actif de chaque compte, SAUF les comptes de exclude."""
     amount  = int(request.json.get('amount', 2))
     exclude = set(request.json.get('exclude', []))
     conn = get_db()
     c    = conn.cursor()
-    players = [r['name'] for r in c.execute('SELECT name FROM players').fetchall()]
+    actives = c.execute('SELECT name, account FROM players WHERE active = 1').fetchall()
     updated = []
-    for name in players:
-        if name not in exclude:
-            c.execute('UPDATE players SET points = points + ? WHERE name=?', (amount, name))
-            updated.append(name)
+    for r in actives:
+        if r['account'] not in exclude:
+            c.execute('UPDATE players SET points = points + ? WHERE name=?', (amount, r['name']))
+            updated.append(r['account'])
     conn.commit()
     conn.close()
     return jsonify({'updated': updated, 'skipped': list(exclude), 'count': len(updated)})
@@ -1658,15 +1831,16 @@ def admin_set_password(name):
         return err
     conn = get_db()
     c    = conn.cursor()
-    if not c.execute('SELECT 1 FROM players WHERE name=?', (name,)).fetchone():
+    if not c.execute('SELECT 1 FROM accounts WHERE name=?', (name,)).fetchone():
         conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
-    c.execute('UPDATE players SET password_hash = ? WHERE name=?', (generate_password_hash(password), name))
+    c.execute('UPDATE accounts SET password_hash = ? WHERE name=?', (generate_password_hash(password), name))
     conn.commit()
     conn.close()
     return jsonify({'ok': True})
 
 @app.route('/api/admin/reset/<name>', methods=['POST'])
 @require_admin
+@admin_target
 def reset_player(name):
     conn = get_db()
     c    = conn.cursor()

@@ -89,6 +89,28 @@
             border-radius: 5px;
         }
 
+        /* --- Liste des personnages du compte --- */
+        #characters-section { max-width: 700px; margin: 2rem auto 0; }
+        .characters-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .characters-head h2 { margin: 0; }
+        .characters-hint { color: #666; font-size: 0.9rem; margin: 0.4rem 0 1rem; }
+        .character-row {
+            display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+            background: var(--card-bg); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.6rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid transparent;
+        }
+        .character-row.active { border-left-color: var(--acquired); }
+        .character-row .active-choice { display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; color: #666; cursor: pointer; }
+        .character-row .active-choice input { width: 18px; height: 18px; cursor: pointer; }
+        .character-row .summary { flex: 1; min-width: 180px; }
+        .character-row .summary small { display: block; color: #777; }
+        .character-row .admin-btn { width: auto; margin: 0; padding: 6px 14px; }
+        .character-new { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .character-new input { flex: 1; min-width: 180px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+        .character-new .admin-btn { width: auto; margin: 0; }
+        .active-badge { font-size: 0.75rem; background: var(--acquired); color: #fff; border-radius: 10px; padding: 2px 8px; vertical-align: middle; }
+        .player-account { color: #888; font-size: 0.85rem; }
+
         /* --- Vue Joueur --- */
         #player-header {
             display: flex;
@@ -562,6 +584,10 @@
         .exclude-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
         .exclude-item label { cursor: pointer; flex: 1; }
         .exclude-item label.excluded { text-decoration: line-through; color: #aaa; }
+        .admin-field-label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; font-weight: bold; color: #555; }
+        .admin-field-label small { font-weight: normal; color: #888; }
+        .receiver-actions { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 0.9rem; }
+        .receiver-actions span { flex: 1; font-weight: bold; color: #555; }
     </style>
 </head>
 <body>
@@ -577,7 +603,7 @@
 <main>
     <section id="login-section">
         <h2>Connexion joueur</h2>
-        <input type="text" id="player-name-input" placeholder="Nom (ex: Galar le Barbare)" autocomplete="username">
+        <input type="text" id="player-name-input" placeholder="Nom du joueur" autocomplete="username">
         <input type="password" id="player-password-input" placeholder="Mot de passe" autocomplete="current-password"
                onkeydown="if(event.key==='Enter') connectPlayer()">
         <div style="display:flex;gap:0.5rem;">
@@ -586,10 +612,26 @@
         </div>
     </section>
 
+    <section id="characters-section" class="hidden">
+        <div class="characters-head">
+            <h2>Personnages de <span id="characters-account"></span></h2>
+            <button class="btn-role" style="border-color:#e74c3c;color:#e74c3c;" onclick="disconnectPlayer()">Déconnexion</button>
+        </div>
+        <p class="characters-hint">Un seul personnage est actif : c'est lui qui reçoit les points donnés par l'Animation.
+            Cochez « Actif » pour le changer, « Ouvrir » pour voir sa fiche.</p>
+        <div id="characters-list"></div>
+        <div class="character-new">
+            <input type="text" id="new-character-name" placeholder="Nom du nouveau personnage" maxlength="60"
+                   onkeydown="if(event.key==='Enter') createCharacter()">
+            <button class="admin-btn" onclick="createCharacter()">Créer un personnage</button>
+        </div>
+    </section>
+
     <section id="player-view" class="hidden">
         <div id="player-header">
             <div class="player-info">
                 <h2 id="player-display-name">Joueur</h2>
+                <span class="player-account" id="player-account-name"></span>
             </div>
             <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
                 <div class="player-points">
@@ -598,6 +640,7 @@
                 <div class="player-points" style="color:#8e44ad;">
                     Connaissance : <span id="player-knowledge-count">0</span>
                 </div>
+                <button class="btn-role" style="border-color:var(--secondary);color:var(--secondary);" onclick="showCharacterList()">Mes personnages</button>
                 <button class="btn-role" style="border-color:#e74c3c;color:#e74c3c;" onclick="disconnectPlayer()">Déconnexion</button>
             </div>
         </div>
@@ -638,10 +681,17 @@
 
         <div class="admin-card">
             <h3>Distribuer des Points à tous les joueurs</h3>
-            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Tous les joueurs reçoivent les points indiqués, sauf ceux cochés.</p>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Seuls les joueurs cochés reçoivent les points indiqués.</p>
             <div class="admin-form-group">
-                <input type="number" id="admin-dist-xp"        placeholder="XP à distribuer (0 si aucun)" min="0" value="0">
-                <input type="number" id="admin-dist-knowledge" placeholder="Connaissance à distribuer (0 si aucun)" min="0" value="0">
+                <label class="admin-field-label">XP — pour acheter des compétences <small>0 si aucun</small>
+                    <input type="number" id="admin-dist-xp" min="0" value="0"></label>
+                <label class="admin-field-label">Points de Connaissance — pour acheter des connaissances <small>0 si aucun</small>
+                    <input type="number" id="admin-dist-knowledge" min="0" value="0"></label>
+            </div>
+            <div class="receiver-actions">
+                <span>Joueurs qui reçoivent les points</span>
+                <button class="admin-small-btn" onclick="setAllReceivers(true)">Tout cocher</button>
+                <button class="admin-small-btn" onclick="setAllReceivers(false)">Tout décocher</button>
             </div>
             <div id="admin-exclude-dist-list" style="margin-bottom:1rem;max-height:200px;overflow-y:auto;border:1px solid #e0e6ed;border-radius:6px;padding:0.5rem;">
                 <p style="color:#aaa;font-size:0.85rem;margin:0;">Chargement des joueurs...</p>
@@ -652,7 +702,7 @@
         <div class="admin-card">
             <h3>Donner des Points à un Joueur Précis</h3>
             <div class="admin-form-group">
-                <input type="text" id="admin-player-target" placeholder="Nom du joueur exact">
+                <input type="text" id="admin-player-target" placeholder="Nom exact du joueur (son personnage actif)">
                 <input type="number" id="admin-points-amount" placeholder="Quantité de XP">
                 <input type="number" id="admin-knowledge-amount" placeholder="Quantité de Connaissance (optionnel)">
             </div>
@@ -677,7 +727,7 @@
             <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Pour corriger un achat de connaissance fait par erreur. Le point peut être remboursé.</p>
             <div class="admin-form-group">
                 <div style="display:flex;gap:0.5rem;">
-                    <input type="text" id="admin-revoke-player" placeholder="Nom exact du joueur" style="flex:1;">
+                    <input type="text" id="admin-revoke-player" placeholder="Nom exact du joueur (son personnage actif)" style="flex:1;">
                     <button class="admin-btn" style="width:auto;padding:8px 14px;white-space:nowrap;" onclick="loadPlayerKnowledges()">Charger</button>
                 </div>
                 <select id="admin-revoke-select" style="display:none;">
@@ -695,7 +745,7 @@
             <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Race, provenance et armure inspectée à l'inscription.</p>
             <div class="admin-form-group">
                 <div style="display:flex;gap:0.5rem;">
-                    <input type="text" id="admin-char-player" placeholder="Nom exact du joueur" style="flex:1;">
+                    <input type="text" id="admin-char-player" placeholder="Nom exact du joueur (son personnage actif)" style="flex:1;">
                     <button class="admin-btn" style="width:auto;padding:8px 14px;white-space:nowrap;" onclick="adminLoadCharacter()">Charger</button>
                 </div>
             </div>
@@ -713,10 +763,8 @@
             <div class="admin-form-group">
                 <select id="admin-skill-branch">
                     <option value="Martial">Martial</option>
-                    <option value="Magie">Magie</option>
-                    <option value="Utilité">Utilité</option>
-                    <option value="Craft">Craft</option>
-                    <option value="Économie">Économie</option>
+                    <option value="Académique">Académique</option>
+                    <option value="Économique">Économique</option>
                 </select>
                 <input type="text" id="admin-skill-name" placeholder="Nom de la compétence">
                 <input type="number" id="admin-skill-cost" placeholder="Coût en XP (0 si connaissance uniquement)" min="0" value="0">
@@ -810,6 +858,8 @@
     let adminKey      = "";
     let characterRules = null;
     let magicSchools   = [];   // écoles de magie et leurs sorts par niveau (spells.json)
+    let account        = null; // compte connecté
+    let myCharacters   = [];   // ses personnages : { id, name, race, provenance, active }
     const KNOWLEDGE_MAX_LEVEL = 5;
 
     // --- UTILITAIRES API ---
@@ -835,24 +885,86 @@
         } catch (e) { alert("Erreur de connexion : " + e.message); }
     }
 
+    // Après la connexion : liste des personnages du compte
     async function loadPlayerSession() {
         try {
-            const [record, tree, kList, schools] = await Promise.all([
+            const [me, tree, kList, schools] = await Promise.all([
                 api('/api/me'),
                 api('/api/skills'),
                 api('/api/knowledges'),
                 api('/api/spells')
             ]);
-            playerData    = record;
+            account       = me.account;
+            myCharacters  = me.characters;
             cachedTree    = tree;
             allKnowledges = kList;
             magicSchools  = schools;
-            document.getElementById('login-section').classList.add('hidden');
+            showCharacterList();
+        } catch (e) { alert("Erreur de connexion : " + e.message); }
+    }
+
+    // --- PERSONNAGES DU COMPTE ---
+    function showCharacterList() {
+        playerData = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [], acquiredKnowledges: [] };
+        switchRole('player');
+        renderCharacterList();
+    }
+
+    function renderCharacterList() {
+        document.getElementById('characters-account').textContent = account;
+        document.getElementById('characters-list').innerHTML = myCharacters.map(ch => `
+            <div class="character-row ${ch.active ? 'active' : ''}">
+                <label class="active-choice" title="Personnage actif">
+                    <input type="radio" name="active-character" ${ch.active ? 'checked' : ''}
+                           onchange="activateCharacter('${ch.id}')"> Actif</label>
+                <div class="summary"><strong>${escapeHtml(ch.name)}</strong>
+                    <small>${escapeHtml(ch.race ?? 'Race à choisir')} · ${escapeHtml(ch.provenance ?? 'Provenance à choisir')}</small></div>
+                <button class="admin-small-btn" onclick="renameCharacter('${ch.id}')">Renommer</button>
+                <button class="admin-btn" onclick="openCharacter('${ch.id}')">Ouvrir</button>
+            </div>`).join('');
+    }
+
+    async function activateCharacter(id) {
+        const ch = myCharacters.find(c => c.id === id);
+        if (!confirm(`Rendre « ${ch.name} » actif ? Les points donnés par l'Animation iront à ce personnage.`)) {
+            renderCharacterList();
+            return;
+        }
+        try {
+            myCharacters = (await api(`/api/characters/${encodeURIComponent(id)}/activate`, 'POST')).characters;
+        } catch (e) { alert(e.message); }
+        renderCharacterList();
+    }
+
+    async function renameCharacter(id) {
+        const ch   = myCharacters.find(c => c.id === id);
+        const name = prompt('Nouveau nom du personnage :', ch.name);
+        if (!name || !name.trim() || name.trim() === ch.name) return;
+        try {
+            myCharacters = (await api(`/api/characters/${encodeURIComponent(id)}/rename`, 'POST', { name })).characters;
+            renderCharacterList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function createCharacter() {
+        const input = document.getElementById('new-character-name');
+        const name  = input.value.trim();
+        if (!name) { alert('Donnez un nom au personnage.'); return; }
+        try {
+            myCharacters = (await api('/api/characters', 'POST', { name })).characters;
+            input.value = '';
+            renderCharacterList();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function openCharacter(id) {
+        try {
+            playerData = await api(`/api/player/${encodeURIComponent(id)}`);
             switchRole('player');
             switchPlayerTab('skills');
             renderPlayerInfo();
             renderSkillTree();
-        } catch (e) { alert("Erreur de connexion : " + e.message); }
+        } catch (e) { alert(e.message); }
     }
 
     // Reprend la session si le joueur est déjà connecté (rechargement de la page)
@@ -861,6 +973,9 @@
     async function disconnectPlayer() {
         await fetch('/api/logout', { method: 'POST' });
         playerData    = { name: "", points: 0, knowledgePoints: 0, acquiredSkills: [], acquiredKnowledges: [] };
+        account       = null;
+        myCharacters  = [];
+        document.getElementById('characters-section').classList.add('hidden');
         cachedTree    = [];
         allKnowledges = [];
         switchPlayerTab('skills');
@@ -882,11 +997,14 @@
         document.getElementById('player-view').classList.add('hidden');
         document.getElementById('admin-view').classList.add('hidden');
         document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('characters-section').classList.add('hidden');
 
         if (role === 'player') {
             document.getElementById('btn-player').classList.add('active');
             if (playerData.name) {
                 document.getElementById('player-view').classList.remove('hidden');
+            } else if (account) {
+                document.getElementById('characters-section').classList.remove('hidden');
             } else {
                 document.getElementById('login-section').classList.remove('hidden');
             }
@@ -938,7 +1056,10 @@
 
     // --- 2. RENDU JOUEUR ---
     function renderPlayerInfo() {
-        document.getElementById('player-display-name').textContent = playerData.name;
+        const title = document.getElementById('player-display-name');
+        title.textContent = playerData.characterName ?? playerData.name;
+        if (playerData.active) title.insertAdjacentHTML('beforeend', ' <span class="active-badge">Actif</span>');
+        document.getElementById('player-account-name').textContent = playerData.account ? `Joueur : ${playerData.account}` : '';
         document.getElementById('player-points-count').textContent = playerData.points;
         document.getElementById('player-knowledge-count').textContent = playerData.knowledgePoints ?? 0;
     }
@@ -1076,7 +1197,7 @@
                     } else if (isAvailable) {
                         btn.textContent = "Acheter";
                         if (isKnowledge) btn.classList.add('knowledge-btn');
-                        btn.onclick = () => purchaseSkill(skill.id);
+                        btn.onclick = () => purchaseSkill(skill.id, {}, ` (${skillCostLabel(skill)})`);
                     } else {
                         btn.textContent = "Verrouillé"; btn.disabled = true;
                     }
@@ -1127,7 +1248,8 @@
                 btn.textContent = cost === 0 ? 'Acheter (gratuit)' : `Acheter (${cost} XP)`;
                 btn.onclick = () => {
                     if (!select.value) { alert("Choisissez une catégorie d'arme."); return; }
-                    purchaseSkill(skill.id, { weapon: select.value });
+                    purchaseSkill(skill.id, { weapon: select.value },
+                                  ` : ${select.selectedOptions[0].text} (${cost === 0 ? 'gratuit' : cost + ' XP'})`);
                 };
             } else {
                 btn.textContent = 'Verrouillé'; btn.disabled = true;
@@ -1171,7 +1293,7 @@
                 btn.textContent = `Acheter (${skill.cost} XP)`;
                 btn.onclick = () => {
                     if (!select.value) { alert('Choisissez une arme à spécialiser.'); return; }
-                    purchaseSkill(skill.id, { weapon: select.value });
+                    purchaseSkill(skill.id, { weapon: select.value }, ` : ${select.selectedOptions[0].text} (${skill.cost} XP)`);
                 };
             } else {
                 btn.textContent = 'Verrouillé'; btn.disabled = true;
@@ -1347,7 +1469,11 @@
     }
 
     async function confirmSpellChoice(schoolId) {
-        if (await purchaseSkill(magicDialogSkill.id, { school: schoolId, spells: chosenSpells() })) closeMagicDialog();
+        const school = magicSchools.find(s => s.id === schoolId)?.name ?? schoolId;
+        const spells = chosenSpells().map(id => findSpell(id)?.name ?? id);
+        if (await purchaseSkill(magicDialogSkill.id, { school: schoolId, spells: chosenSpells() },
+                                ` : ${school} (${skillCostLabel(magicDialogSkill)})${spells.length ? `\nSorts : ${spells.join(', ')}` : ''}`))
+            closeMagicDialog();
     }
 
     function closeMagicDialog() {
@@ -1452,7 +1578,9 @@
 
     async function confirmExtraSpell() {
         const choice = document.querySelector('input[name="extra-spell"]:checked');
-        if (choice && await purchaseSkill(magicDialogSkill.id, { spell: choice.value })) closeMagicDialog();
+        if (choice && await purchaseSkill(magicDialogSkill.id, { spell: choice.value },
+                                          ` : ${findSpell(choice.value)?.name ?? choice.value} (${choice.dataset.cost} XP)`))
+            closeMagicDialog();
     }
 
     // --- ONGLET SORTS ---
@@ -1593,7 +1721,7 @@
         // Les totaux dépendent des compétences achetées : on recharge la fiche à chaque ouverture
         try {
             await ensureCatalogs();
-            playerData = await api('/api/me');
+            playerData = await api(`/api/player/${encodeURIComponent(playerData.name)}`);
             renderCharacter();
         } catch (e) { alert(e.message); }
     }
@@ -1800,7 +1928,7 @@
             const bonus = ch.race === 'Humain' && ch.humanBonus
                 ? ` (Versatile : +1 ${ch.humanBonus === 'pv' ? 'point de vie' : "point d'esprit"})` : '';
             card.innerHTML = `
-                <h3>${playerData.name}</h3>
+                <h3>${escapeHtml(playerData.characterName ?? playerData.name)}</h3>
                 <p style="margin:0 0 0.3rem;"><strong>Race :</strong> ${ch.race}${bonus}</p>
                 <p style="margin:0 0 0.3rem;color:#666;font-size:0.9rem;">${ch.talent}</p>
                 <p style="margin:0 0 0.5rem;"><strong>Provenance :</strong> ${ch.provenance ?? '—'}</p>
@@ -1877,6 +2005,7 @@
 
     function renderAdminCharacter(record) {
         const ch = record.character;
+        document.getElementById('admin-char-form').dataset.title = `${record.characterName ?? record.name} (${record.account})`;
         const materials = characterRules.armorMaterials;
         const armorRows = characterRules.armorParts.map(p => `
             <label style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;font-size:0.9rem;">
@@ -1911,6 +2040,7 @@
     }
 
     async function adminSaveCharacter(name) {
+        const label = document.getElementById('admin-char-form').dataset.title ?? name;
         const armor = {};
         document.querySelectorAll('#admin-char-form [data-armor-part]').forEach(sel => {
             if (sel.value) armor[sel.dataset.armorPart] = sel.value;
@@ -1927,7 +2057,8 @@
             const record = await api(`/api/admin/player/${encodeURIComponent(name)}/character`, 'POST', body);
             renderAdminCharacter(record);
             if (name === playerData.name) playerData = { ...playerData, character: record.character };
-            alert(`Fiche de ${name} enregistrée.`);
+            renderPlayerList();
+            alert(`Fiche de ${label} enregistrée.`);
         } catch (e) { alert(e.message); }
     }
 
@@ -2000,7 +2131,7 @@
                 } else if (canAfford) {
                     btn.textContent = level > 0 ? `Niveau ${level + 1} (1 Conn.)` : 'Acheter (1 Conn.)';
                     btn.classList.add('knowledge-btn');
-                    btn.onclick = () => buyKnowledge(k.id);
+                    btn.onclick = () => buyKnowledge(k.id, `${k.name}${level > 0 ? ` niveau ${level + 1}` : ''}`);
                 } else {
                     btn.textContent = 'Conn. insuffisante'; btn.disabled = true;
                     btn.style.backgroundColor = 'var(--locked)';
@@ -2015,7 +2146,8 @@
         if (!shown && query) searchEmptyMessage(container);
     }
 
-    async function buyKnowledge(knowledgeId) {
+    async function buyKnowledge(knowledgeId, label) {
+        if (!confirm(`Acheter la connaissance « ${label} » (1 Conn.) ?\nCet achat est définitif.`)) return;
         try {
             const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/buy-knowledge`, 'POST', { knowledgeId });
             playerData.knowledgePoints    = result.knowledgePoints;
@@ -2035,7 +2167,16 @@
     }
 
     // --- 3. ACHAT ---
-    async function purchaseSkill(skillId, extra = {}) {
+    function skillCostLabel(skill) {
+        const parts = [];
+        if (skill.cost) parts.push(`${skill.cost} XP`);
+        if (skill.knowledge_cost) parts.push(`${skill.knowledge_cost} Conn.`);
+        return parts.join(' + ') || 'gratuit';
+    }
+
+    // details : choix et coût affichés dans la confirmation (ex. « : Épée (2 XP) »)
+    async function purchaseSkill(skillId, extra = {}, details = '') {
+        if (!confirm(`Acheter « ${getSkillName(skillId)} »${details} ?\nCet achat est définitif.`)) return false;
         try {
             const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/purchase`, 'POST', { skillId, ...extra });
             playerData.points          = result.points;
@@ -2053,7 +2194,13 @@
     }
 
     // --- 4. ADMIN ---
-    function buildExcludeList(players, containerId, prefix) {
+    // receivers : cases cochées = joueurs qui reçoivent (cochées par défaut) ; sinon cases cochées = joueurs exclus
+    // L'Animation nomme les comptes : leurs actions visent le personnage actif
+    function viewsAccount(name) {
+        return !!playerData.active && playerData.account === name;
+    }
+
+    function buildExcludeList(players, containerId, prefix, receivers = false) {
         const el = document.getElementById(containerId);
         if (!el) return;
         if (players.length === 0) {
@@ -2062,9 +2209,9 @@
         }
         el.innerHTML = players.map(p => `
             <div class="exclude-item">
-                <input type="checkbox" id="${prefix}-${p.name}" value="${p.name}"
-                    onchange="document.querySelector('label[for=${prefix}-${CSS.escape(p.name)}]').classList.toggle('excluded', this.checked)">
-                <label for="${prefix}-${p.name}">${p.name} — ${p.points} XP / ${p.knowledgePoints ?? 0} Conn.</label>
+                <input type="checkbox" id="${prefix}-${p.name}" value="${p.name}" ${receivers ? 'checked' : ''}
+                    onchange="document.querySelector('label[for=${prefix}-${CSS.escape(p.name)}]').classList.toggle('excluded', ${receivers ? '!' : ''}this.checked)">
+                <label for="${prefix}-${p.name}">${p.name}${p.character ? ` (${escapeHtml(p.character)})` : ''} — ${p.points} XP / ${p.knowledgePoints ?? 0} Conn.</label>
             </div>`).join('');
     }
 
@@ -2075,13 +2222,14 @@
             const players = await api('/api/admin/players');
             if (players.length === 0) {
                 listEl.innerHTML = "<p style='color:#888'>Aucun joueur enregistré.</p>";
-                buildExcludeList([], 'admin-exclude-dist-list',   'excld');
+                buildExcludeList([], 'admin-exclude-dist-list',   'excld', true);
                 buildExcludeList([], 'admin-exclude-remove-list', 'exclr');
                 return;
             }
             listEl.innerHTML = players.map(p => `
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;">
-                    <span><strong>${p.name}</strong> — ${p.points} XP — <span style="color:#8e44ad;">${p.knowledgePoints ?? 0} Conn.</span> — ${p.skillCount} compétence(s)</span>
+                    <span><strong>${p.name}</strong> — actif : ${escapeHtml(p.character ?? '—')} — ${p.points} XP — <span style="color:#8e44ad;">${p.knowledgePoints ?? 0} Conn.</span> — ${p.skillCount} compétence(s)
+                        ${p.characters.length > 1 ? `<br><small style="color:#888;">Autres personnages : ${p.characters.filter(c => !c.active).map(c => escapeHtml(c.name)).join(', ')}</small>` : ''}</span>
                     <span style="display:flex;gap:0.5rem;">
                         <button class="admin-btn" style="width:auto;padding:5px 10px;background:#7f8c8d;"
                             onclick="adminSetPassword('${p.name}')">Mot de passe</button>
@@ -2090,7 +2238,7 @@
                     </span>
                 </div>`).join('');
 
-            buildExcludeList(players, 'admin-exclude-dist-list',   'excld');
+            buildExcludeList(players, 'admin-exclude-dist-list',   'excld', true);
             buildExcludeList(players, 'admin-exclude-remove-list', 'exclr');
         } catch (e) { listEl.innerHTML = `<p style='color:red'>${e.message}</p>`; }
     }
@@ -2107,25 +2255,35 @@
         });
     }
 
+    function setAllReceivers(checked) {
+        document.querySelectorAll('#admin-exclude-dist-list input[type="checkbox"]').forEach(cb => {
+            cb.checked = checked;
+            document.querySelector(`label[for="${CSS.escape(cb.id)}"]`)?.classList.toggle('excluded', !checked);
+        });
+    }
+
     async function adminDistributePoints() {
         const xp      = parseInt(document.getElementById('admin-dist-xp').value) || 0;
         const kp      = parseInt(document.getElementById('admin-dist-knowledge').value) || 0;
         if (xp === 0 && kp === 0) { alert("Entrez au moins une quantité à distribuer."); return; }
         if (xp < 0 || kp < 0) { alert("Entrez des valeurs positives."); return; }
-        const exclude = getExcluded('admin-exclude-dist-list');
+        const boxes     = Array.from(document.querySelectorAll('#admin-exclude-dist-list input[type="checkbox"]'));
+        const receivers = boxes.filter(cb => cb.checked).map(cb => cb.value);
+        const exclude   = boxes.filter(cb => !cb.checked).map(cb => cb.value);
+        if (receivers.length === 0) { alert("Cochez au moins un joueur qui reçoit les points."); return; }
         const parts   = [];
         if (xp > 0) parts.push(`${xp} XP`);
         if (kp > 0) parts.push(`${kp} Connaissance`);
         const msg = exclude.length > 0
-            ? `Donner ${parts.join(' et ')} à tous sauf : ${exclude.join(', ')} ?`
+            ? `Donner ${parts.join(' et ')} à : ${receivers.join(', ')} ?`
             : `Donner ${parts.join(' et ')} à TOUS les joueurs ?`;
         if (!confirm(msg)) return;
         try {
             let alertMsg = '';
             if (xp > 0) {
                 const r = await api('/api/admin/distribute-xp', 'POST', { amount: xp, exclude });
-                alertMsg += `${xp} XP distribués à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}\n`;
-                if (playerData.name && !exclude.includes(playerData.name)) {
+                alertMsg += `${xp} XP distribués à ${r.count} joueur(s) : ${r.updated.join(', ')}\n`;
+                if (playerData.active && !exclude.includes(playerData.account)) {
                     playerData.points += xp;
                     renderPlayerInfo();
                     renderSkillTree();
@@ -2133,8 +2291,8 @@
             }
             if (kp > 0) {
                 const r = await api('/api/admin/distribute-knowledge', 'POST', { amount: kp, exclude });
-                alertMsg += `${kp} Connaissance distribués à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}`;
-                if (playerData.name && !exclude.includes(playerData.name)) {
+                alertMsg += `${kp} Connaissance distribués à ${r.count} joueur(s) : ${r.updated.join(', ')}`;
+                if (playerData.active && !exclude.includes(playerData.account)) {
                     playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) + kp;
                     renderPlayerInfo();
                 }
@@ -2142,7 +2300,6 @@
             alert(alertMsg.trim());
             document.getElementById('admin-dist-xp').value = '0';
             document.getElementById('admin-dist-knowledge').value = '0';
-            clearExcludeList('admin-exclude-dist-list');
             renderPlayerList();
         } catch (e) { alert(e.message); }
     }
@@ -2156,18 +2313,18 @@
             let msg = '';
             if (xp !== 0) {
                 const r = await api('/api/admin/give-points', 'POST', { player: target, amount: xp });
-                if (target === playerData.name) { playerData.points = r.points; }
+                if (viewsAccount(target)) { playerData.points = r.points; }
                 msg += `${xp} XP attribués. Total XP : ${r.points}\n`;
             }
             if (kp !== 0) {
                 const r = await api('/api/admin/give-knowledge', 'POST', { player: target, amount: kp });
-                if (target === playerData.name) { playerData.knowledgePoints = r.knowledgePoints; }
+                if (viewsAccount(target)) { playerData.knowledgePoints = r.knowledgePoints; }
                 msg += `${kp} Connaissance attribués. Total Conn. : ${r.knowledgePoints}`;
             }
             alert(msg.trim());
             document.getElementById('admin-points-amount').value = '';
             document.getElementById('admin-knowledge-amount').value = '';
-            if (target === playerData.name) { renderPlayerInfo(); renderSkillTree(); }
+            if (viewsAccount(target)) { renderPlayerInfo(); renderSkillTree(); }
             renderPlayerList();
         } catch (e) { alert(e.message); }
     }
@@ -2190,7 +2347,7 @@
             if (xp > 0) {
                 const r = await api('/api/admin/distribute-xp', 'POST', { amount: -xp, exclude });
                 alertMsg += `${xp} XP retirés à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}\n`;
-                if (playerData.name && !exclude.includes(playerData.name)) {
+                if (playerData.active && !exclude.includes(playerData.account)) {
                     playerData.points -= xp;
                     renderPlayerInfo();
                     renderSkillTree();
@@ -2199,7 +2356,7 @@
             if (kp > 0) {
                 const r = await api('/api/admin/distribute-knowledge', 'POST', { amount: -kp, exclude });
                 alertMsg += `${kp} Connaissance retirée à ${r.count} joueur(s).${r.skipped.length ? '\nExclus : ' + r.skipped.join(', ') : ''}`;
-                if (playerData.name && !exclude.includes(playerData.name)) {
+                if (playerData.active && !exclude.includes(playerData.account)) {
                     playerData.knowledgePoints = (playerData.knowledgePoints ?? 0) - kp;
                     renderPlayerInfo();
                 }
@@ -2252,7 +2409,7 @@
         if (!confirm(`Retirer 1 niveau de "${kName}" à ${name} ?${refund ? '\nLe point sera remboursé.' : '\nAucun remboursement.'}`)) return;
         try {
             const r = await api(`/api/admin/player/${encodeURIComponent(name)}/remove-knowledge`, 'POST', { knowledgeId: kid, refund });
-            if (name === playerData.name) {
+            if (viewsAccount(name)) {
                 playerData.knowledgePoints    = r.knowledgePoints;
                 playerData.acquiredKnowledges = r.acquiredKnowledges;
                 playerData.knowledgeLevels    = r.knowledgeLevels;
@@ -2290,7 +2447,7 @@
     }
 
     // --- ANIMATION : MODIFIER LE CONTENU DU JEU ---
-    const ADMIN_CATEGORIES = ['Martial', 'Magie', 'Utilité', 'Craft', 'Économie', 'Autres'];
+    const ADMIN_CATEGORIES = ['Martial', 'Académique', 'Économique', 'Autres'];
 
     // Recharge compétences, connaissances, sorts et règles (partagés avec la vue joueur)
     async function loadAdminContent() {
@@ -2649,7 +2806,7 @@
         if (!confirm(`Réinitialiser ${name} ? (9 XP, 3 Connaissance, compétences et connaissances effacées)`)) return;
         try {
             await api(`/api/admin/reset/${encodeURIComponent(name)}`, 'POST');
-            if (name === playerData.name) {
+            if (viewsAccount(name)) {
                 playerData.points             = 9;
                 playerData.knowledgePoints    = 3;
                 playerData.acquiredSkills     = [];
