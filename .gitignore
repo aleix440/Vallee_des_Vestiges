@@ -4,3 +4,4 @@ __pycache__/
 admin_password.txt
 data/server.log
 data/game.db
+data/docs/

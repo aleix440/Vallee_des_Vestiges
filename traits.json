@@ -1,0 +1,1040 @@
+[
+ {
+  "id": "d-intolerance-alchimique",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Intolérance alchimique",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Votre corps est incappable de bien traiter les substances des alchimistes et les poisons. Le maximum de produit alchimique que vous pouvez consommez sans avoir de malus est réduit de 1 par niveau de ce désavantage."
+ },
+ {
+  "id": "d-asmatique",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Asthmatique",
+  "costs": [
+   2
+  ],
+  "description": "Vous avez de la difficulté à respirer correctement lors d’efforts physiques intenses. Il vous est impossible de courir ou de vous battre pendant plus de deux minutes sans vous effondrez à terre le souffle court."
+ },
+ {
+  "id": "d-epileptique",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Epileptique",
+  "costs": [
+   4
+  ],
+  "description": "Vous êtes atteint de crise epleptique. Une fois par événement, vous devez simuler une crise lorsque vous êtes en situation de stress. Cette maladie est mal connue de la population et pourrait vous attirer d’autres ennuis."
+ },
+ {
+  "id": "d-hemophilie",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Hémophilie",
+  "costs": [
+   4
+  ],
+  "description": "Vous avez une maladie rare qui empêche vos blessures de fermer correctement. Tous les coups normaux, poison, maladi et perce-armure que vous recevrez vont désormais vous mettre l’état ‘’hémorragie’’ en plus des dégâts reçus, même si ceux-ci font ‘’caller’’ avec zero exemple; vous recevez un coup de point ‘’zéro douleur’’ vous recevrez donc aucun dégâts mais une hémorragie car vous avec tout de même été frapper"
+ },
+ {
+  "id": "d-aveugle",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Aveugle",
+  "costs": [
+   6
+  ],
+  "description": "Votre personnage a perdu la vue. Cela peut être de naissance ou encore suite à une blessure ou une maladie. Bien que votre personnage soit aveugle, nous vous conseillons de trouver une manière de voir un peu pour votre sécurité sur le terrain."
+ },
+ {
+  "id": "d-mutation",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Mutation",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous avez une mutation. Ceci vous place aux yeux de plusieurs comme un serviteur des Empereurs Damnés. La mutation peut être cachée avec des éléments de costume. Il faut qu’un scénariste accepte votre mutation et dépendamment de celle-ci, elle pourrait vous octroyer un pouvoir spécial tout de suite ou avec le temps.",
+  "approval": true
+ },
+ {
+  "id": "d-cicatrice",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Cicatrice",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez une vilaine cicatrice au visage. Cela permet de plus facilement vous identifier."
+ },
+ {
+  "id": "d-defigure",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Défiguré",
+  "costs": [
+   3
+  ],
+  "description": "Vous avez été défiguré suite à un accident. Votre visage en a été rescapé de justesse, mais maintenant le monde recule devant vous et votre visage affreux."
+ },
+ {
+  "id": "d-borgne",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Borgne",
+  "costs": [
+   2
+  ],
+  "description": "Vous voyez mal d’un oeil. Peut-être l’avez vous perdu avec l’âge, un accident ou de naissance. La réalité est que vous ne pouvez plus utiliser cet organe ce qui trouble votre perception des profondeurs."
+ },
+ {
+  "id": "d-boiteux",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Boiteux",
+  "costs": [
+   2
+  ],
+  "description": "Votre jambe manque de force et vous êtes incappable de vous déplacer correctement avec celle-ci. Cette blessure ou maladie vous empêches de courir, mais ne vous protège pas contre des effets qui vous forcent à courir vers un objectif."
+ },
+ {
+  "id": "d-bossu",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Bossu",
+  "costs": [
+   2
+  ],
+  "description": "Vous êtes né bossu. Ceci n’a pas de désavantage en tant que tel autre que cela peut passer pour une mutation et que cela demande un élément de costume obligatoire pour votre personnage."
+ },
+ {
+  "id": "d-sante-fragile",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Santé fragile",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez une constitution plus faible que la moyenne. Vous avez -1 point de vie permanent.",
+  "stats": {
+   "pv": -1
+  }
+ },
+ {
+  "id": "d-sourd",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Sourd",
+  "costs": [
+   6
+  ],
+  "description": "Vous êtes incapable d’entendre le moindre son. Cela peut être de naissance, à la suite d’un accident ou encore à cause de l’âge."
+ },
+ {
+  "id": "d-muet",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Muet",
+  "costs": [
+   6
+  ],
+  "description": "Vous êtes incapable de parler. Ce désavantage peut aussi bien être une perte de voix totale qu'une perte partielle qui permet uniquement quelque grognement."
+ },
+ {
+  "id": "d-infertile",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Infertile",
+  "costs": [
+   1
+  ],
+  "description": "Vos organes reproducteurs ne sont pas capables de faire leur travail. Cela peut être une erreur génétique, la perte des organes ou simplement de l’impuissance. Ce désavantage doit être approuvé par l’animation puisqu’il est rare que cet handicap cause véritablement des problèmes au personnage.",
+  "approval": true
+ },
+ {
+  "id": "d-ampute",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Amputé",
+  "costs": [
+   2,
+   4
+  ],
+  "description": "Vous avez un membre en moins. Pour le désavantage à 2 points, il s’agit d’un bras et pour le désavantage à 4 points, il s’agit d’une jambe. Ce membre ne peut pas repousser grâce à la magie ou les potions."
+ },
+ {
+  "id": "d-dur-d-oreille",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Dur d’oreille",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez du mal à entendre. Cela peut être d’une seule oreille ou bien des deux. Il vous faut souvent faire répéter le monde ou leur demander de parler un peu plus fort."
+ },
+ {
+  "id": "d-malvoyant",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Malvoyant",
+  "costs": [
+   1
+  ],
+  "description": "Votre vue n'est pas la meilleure. Vous avez besoin de lunettes pour voir comme tout le monde. Ce désavantage peut aussi bien être pour la myopie que la presbytie."
+ },
+ {
+  "id": "d-probleme-d-elocution",
+  "kind": "desavantage",
+  "category": "Physique",
+  "name": "Problème d’élocution",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez un problème d’élocution. Cela peut être aussi bien du zozotement que la difficulté à prononcer certains sons. À vous d'être créatif."
+ },
+ {
+  "id": "d-ennemi",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Ennemi",
+  "costs": [
+   1
+  ],
+  "description": "Une personne de votre entourage ne vous aime guère et essayera de vous nuire quand elle le pourra. La nature même de cette haine peut provenir de vos actions ou juste de son aversion pour la personne que vous êtes. Toutefois, celle-ci ne cherchera jamais à vous enlever la vie."
+ },
+ {
+  "id": "d-ennemi-jure",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Ennemi juré",
+  "costs": [
+   2
+  ],
+  "description": "Une personne de votre entourage ne vous aime guère et ne reculera devant rien pour vous voir vaincu ou même tué. La nature même de cette haine peut provenir de vos actions ou juste de son aversion pour la personne que vous êtes."
+ },
+ {
+  "id": "d-groupe-d-ennemi",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Groupe d’ennemi",
+  "costs": [
+   1
+  ],
+  "description": "Ce désavantage se prend jumelé avec ennemi ou ennemi juré. Au lieu d’être une seule personne qui vous en veut, il s’agit d’un groupe de personnes ou une faction. Il est aussi cumulable avec ennemi invisible.",
+  "requires": [
+   "d-ennemi",
+   "d-ennemi-jure"
+  ]
+ },
+ {
+  "id": "d-ennemi-invisible",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Ennemi invisible",
+  "costs": [
+   1
+  ],
+  "description": "Ce désavantage se prend jumelé avec ennemi ou ennemi juré. Votre ennemi devient alors inconnu de vous agissant dans l’ombre. Peut-être le rencontrerez vous avec le temps. Ce désavantage est aussi cumulable avec groupe d'ennemis.",
+  "requires": [
+   "d-ennemi",
+   "d-ennemi-jure"
+  ]
+ },
+ {
+  "id": "d-chantage",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Chantage",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Une personne influente a appris un secret terrible sur vous qui pourrait vous nuire s' il venait à paraître au grand jour. Cette personne promet de garder le secret si vous accomplissez quelques tâches pour elle. Travailler avec l’animation pour déterminer le secret et la personne qui le connaît.",
+  "approval": true
+ },
+ {
+  "id": "d-sosie",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Sosie",
+  "costs": [
+   2
+  ],
+  "description": "Quelqu’un dans la vie vous ressemble en tout point. Le problème est que vous êtes souvent confondu avec celle-ci donc vos actions lui sont parfois attribuées et vice-versa. Vous serez parfois appelée à jouer votre sosie si l’animation le demande."
+ },
+ {
+  "id": "d-famille-criminelle",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Famille criminelle",
+  "costs": [
+   2
+  ],
+  "description": "Votre famille trempe dans plusieurs activités louches et a souvent eu des démêlés avec la justice. Bien qu’il se peut que vous ne participiez pas à ses actes répréhensibles, vous serez toujours relié aux crimes de votre famille."
+ },
+ {
+  "id": "d-esclave",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Esclave",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez été soumis à l’esclavage que cela soit par choix ou non. Vous devez servir votre maître comme possible en échange que celui-ci vous accorde les besoins de base pour vivre. Lorsque vous choisissez ce désavantage, l’animation vous attribuera un joueur qui sera votre maître."
+ },
+ {
+  "id": "d-criminel",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Criminel",
+  "costs": [
+   2
+  ],
+  "description": "Vous avez commis des crimes et cela est de notoriété publique. Il se peut que la nouvelle ne se soit pas encore rendue au village, mais cela ne saurait tarder et il est fort probable que les habitants vous dénoncent."
+ },
+ {
+  "id": "d-deserteur",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Déserteur",
+  "costs": [
+   3
+  ],
+  "description": "Vous avez déserté l'armée de votre patrie. Il s’agit dans beaucoup de régions d’un crime grave qui est passible de mort et parfois plus."
+ },
+ {
+  "id": "d-traitre",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Traître",
+  "costs": [
+   3
+  ],
+  "description": "Il est de notoriété publique que vous avez trahi un individu ou une faction. Peu de personnes vous font confiance.  Il se peut que la nouvelle ne se soit pas encore rendue au village, mais cela ne saurait tarder et il est fort probable que les habitants vous dénoncent."
+ },
+ {
+  "id": "d-recherche-pour-crime",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Recherché pour crime",
+  "costs": [
+   2
+  ],
+  "description": "Vous êtes recherché pour avoir commis des crimes. Peut-être que se sont de fausses accusations, mais les autorités vous arrêterons pour vous questionner s' ils en ont l’occasion."
+ },
+ {
+  "id": "d-recherche-pour-heresie",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Recherché pour hérésie",
+  "costs": [
+   3
+  ],
+  "description": "Vous êtes recherché par les autorités religieuses pour hérésie. Peut-être est-ce un malentendu ou simplement que vous avez frustré le prêtre local. Pensez à prendre les jambes à votre cou lorsque l’inquisition se pointera."
+ },
+ {
+  "id": "d-recherche-pour-desertion",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Recherché pour désertion",
+  "costs": [
+   3
+  ],
+  "description": "Vous êtes recherché pour avoir abandonné un groupe militaire. Peut-être que se sont de fausses accusations, mais les autorités vous arrêterons pour vous questionner s' ils en ont l’occasion."
+ },
+ {
+  "id": "d-recherche-pour-trahison",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Recherché pour trahison",
+  "costs": [
+   3
+  ],
+  "description": "Vous êtes recherché pour trahison. Il va s’en dire que si l’on vous attrape vous risquer la torture pour dévoiler vos ‘’complices’’ et la mort qui vous sera donné sera loin d’être des plus belle."
+ },
+ {
+  "id": "d-tete-mise-a-prix",
+  "kind": "desavantage",
+  "category": "Sociale",
+  "name": "Tête mise à prix",
+  "costs": [
+   2,
+   4,
+   6
+  ],
+  "description": "Votre tête a été mise à prix en raison de votre implication (ou de votre implication présumée) dans un crime. La gravité du crime lui-même dicte le coût de ce désavantage, le montant de la prime sur votre tête et qui sera prêt à chasser pour vous. Une infraction mineure génère une prime de 10 talents d’or, et généralement seuls les magistrats de la province ou la prime a été émise, ou les chasseurs de primes, vous recherchent. Une infraction grave génère une prime de 25 talents d’or. Tout membre de la loi ou criminel associé au groupe qui a attribué la prime en sera conscient. Un acte violent ou odieux génère une prime d'au moins 45 talents d’or. Tous les soldats du pays sont à l'affût et cela peut même attirer des chasseurs de prime des pays voisins, et vous risquez d'être exécuté rapidement si vous êtes placé en garde à vue"
+ },
+ {
+  "id": "d-ruiner",
+  "kind": "desavantage",
+  "category": "Matériel",
+  "name": "Ruiné",
+  "costs": [
+   1
+  ],
+  "description": "Pour une quelconque raison, vous avez tout perdu. Votre nouveau personnage commence avec aucun sous, ne peut pas prendre d’avantage matériel et si celui-ci à des compétence de récolte de ressource, vous pouvez avoir les ressource gratuite qu’à partir du 2e événement."
+ },
+ {
+  "id": "d-dette",
+  "kind": "desavantage",
+  "category": "Matériel",
+  "name": "Dette",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Vous vous êtes endetté au cours de votre vie. Cela peut être une malchance ou une dette qui s’est juste accumulée. Pour chaque point de ce désavantage, vous devez 100 talents d’or à un tierce partie."
+ },
+ {
+  "id": "d-depensier",
+  "kind": "desavantage",
+  "category": "Matériel",
+  "name": "Dépensier",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Vous êtes incapable de vous empêcher de jetter votre argent par les fenêtre. Peut-être avez vous besoin de magasiner pour vous sentir bien ou que vous n’accordez que peu d’importance à la richesse personnelle. Pour chaque point que vous avez de ce désavantage vous devez payer 10 talents d’or à la fin d’un événement."
+ },
+ {
+  "id": "d-esprit-faible",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Esprit faible",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez de la difficulté à vous concentrer et la majorité des actions longues ou redondantes draine votre énergie. Vous avez -1 point d’esprit permanent.",
+  "stats": {
+   "pe": -1
+  }
+ },
+ {
+  "id": "d-phobie",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Phobie",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez une phobie et devez prendre tout votre courage pour ne pas fuir devant celle-ci. Lorsque vous êtes en présence de votre phobie, vous ne pouvez en aucun cas résister à un effet de crainte, peur, horreur ou terreur."
+ },
+ {
+  "id": "d-incertain",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Incertain",
+  "costs": [
+   1
+  ],
+  "description": "Vous doutez de vous-même et devez constamment revérifier ce que vous faites. Toutes les compétences de récoltes, fabrication, ritualisme, druidisme et les incantations en rituel vous prennent 1 minute de plus par tranche de 5 minutes de travail (minimum 1 minute supplémentaire)"
+ },
+ {
+  "id": "d-ame-soeur",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Âme soeur",
+  "costs": [
+   2
+  ],
+  "description": "Trouver son âme sœur peut être une expérience merveilleuse, mais le plus souvent c'est un désastre, car il n’est pas rare que plusieurs utilisent cet amour contre vous. Choisissez un autre personnage, joueur ou non, vous êtes éperdument amoureux de celui-ci (même si l’amour n’est pas réciproque). Chaque fois que vous êtes dans une position où vous devez choisir entre l'amour et le devoir, vous devez choisir votre amant plutôt que votre devoir."
+ },
+ {
+  "id": "d-tic",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Tic",
+  "costs": [
+   1
+  ],
+  "description": "Votre personnage a un tic nerveux. Cela peut être une habitude lorsqu’il est stressé ou simplement un comportement qu’il ne se rend pas compte qu’il fait."
+ },
+ {
+  "id": "d-borne",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Borné",
+  "costs": [
+   1
+  ],
+  "description": "Votre personnage à de la difficulté à changer d’idée et refuse souvent celles qui ne sont pas les siennes."
+ },
+ {
+  "id": "d-addiction",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Addiction",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Votre personnage à une addiction à une substance. Le nombre de points donné par ce désavantage dépend de la facilité à se procurer le produit, la légalité de celui-ci et ses effets de manquements. Déterminé celui-ci avec un scénariste.",
+  "approval": true
+ },
+ {
+  "id": "d-paranoiaque",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Paranoïaque",
+  "costs": [
+   1
+  ],
+  "description": "Votre personnage croit que le monde est contre lui. Il a de la difficulté à faire confiance au monde et se méfie de toutes les nouvelles personnes qu’il rencontre. Cela crée souvent des personnage renfermé ou qui croient en plusieurs histoires sans queue ni tête."
+ },
+ {
+  "id": "d-naif",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Naïf",
+  "costs": [
+   1
+  ],
+  "description": "Votre personnage fait confiance au monde et prend pour acquis que ce que l’on lui dit est vrai. Vous êtes facile à tromper et croyez en la bonté des gens."
+ },
+ {
+  "id": "d-code-d-honneur",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Code d’honneur",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Votre personnage a un code d’honneur auquel il ne veut en aucun cas déroger. Il peut s’agir d’un code noble comme ceux de la chevalerie ou encore moins moral comme celui des voleurs. Travailler avec l’animation pour déterminer votre code d’honneur.",
+  "approval": true
+ },
+ {
+  "id": "d-superstitieux",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Superstitieux",
+  "costs": [
+   1
+  ],
+  "description": "Vous croyez en diverses croyances qui relèvent plus de la superstition que de la réalité. Peu importe comment on vous montre que ses croyances sont fausses, il est impossible de vous faire changer d’avis. Les croyances peuvent aller aux 7 ans de malheur en cassant un miroir ou encore jeter une pincée de sel par-dessus l’épaule porte chance."
+ },
+ {
+  "id": "d-fanatique",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Fanatique",
+  "costs": [
+   1
+  ],
+  "description": "Vous êtes un fanatique de votre religion et poussez votre croyance sur d’autres. Selon vous, les prêtres ont le mot juste par rapport aux êtres supérieurs et vous utiliserez des moyens radicaux, voire extrémistes pour le prouver."
+ },
+ {
+  "id": "d-amnesie",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Amnésie",
+  "costs": [
+   2,
+   4
+  ],
+  "description": "Votre personnage à oublier son passé. Lorsque vous choisissez ce désavantage a 2 points, vous laissez carte blanche aux scénaristes pour l’histoire de votre personnage. Si vous prenez ce désavantage à 4 points, ce sont les scénaristes qui s’occupent de faire votre fiche."
+ },
+ {
+  "id": "d-obsession",
+  "kind": "desavantage",
+  "category": "Mental",
+  "name": "Obsession",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez une obsession pour un sujet ou un projet en particulier. Vous ferez tout ce qui est en votre pouvoir pour trouver de l’information dessus ou un moyen de le faire avancer quitte à commettre des crimes mineurs ou à avoir un comportement auto-destructeur."
+ },
+ {
+  "id": "d-ame-corrompu",
+  "kind": "desavantage",
+  "category": "Surnaturel",
+  "name": "Âme corrompue",
+  "costs": [
+   4
+  ],
+  "description": "Votre âme a déjà été teintée par les forces des empereurs damnés. Vous savez que votre trépas approche que ce soit par la main de l’inquisition ou le mal qui vous ronge. Vous commencez avec 1 rang de corruption et votre résistance est moindre pour l’avancement de celle-ci entre chaque événement."
+ },
+ {
+  "id": "d-cauchemar",
+  "kind": "desavantage",
+  "category": "Surnaturel",
+  "name": "Cauchemar",
+  "costs": [
+   2
+  ],
+  "description": "Toutes les nuits de votre personnage sont remplies d'images terribles. Vous avez de la difficulté à trouver le repos et vous vous réveillez plus souvent fatigué que reposé. À chaque fois que vous vous réveillez (suite à une nuit, une sieste ou un effet de sommeil), vos points d’esprit tombent à 0."
+ },
+ {
+  "id": "d-hante-par-la-famille",
+  "kind": "desavantage",
+  "category": "Surnaturel",
+  "name": "Hanté par la famille",
+  "costs": [
+   2
+  ],
+  "description": "Un ou plusieurs membres de votre famille décédé sont incapables de passer dans le royaume des morts et se sont attachés à vous. Ses spectres vous demanderons de les aider ou d'effectuer certaines actions. Les contrariez pourraient vous amener plusieurs problèmes."
+ },
+ {
+  "id": "d-malediction",
+  "kind": "desavantage",
+  "category": "Surnaturel",
+  "name": "Malédiction",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous êtes affecté par un maléfice ou un sortilège qui vous colle à la peau. Tous les moyens de base n’ont aucun effet sur celui-ci. Veuillez parler à l'animation pour la nature et les effets de votre malédiction.",
+  "approval": true
+ },
+ {
+  "id": "a-ambidextre",
+  "kind": "avantage",
+  "category": "Physique",
+  "name": "Ambidextre",
+  "costs": [
+   1
+  ],
+  "description": "Vous n’êtes ni droitier, ni gaucher. Vous savez utiliser vos deux mains de manière parfaite ce qui vous donne un avantage dans plusieurs domaines, en particulier au combat. Vous ignorez le malus de -1 dégât pour l’arme dans votre main non directrice."
+ },
+ {
+  "id": "a-endurant-a-la-douleur",
+  "kind": "avantage",
+  "category": "Physique",
+  "name": "Endurant à la douleur",
+  "costs": [
+   2
+  ],
+  "description": "Vous avez une endurance incroyable à la douleur. En situation de stress ou de combat, vous pouvez simplement grincer des dents au lieu de crier de douleur. Toutefois, cela n’empêche pas le roleplay d’impact d’arme et lorsque le combat est terminé et que l’adrénaline descend la douleur rentre souvent d’un coup vous pliant en deux et vous faisant perdre conscience."
+ },
+ {
+  "id": "a-dur-a-tuer",
+  "kind": "avantage",
+  "category": "Physique",
+  "name": "Dur à tuer",
+  "costs": [
+   1
+  ],
+  "description": "Votre corps est endurant et peut subir les pires blessures sans problème. Vous avez 20 minutes d’agonie avant de mourir au lieu de 15. Cet avantage n’est pas compatible avec les désavantages hémophile et santé fragile.",
+  "incompatible": [
+   "d-hemophilie",
+   "d-sante-fragile"
+  ]
+ },
+ {
+  "id": "a-guerison-rapide",
+  "kind": "avantage",
+  "category": "Physique",
+  "name": "Guérison rapide",
+  "costs": [
+   2
+  ],
+  "description": "Votre corps se régénère à une vitesse anormale pour un être vivant. Vous regagnez un point de vie par demi-heure au lieu de à chaque heure."
+ },
+ {
+  "id": "a-allie",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Allié",
+  "costs": [
+   1
+  ],
+  "description": "Une personne de votre entourage aime beaucoup et essayera de vous aidé quand elle le pourra. La nature même de cet amour peut provenir de vos actions ou juste de son attirance pour la personne que vous êtes. Toutefois, celle-ci refusera de se mettre en danger de quelque manière que ce soit."
+ },
+ {
+  "id": "a-allie-fidele",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Allié fidèle",
+  "costs": [
+   2
+  ],
+  "description": "Une personne de votre entourage aime beaucoup et essayera de vous aidé quand elle le pourra. La nature même de cet amour peut provenir de vos actions ou juste de son attirance pour la personne que vous êtes. Celle-ci peut même être convaincue de mettre sa réputation, ses avoirs ou même sa santé en jeu pour vous."
+ },
+ {
+  "id": "a-groupe-d-allie",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Groupe d’allié",
+  "costs": [
+   1
+  ],
+  "description": "Cet avantage se prend jumelé avec allié ou allié fidèle. Au lieu d’être une seule personne qui vous aide, il s’agit d’un groupe de personnes ou une faction. Il est cumulable avec allié invisible.",
+  "requires": [
+   "a-allie",
+   "a-allie-fidele"
+  ]
+ },
+ {
+  "id": "a-allie-invisible",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Allié invisible",
+  "costs": [
+   1
+  ],
+  "description": "Cet avantage se prend jumelé avec allié ou allié fidèle. Votre allié devient alors inconnu de vous agissant dans l’ombre le rendant beaucoup plus difficile pour vos ennemis de le cibler. Peut-être le rencontrerez vous avec le temps. Cet avantage est aussi cumulable avec groupe d'allié.",
+  "requires": [
+   "a-allie",
+   "a-allie-fidele"
+  ]
+ },
+ {
+  "id": "a-famille-influente",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Famille influente",
+  "costs": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "description": "Votre famille a acquis une réputation avec les années et peut utiliser son influence pour vous aider. Plus vous mettez de point dans cet avantage, plus celle-ci est influente. À 2 points cela peut représenter une famille respectée d’un village alors que à 5 points cela peut être une famille étant entré dans l’histoire de son pays."
+ },
+ {
+  "id": "a-orphelin",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Orphelin",
+  "costs": [
+   2
+  ],
+  "description": "Votre personnage ne possède aucune famille que cela soit biologique ou adoptive, bien que cela peut sembler étrange, il s’agit d’une décision de l’animation. Un personnage sans famille ferme des portes de jeu possible et donc se voit être un avantage."
+ },
+ {
+  "id": "a-civil",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Civil",
+  "costs": [
+   0
+  ],
+  "description": "Vous êtes un habitant d’un autre pays venu habiter à l’ambassade pour diverses raisons. Bien que vous puissiez assister aux agoras, vous ne pouvez pas voter ni avoir de droit de parole."
+ },
+ {
+  "id": "a-citoyen",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Citoyen",
+  "costs": [
+   1
+  ],
+  "description": "Le citoyen peut avoir acquis son statut de 2 manières: en étant né sur les terres de l’ambassade ou encore en ayant vécu activement pendant 2 ans dans celle-ci. Dans tous les cas, celui-ci a le droit d’assister, de parler et de voter lors des agoras et il a le droit de porter les armes sans pour autant répondre aux cris d’alarme."
+ },
+ {
+  "id": "a-noble",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Noble",
+  "costs": [
+   2
+  ],
+  "description": "Vous provenez d’une famille noble ou de l’équivalence pour votre pays. Bien que vous n’êtes pas un citoyen de l’ambassade, plusieurs passe droit vous sont accordés pour garder de bonnes relations diplomatiques. De plus, vous pouvez plus facilement demander du soutien du pays dont vous provenez."
+ },
+ {
+  "id": "a-rang-religieux",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Rang religieux",
+  "costs": [
+   2,
+   3
+  ],
+  "description": "Vous avez monté les échelons de votre groupe religieux. Vous avez plus de responsabilité, mais plusieurs personnes suivant votre foi acceptent de travailler pour vous. Pour chaque rang que vous avez vous gagnez aussi une ressource d’ouvrier pour représenter vos suivants."
+ },
+ {
+  "id": "a-rang-militaire",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Rang militaire",
+  "costs": [
+   2,
+   3
+  ],
+  "description": "Vous avez monté les échelons de l'armée de votre pays. Vous avez quelques ressources supplémentaires fournies par l'État, mais l’on s'attend à ce que vous fassiez votre devoir de soldat et à des rapports positifs. Pour chaque rang militaire que vous avez, vous gagnez aussi une ressource militaire représentant les hommes à votre service."
+ },
+ {
+  "id": "a-protege",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Protégé",
+  "costs": [
+   1
+  ],
+  "description": "Vous êtes apprécié par une personne influente de la région. Celle-ci vous supportera dans vos projets et vous défendra si l’on vient à vous déranger. Toutefois, si vous la décevez ou allez contre ses principes, elle risque de vous abandonner."
+ },
+ {
+  "id": "a-reputation",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Réputation",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous êtes reconnus pour une raison positive dans le village. Les joueurs et personnages non joueurs ont pu entendre parler de vous et réagiront selon votre réputation.",
+  "approval": true
+ },
+ {
+  "id": "a-service",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Service",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Quelqu’un vous doit un service en échange d’un que vous lui avez rendu dans le passé. Déterminer avec l’animation qui vous doit un service et pour quelle raison.",
+  "approval": true
+ },
+ {
+  "id": "a-chantage",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Chantage",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous avez appris un grave secret sur un individu qui pourrait gravement lui nuire si il devenait publique. Vous pouvez utiliser celui-ci à votre avantage pour forcer l’individu à commettre certaines actions pour vous. Toutefois si vous lui demandez trop, celui-ci pourrait décider de faire face aux conséquences plutôt que de vous écouter. Déterminer avec l’animation quel secret vous connaissez sur quel personnage.",
+  "approval": true
+ },
+ {
+  "id": "a-contact",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Contact",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez un contact dans un environnement précis qui acceptera de vous donner des informations. Toutefois rien n’est gratuit et il vous demandera sûrement quelque chose en échange."
+ },
+ {
+  "id": "a-membre-d-une-organisation",
+  "kind": "avantage",
+  "category": "Sociale",
+  "name": "Membre d’une organisation",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous faites partie de l’une des nombreuses organisations de ce monde. Celle-ci peut être légale ou non ou encore secrète. Vous aurez accès aux connaissances de celle-ci et pouvez leur demander de l’aide, mais celles-ci s'attendent à certains comportement de vous et que vous les aider dans leurs objectifs.",
+  "approval": true
+ },
+ {
+  "id": "a-famille-riche",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Famille riche",
+  "costs": [
+   2
+  ],
+  "description": "Votre famille est connue pour avoir un coffre bien rempli ainsi que de posséder plusieurs actifs lui permettant d'éviter des coups durs. Elle est bien encline à vous passez de l’argent tant que vous êtes responsable et n’en abusez pas."
+ },
+ {
+  "id": "a-reseau-d-espion",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Réseau d’espion",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Vous avez accès à un réseau d'espions qui peuvent épier les moindres faits et gestes des personnes dont vous vous méfiez. Pour chaque point de cet avantage, vous pouvez avertir l’animation de quel joueur vous voulez connaitre une action. Cela sera toujours l’action la moins subtil qui vous sera révélé."
+ },
+ {
+  "id": "a-acces-a-un-marche",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Accès à un marché",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Vous avez accès à un marché légal ou non d’un pays et ses différents produits. Au début de chaque événement, vous pouvez acheter les produits disponibles sur ce marché. Les produits disponibles et les prix de ceux-ci changent de marché en marché."
+ },
+ {
+  "id": "a-employes",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Employés",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Vous avez des employés qui travaillent pour vous. Chaque point mis dans cet avantage vous donne une carte main-d'œuvre paysanne au début de l’événement."
+ },
+ {
+  "id": "a-riche",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Riche",
+  "costs": [
+   1,
+   2,
+   3
+  ],
+  "description": "Pour chaque point que vous mettez dans riche vous commencer avec 10 talents d’or supplémentaires"
+ },
+ {
+  "id": "a-lopin-de-terre",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Lopin de terre",
+  "costs": [
+   2
+  ],
+  "description": "Vous possédez un terrain vierge à l’ambassade ou dans votre pays sur lequel aucun bâtiment n'est construit. Vous pouvez construire un bâtiment sur celui-ci qui vous rapportera son bonus passif. Consulter le document d’action entre-gn pour les différents bâtiments."
+ },
+ {
+  "id": "a-terre-agricole-forestiere",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Terre agricole / forestière",
+  "costs": [
+   2
+  ],
+  "description": "Vous possédez une terre agricole ou forestière à l’ambassade ou dans votre pays qui pourra vous rapporter de ressource à condition d’y mettre de la main d'œuvre. Chaque main d'œuvre donnera deux ressources de nourriture ou de bois."
+ },
+ {
+  "id": "a-mine",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Mine",
+  "costs": [
+   2
+  ],
+  "description": "Vous possédez une mine à l’ambassade ou dans votre pays qui peut vous fournir en différents métaux. De base la mine est une mine de fer, mais avec le temps il est possible que le filon s’épuise ou que vous en trouviez des nouveaux. Pour miner il vous faut des main-d'œuvre qui vous apporteront chacune deux ressources."
+ },
+ {
+  "id": "a-objet-hors-norme",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Objet hors norme",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous avez un objet hors norme que cela soit dans l’univers ou pour les règlements du jeu. Discuté avec l'animation de cet objet et des limites de celui-ci.",
+  "approval": true
+ },
+ {
+  "id": "a-objet-magique",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Objet magique",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous possédez un objet magique. Discuter avec l’animation pour savoir ce que l’objet peut faire et le nombre de points qu’il vous coûtera.",
+  "approval": true
+ },
+ {
+  "id": "a-artefact-religieux",
+  "kind": "avantage",
+  "category": "Matériel",
+  "name": "Artefact religieux",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Vous avez en votre possession un artéfact religieux. Bien qu’il se peut que celui-ci ne soit nécessairement magique, il vous apportera le respect de ceux qui partagent vos croyances.",
+  "approval": true
+ },
+ {
+  "id": "a-concentration",
+  "kind": "avantage",
+  "category": "Mental",
+  "name": "Concentration",
+  "costs": [
+   4
+  ],
+  "description": "Vous êtes capable de vous re-concentrer rapidement après des efforts mentaux et de rester dans votre bulle malgré ce qui se passe autour de vous. Vous regagnez un point d’esprit par demi-heure au lieu de à chaque heure."
+ },
+ {
+  "id": "a-savoir-obscure",
+  "kind": "avantage",
+  "category": "Mental",
+  "name": "Savoir obscur",
+  "costs": [
+   1
+  ],
+  "description": "Vous avez acquis d’une manière légitime ou non un savoir qui ne doit pas être à la portée de tous. Bien que vous ayez des connaissances rares, l’on pourrait vous questionner sur le pourquoi vous savez cela."
+ },
+ {
+  "id": "a-benediction",
+  "kind": "avantage",
+  "category": "Surnaturel",
+  "name": "Bénédiction",
+  "costs": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "description": "Pour une raison qui vous est inconnue, vous avez été béni par les dieux ou la magie. Parler avec l’animation pour voir d'où provient cette bénédiction et des effets de celle-ci.",
+  "approval": true
+ }
+]

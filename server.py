@@ -144,7 +144,8 @@ RACES = {
 # Avantages donnés gratuitement par la provenance (p. 19-26) :
 # compétences (niveau I), connaissances (niveau 1) et avantages à appliquer par l'Animation.
 # Il est impossible de provenir de l'Empire de Dulne ni de la Terre des exilés.
-PROVENANCES = {
+# Valeurs de départ seulement : les provenances sont ensuite dans la base, modifiables par l'Animation.
+PROVENANCES_SEED = {
     "Archipels de Givre": {"skills": ["chasse1"],
                            "knowledges": ["k_lang_geofroy", "k_animaux", "k_astrologie"]},
     "Aublanc":            {"skills": ["lireerire1"],
@@ -248,12 +249,12 @@ SCROLL_SKILL_DESC = ("Pré-requis : Lecture/écriture et École de magie ou Prê
                      "(coûte autant de pm que lancer le sort, réduit votre max jusqu'au prochain cycle). "
                      "Prend 2 min/niveau + 1 ressource tissu. Impossible pour les sorts rituels, passifs ou de concentration.")
 SKILLS_REQUIRING_MAGIC = {SCROLL_SKILL}
+# Écoles de magie (spells.json) ; leurs sorts sont dans la base, modifiables par l'Animation
 with open(os.path.join(BASE_DIR, 'spells.json'), encoding='utf-8') as f:
-    MAGIC_SCHOOLS = json.load(f)
-SCHOOLS_BY_ID = {s['id']: s for s in MAGIC_SCHOOLS}
-SCHOOL_SPELLS = {(s['id'], int(lv)): [sp['id'] for sp in spells]
-                 for s in MAGIC_SCHOOLS for lv, spells in s['levels'].items()}
-SPELL_INFO = {sp: (school, level) for (school, level), spells in SCHOOL_SPELLS.items() for sp in spells}
+    SCHOOL_META = [{k: v for k, v in s.items() if k != 'levels'} for s in json.load(f)]
+SCHOOLS_BY_ID = {s['id']: s for s in SCHOOL_META}
+# Contenu chargé depuis la base par reload_content()
+PROVENANCES, MAGIC_SCHOOLS, SCHOOL_SPELLS, SPELL_INFO = {}, [], {}, {}
 # Compétences qui exigent l'arme de prédilection dans l'une de ces catégories
 SKILL_WEAPON_PREREQS = {
     "attsour1":  ["dague"],
@@ -302,6 +303,16 @@ SKILL_NAME_ALIASES = {
     "maniementdesarmeslourdes":     "maniementarmeslourdes",
     "premiersoins":                 "premierssoins",
 }
+
+# Avantages et désavantages (p. 32-44), choisis une seule fois à la création (traits.json).
+# Entre DISADVANTAGE_MIN et DISADVANTAGE_MAX points de désavantage ; les avantages coûtent au plus
+# autant de points que les désavantages en donnent, les points restants sont perdus.
+DISADVANTAGE_MIN = 3
+DISADVANTAGE_MAX = 12
+RUINED_TRAIT     = "d-ruiner"   # Ruiné : aucun avantage matériel
+with open(os.path.join(BASE_DIR, 'traits.json'), encoding='utf-8') as f:
+    TRAITS = json.load(f)
+TRAITS_BY_ID = {t['id']: t for t in TRAITS}
 
 # Compétences qui augmentent les points de vie / d'esprit
 SKILL_STAT_BONUSES = {
@@ -375,7 +386,8 @@ def init_db():
         pass
     for column in ('password_hash TEXT', 'race TEXT', 'provenance TEXT',
                    'human_bonus TEXT', "armor TEXT NOT NULL DEFAULT '{}'",
-                   "provenance_languages TEXT NOT NULL DEFAULT '[]'", 'religion TEXT'):
+                   "provenance_languages TEXT NOT NULL DEFAULT '[]'", 'religion TEXT',
+                   'traits TEXT'):   # avantages/désavantages {id: coût}, NULL tant que non choisis
         try:
             c.execute(f'ALTER TABLE players ADD COLUMN {column}')
         except Exception:
@@ -449,13 +461,49 @@ def init_db():
     c.executemany('''INSERT INTO knowledges VALUES (?,?,?,?)
                      ON CONFLICT(id) DO UPDATE SET category=excluded.category, name=excluded.name,
                                                    description=excluded.description''', KNOWLEDGES)
-    # Arbre de compétences de référence (skills.json) : ajouté s'il manque, par exemple sur une base neuve.
-    # Les compétences déjà présentes, dont celles ajoutées par l'Animation, ne sont pas touchées.
+    c.execute('''CREATE TABLE IF NOT EXISTS spells (
+        id          TEXT PRIMARY KEY,
+        school      TEXT    NOT NULL,
+        level       INTEGER NOT NULL,
+        position    INTEGER NOT NULL DEFAULT 0,
+        name        TEXT    NOT NULL,
+        type        TEXT    NOT NULL DEFAULT '',
+        incantation TEXT    NOT NULL DEFAULT '',
+        cible       TEXT    NOT NULL DEFAULT '',
+        portee      TEXT    NOT NULL DEFAULT '',
+        duree       TEXT    NOT NULL DEFAULT '',
+        resistance  TEXT    NOT NULL DEFAULT '',
+        description TEXT    NOT NULL DEFAULT ''
+    )''')
+    c.execute('''CREATE TABLE IF NOT EXISTS provenances (
+        name     TEXT PRIMARY KEY,
+        position INTEGER NOT NULL DEFAULT 0,
+        data     TEXT    NOT NULL   -- JSON : skills, knowledges, language_choice, extra_free_weapons, notes
+    )''')
+    # Changements de contenu appliqués une seule fois : ensuite, la base (modifiable par l'Animation) fait foi
+    c.execute('CREATE TABLE IF NOT EXISTS migrations (name TEXT PRIMARY KEY)')
+    done = {r['name'] for r in c.execute('SELECT name FROM migrations').fetchall()}
+    for name, migrate in CONTENT_MIGRATIONS:
+        if name not in done:
+            migrate(c)
+            c.execute('INSERT INTO migrations VALUES (?)', (name,))
+    # L'ancienne « Tactiques militaires (1 pays) » est retirée si personne ne la possède
+    c.execute('''DELETE FROM knowledges WHERE id = 'k_tactiques'
+                 AND NOT EXISTS (SELECT 1 FROM player_knowledges WHERE knowledge_id = 'k_tactiques')''')
+    conn.commit()
+    reload_content(c)
+    conn.close()
+
+def seed_skills(c):
+    """Arbre de compétences de référence (skills.json), pour une base neuve."""
     with open(os.path.join(BASE_DIR, 'skills.json'), encoding='utf-8') as f:
         base_skills = [(s['id'], s['branch'], s['name'], s['cost'], s['knowledge_cost'], s['desc'], s['prereq'],
                         s['sort_order']) for s in json.load(f)]
     c.executemany('''INSERT OR IGNORE INTO skills (id, branch, name, cost, knowledge_cost, desc, prereq, sort_order)
                      VALUES (?,?,?,?,?,?,?,?)''', base_skills + EXTRA_SKILLS)
+
+def migrate_rules_2025(c):
+    """Corrections de l'arbre selon le Livre des règles (armes, magie, religion…)."""
     c.execute('UPDATE skills SET desc = ? WHERE id = ?', (WEAPON_SKILL_DESC, WEAPON_SKILL))
     # Les niveaux II et III de la spécialisation sont remplacés par des niveaux par catégorie d'arme
     c.execute('UPDATE skills SET name = ?, desc = ? WHERE id = ?', (SPEC_SKILL_NAME, SPEC_SKILL_DESC, SPEC_SKILL))
@@ -475,16 +523,74 @@ def init_db():
     # Sorts supplémentaires vaut pour la magie comme pour la prêtrise : l'école connue est vérifiée à l'achat
     c.execute('UPDATE skills SET desc = ?, prereq = NULL WHERE id = ?', (EXTRA_SPELL_DESC, EXTRA_SPELL_SKILL))
     c.execute("UPDATE skills SET desc = ?, prereq = 'lireerire1' WHERE id = ?", (SCROLL_SKILL_DESC, SCROLL_SKILL))
-    # L'ancienne « Tactiques militaires (1 pays) » est retirée si personne ne la possède
-    c.execute('''DELETE FROM knowledges WHERE id = 'k_tactiques'
-                 AND NOT EXISTS (SELECT 1 FROM player_knowledges WHERE knowledge_id = 'k_tactiques')''')
-    conn.commit()
-    conn.close()
+
+def migrate_categories(c):
+    """La catégorie de chaque compétence (fichiers martial.txt, magie.txt…) est enregistrée dans la base."""
+    placement = load_skill_categories()
+    names     = [name for _, name, _ in SKILL_CATEGORIES]
+    for r in c.execute('SELECT id, name, branch FROM skills').fetchall():
+        branch = placement.get(skill_key(r['name'])) or (r['branch'] if r['branch'] in names else OTHER_CATEGORY)
+        c.execute('UPDATE skills SET branch = ? WHERE id = ?', (branch, r['id']))
+
+def seed_spells(c):
+    """Sorts du Règlement de magie (spells.json)."""
+    with open(os.path.join(BASE_DIR, 'spells.json'), encoding='utf-8') as f:
+        schools = json.load(f)
+    c.executemany('''INSERT OR IGNORE INTO spells (id, school, level, position, name, type, incantation, cible,
+                                                   portee, duree, resistance, description)
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
+                  [(sp['id'], s['id'], int(lv), i, sp['name'], sp['type'], sp['incantation'], sp['cible'],
+                    sp['portee'], sp['duree'], sp['resistance'], sp['description'])
+                   for s in schools for lv, spells in s['levels'].items() for i, sp in enumerate(spells)])
+
+def seed_provenances(c):
+    c.executemany('INSERT OR IGNORE INTO provenances (name, position, data) VALUES (?, ?, ?)',
+                  [(name, i, json.dumps(rules)) for i, (name, rules) in enumerate(PROVENANCES_SEED.items())])
+
+CONTENT_MIGRATIONS = [  # (nom, fonction), dans l'ordre ; chacune n'est appliquée qu'une fois par base
+    ('competences-de-base', seed_skills),
+    ('regles-2025',         migrate_rules_2025),
+    ('categories',          migrate_categories),
+    ('sorts',               seed_spells),
+    ('provenances',         seed_provenances),
+]
+
+def reload_content(c):
+    """Recharge en mémoire les sorts et les provenances (au démarrage et après une modification par l'Animation)."""
+    global PROVENANCES, MAGIC_SCHOOLS, SCHOOL_SPELLS, SPELL_INFO
+    PROVENANCES = {r['name']: json.loads(r['data'])
+                   for r in c.execute('SELECT name, data FROM provenances ORDER BY position, name').fetchall()}
+    fields = ('id', 'name', 'type', 'incantation', 'cible', 'portee', 'duree', 'resistance', 'description')
+    levels = {}
+    for r in c.execute('SELECT * FROM spells ORDER BY school, level, position, name').fetchall():
+        levels.setdefault(r['school'], {}).setdefault(str(r['level']), []).append({f: r[f] for f in fields})
+    MAGIC_SCHOOLS = [{**s, 'levels': levels.get(s['id'], {})} for s in SCHOOL_META]
+    SCHOOL_SPELLS = {(s['id'], int(lv)): [sp['id'] for sp in spells]
+                     for s in MAGIC_SCHOOLS for lv, spells in s['levels'].items()}
+    SPELL_INFO    = {sp: (school, level) for (school, level), spells in SCHOOL_SPELLS.items() for sp in spells}
 
 # --- Servir le frontend ---
 @app.route('/')
 def serve_index():
     return send_from_directory(BASE_DIR, 'index.html')
+
+# Documents de règles affichés dans les onglets du joueur (seuls ces fichiers sont servis)
+RULE_DOCUMENTS = {
+    'regles': 'Livre des règles 2025 v2.1 Copy.pdf',
+    'magie':  'Règlement magie 2025.pdf',
+}
+
+# Documents remplacés par l'Animation (prioritaires sur ceux du dépôt git)
+UPLOADED_DOCS_DIR = os.path.join(BASE_DIR, 'data', 'docs')
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024   # taille maximale d'un document envoyé
+
+@app.route('/docs/<doc>')
+def serve_document(doc):
+    if doc not in RULE_DOCUMENTS:
+        return jsonify({'error': 'Document introuvable'}), 404
+    if os.path.exists(os.path.join(UPLOADED_DOCS_DIR, f'{doc}.pdf')):
+        return send_from_directory(UPLOADED_DOCS_DIR, f'{doc}.pdf', mimetype='application/pdf', max_age=0)
+    return send_from_directory(BASE_DIR, RULE_DOCUMENTS[doc], mimetype='application/pdf', max_age=0)
 
 # --- Auth admin ---
 @app.route('/api/admin/login', methods=['POST'])
@@ -670,8 +776,10 @@ def character_sheet(player, skills):
     if race == 'Humain' and player['human_bonus'] in ('pv', 'pe'):
         pv += player['human_bonus'] == 'pv'
         pe += player['human_bonus'] == 'pe'
-    for skill_id in skills:
-        bonus = SKILL_STAT_BONUSES.get(skill_id, {})
+    traits = json.loads(player['traits']) if player['traits'] is not None else None
+    bonuses = [SKILL_STAT_BONUSES.get(s, {}) for s in skills] + \
+              [TRAITS_BY_ID[t].get('stats', {}) for t in (traits or {}) if t in TRAITS_BY_ID]
+    for bonus in bonuses:
         pv += bonus.get('pv', 0)
         pe += bonus.get('pe', 0)
     armor_points = 0
@@ -683,9 +791,35 @@ def character_sheet(player, skills):
                 armor_points += ARMOR_PARTS[part][1][column]
                 immunities[part] = immunity
     return {'race': race, 'provenance': player['provenance'], 'humanBonus': player['human_bonus'],
-            'religion': player['religion'],
+            'religion': player['religion'], 'traits': traits,
             'talent': talent, 'armor': armor, 'armorImmunities': immunities,
             'pv': pv, 'pe': pe, 'armorPoints': armor_points}
+
+def traits_error(traits):
+    """Vérifie un choix d'avantages/désavantages {id: coût} ; renvoie un message d'erreur ou None."""
+    if not isinstance(traits, dict):
+        return 'Avantages et désavantages invalides'
+    for tid, cost in traits.items():
+        trait = TRAITS_BY_ID.get(tid)
+        if not trait:
+            return 'Avantage ou désavantage inconnu'
+        if cost not in trait['costs']:
+            return f'Coût invalide pour {trait["name"]}'
+        if trait.get('requires') and not any(r in traits for r in trait['requires']):
+            names = ' ou '.join(TRAITS_BY_ID[r]['name'] for r in trait['requires'])
+            return f'{trait["name"]} se prend avec {names}'
+        for other in trait.get('incompatible', []):
+            if other in traits:
+                return f'{trait["name"]} est incompatible avec {TRAITS_BY_ID[other]["name"]}'
+        if RUINED_TRAIT in traits and trait['kind'] == 'avantage' and trait['category'] == 'Matériel':
+            return f'Un personnage ruiné ne peut pas prendre d\'avantage matériel ({trait["name"]})'
+    malus = sum(c for t, c in traits.items() if TRAITS_BY_ID[t]['kind'] == 'desavantage')
+    bonus = sum(c for t, c in traits.items() if TRAITS_BY_ID[t]['kind'] == 'avantage')
+    if not DISADVANTAGE_MIN <= malus <= DISADVANTAGE_MAX:
+        return f'Il faut entre {DISADVANTAGE_MIN} et {DISADVANTAGE_MAX} points de désavantage (vous en avez {malus})'
+    if bonus > malus:
+        return f'Vos avantages coûtent {bonus} points, mais vos désavantages n\'en donnent que {malus}'
+    return None
 
 def update_character(c, name, data, allowed):
     """Applique les champs de fiche autorisés ; renvoie un message d'erreur ou None."""
@@ -711,6 +845,11 @@ def update_character(c, name, data, allowed):
         if data['humanBonus'] not in ('pv', 'pe', None):
             return 'Bonus humain invalide (pv ou pe)'
         updates['human_bonus'] = data['humanBonus']
+    if 'traits' in allowed and 'traits' in data:
+        # None remet à zéro : le joueur pourra choisir de nouveau
+        if data['traits'] is not None and (err := traits_error(data['traits'])):
+            return err
+        updates['traits'] = None if data['traits'] is None else json.dumps(data['traits'])
     if 'religion' in allowed and 'religion' in data:
         if data['religion'] not in RELIGIONS and data['religion'] is not None:
             return 'Religion inconnue'
@@ -734,6 +873,8 @@ def character_rules():
                                             if 'language_choice' in r else None)}
                         for n, r in PROVENANCES.items()],
         'religions':   RELIGIONS,
+        'traits':      TRAITS,
+        'disadvantageMin': DISADVANTAGE_MIN, 'disadvantageMax': DISADVANTAGE_MAX, 'ruinedTrait': RUINED_TRAIT,
         'armorParts':  [{'id': k, 'name': n, 'points': pts} for k, (n, pts) in ARMOR_PARTS.items()],
         'armorMaterials': [{'id': k, 'name': n, 'immunity': imm} for k, (n, _, imm) in ARMOR_MATERIALS.items()],
     })
@@ -758,6 +899,23 @@ def set_character(name):
     conn.close()
     return get_player_data(name)
 
+@app.route('/api/player/<name>/traits', methods=['POST'])
+@require_player
+def set_traits(name):
+    """Avantages et désavantages : choisis une seule fois par le joueur, ensuite seule l'Animation peut les changer."""
+    conn = get_db()
+    c    = conn.cursor()
+    if c.execute('SELECT traits FROM players WHERE name=?', (name,)).fetchone()['traits'] is not None:
+        conn.close(); return jsonify({'error': 'Avantages et désavantages déjà choisis, demandez à l\'Animation'}), 400
+    traits = (request.json or {}).get('traits')
+    if traits is None:
+        conn.close(); return jsonify({'error': 'Choisissez vos avantages et désavantages'}), 400
+    if (err := update_character(c, name, {'traits': traits}, {'traits'})):
+        conn.close(); return jsonify({'error': err}), 400
+    conn.commit()
+    conn.close()
+    return get_player_data(name)
+
 @app.route('/api/player/<name>/religion', methods=['POST'])
 @require_player
 def set_religion(name):
@@ -777,7 +935,7 @@ def admin_set_character(name):
     c    = conn.cursor()
     if not c.execute('SELECT 1 FROM players WHERE name=?', (name,)).fetchone():
         conn.close(); return jsonify({'error': 'Joueur introuvable'}), 404
-    if (err := update_character(c, name, request.json or {}, {'race', 'provenance', 'humanBonus', 'armor', 'religion'})):
+    if (err := update_character(c, name, request.json or {}, {'race', 'provenance', 'humanBonus', 'armor', 'religion', 'traits'})):
         conn.close(); return jsonify({'error': err}), 400
     conn.commit()
     conn.close()
@@ -979,19 +1137,19 @@ def sort_name(name):
     base = unicodedata.normalize('NFD', re.sub(r'\s+[IVX]+$', '', name).lower())
     return ''.join(ch for ch in base if not unicodedata.combining(ch))
 
+def skill_category_names():
+    return [name for _, name, _ in SKILL_CATEGORIES] + [OTHER_CATEGORY]
+
 @app.route('/api/skills', methods=['GET'])
 def get_skills():
     conn = get_db()
     rows = conn.execute('SELECT * FROM skills ORDER BY sort_order').fetchall()
     conn.close()
-    placement = load_skill_categories()
-    order     = [name for _, name, _ in SKILL_CATEGORIES] + [OTHER_CATEGORY]
-    branches  = {name: [] for name in order}
+    order    = skill_category_names()
+    branches = {name: [] for name in order}
     for r in rows:
-        # Sans ligne dans les fichiers : la branche enregistrée si c'est une catégorie connue, sinon « Autres »
-        b = placement.get(skill_key(r['name'])) \
-            or (r['branch'] if r['branch'] in branches else OTHER_CATEGORY)
-        branches[b].append(r)
+        # La catégorie est enregistrée dans la base (migrate_categories, puis modifiable par l'Animation)
+        branches[r['branch'] if r['branch'] in branches else OTHER_CATEGORY].append(r)
     return jsonify([{'branchName': b,
                      'skills': [skill_json(r) for r in sorted(branches[b], key=lambda r: (sort_name(r['name']), r['sort_order']))]}
                     for b in order if branches[b]])
@@ -1055,22 +1213,45 @@ def buy_knowledge(name):
     conn.close()
     return jsonify({'knowledgePoints': player['knowledge_points'], 'acquiredKnowledges': list(levels), 'knowledgeLevels': levels})
 
+def read_skill_fields(c, data, skill_id=None):
+    """Champs d'une compétence envoyés par l'Animation ; renvoie (champs, erreur)."""
+    try:
+        cost           = int(data.get('cost', 0) or 0)
+        knowledge_cost = int(data.get('knowledge_cost', 0) or 0)
+    except (TypeError, ValueError):
+        return None, 'Coût invalide'
+    fields = {'branch': data.get('branch') or OTHER_CATEGORY, 'name': (data.get('name') or '').strip(),
+              'desc': (data.get('desc') or '').strip(), 'prereq': data.get('prereq') or None,
+              'cost': cost, 'knowledge_cost': knowledge_cost}
+    if not fields['name'] or not fields['desc']:
+        return None, 'Le nom et la description sont obligatoires'
+    if cost < 0 or knowledge_cost < 0:
+        return None, 'Un coût ne peut pas être négatif'
+    if fields['branch'] not in skill_category_names():
+        return None, 'Catégorie inconnue'
+    # Le prérequis doit exister et ne pas créer de boucle (A demande B qui demande A)
+    prereq = fields['prereq']
+    while prereq:
+        if prereq == skill_id:
+            return None, 'Ce prérequis créerait une boucle'
+        row = c.execute('SELECT prereq FROM skills WHERE id = ?', (prereq,)).fetchone()
+        if not row:
+            return None, 'Prérequis introuvable'
+        prereq = row['prereq']
+    return fields, None
+
 @app.route('/api/skills', methods=['POST'])
 @require_admin
 def add_skill():
-    data           = request.json
-    branch         = data.get('branch', 'Combat')
-    name           = data.get('name', '').strip()
-    cost           = int(data.get('cost', 0) or 0)
-    knowledge_cost = int(data.get('knowledge_cost', 0) or 0)
-    desc           = data.get('desc', '').strip()
-    prereq         = data.get('prereq') or None
-    if not name or not desc:
-        return jsonify({'error': 'Champs manquants'}), 400
-    if cost == 0 and knowledge_cost == 0:
-        return jsonify({'error': 'Au moins un coût (XP ou Connaissance) doit être supérieur à 0'}), 400
     conn = get_db()
     c    = conn.cursor()
+    fields, err = read_skill_fields(c, request.json or {})
+    if err:
+        conn.close(); return jsonify({'error': err}), 400
+    if fields['cost'] == 0 and fields['knowledge_cost'] == 0:
+        conn.close(); return jsonify({'error': 'Au moins un coût (XP ou Connaissance) doit être supérieur à 0'}), 400
+    branch, name, cost, knowledge_cost, desc, prereq = (fields[k] for k in
+                                                        ('branch', 'name', 'cost', 'knowledge_cost', 'desc', 'prereq'))
     max_order = c.execute('SELECT MAX(sort_order) FROM skills WHERE branch=?', (branch,)).fetchone()[0] or 0
     new_id    = branch[0].lower() + str(int(time.time()))
     c.execute('INSERT INTO skills (id, branch, name, cost, knowledge_cost, desc, prereq, sort_order) VALUES (?,?,?,?,?,?,?,?)',
@@ -1079,6 +1260,170 @@ def add_skill():
     conn.close()
     return jsonify({'id': new_id, 'branch': branch, 'name': name, 'cost': cost,
                     'knowledge_cost': knowledge_cost, 'desc': desc, 'prereq': prereq})
+
+# --- Animation : modifier le contenu du jeu ---
+# Compétences au fonctionnement particulier (achat par arme, par école, par sort) : modifiables, pas supprimables
+SPECIAL_SKILLS = {WEAPON_SKILL, SPEC_SKILL, EXTRA_SPELL_SKILL, *MAGIC_SKILLS}
+
+@app.route('/api/admin/skills/<skill_id>', methods=['POST'])
+@require_admin
+def admin_update_skill(skill_id):
+    conn = get_db()
+    c    = conn.cursor()
+    if not c.execute('SELECT 1 FROM skills WHERE id = ?', (skill_id,)).fetchone():
+        conn.close(); return jsonify({'error': 'Compétence introuvable'}), 404
+    fields, err = read_skill_fields(c, request.json or {}, skill_id)
+    if err:
+        conn.close(); return jsonify({'error': err}), 400
+    c.execute('''UPDATE skills SET branch = ?, name = ?, desc = ?, prereq = ?, cost = ?, knowledge_cost = ?
+                 WHERE id = ?''', (*fields.values(), skill_id))
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/skills/<skill_id>/delete', methods=['POST'])
+@require_admin
+def admin_delete_skill(skill_id):
+    """Supprime une compétence ; les joueurs qui l'avaient achetée sont remboursés."""
+    conn = get_db()
+    c    = conn.cursor()
+    skill = c.execute('SELECT * FROM skills WHERE id = ?', (skill_id,)).fetchone()
+    if not skill:
+        conn.close(); return jsonify({'error': 'Compétence introuvable'}), 404
+    if skill_id in SPECIAL_SKILLS:
+        conn.close(); return jsonify({'error': f'{skill["name"]} a un fonctionnement particulier : '
+                                               'elle peut être modifiée mais pas supprimée'}), 400
+    dependents = [r['name'] for r in c.execute('SELECT name FROM skills WHERE prereq = ?', (skill_id,)).fetchall()]
+    if dependents:
+        conn.close(); return jsonify({'error': 'Ces compétences l\'ont en prérequis, changez-les d\'abord : '
+                                               + ', '.join(dependents)}), 400
+    owners = [r['player_name'] for r in c.execute(
+        'SELECT player_name FROM player_skills WHERE skill_id = ?', (skill_id,)).fetchall()]
+    c.executemany('UPDATE players SET points = points + ?, knowledge_points = knowledge_points + ? WHERE name = ?',
+                  [(skill['cost'], skill['knowledge_cost'], p) for p in owners])
+    c.execute('DELETE FROM player_skills WHERE skill_id = ?', (skill_id,))
+    c.execute('DELETE FROM skills WHERE id = ?', (skill_id,))
+    # Elle n'est plus donnée par les provenances
+    for prov, rules in PROVENANCES.items():
+        if skill_id in rules.get('skills', []):
+            rules = {**rules, 'skills': [s for s in rules['skills'] if s != skill_id]}
+            c.execute('UPDATE provenances SET data = ? WHERE name = ?', (json.dumps(rules), prov))
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'ok': True, 'refunded': owners})
+
+SPELL_TEXT_FIELDS = ('name', 'type', 'incantation', 'cible', 'portee', 'duree', 'resistance', 'description')
+
+@app.route('/api/admin/spells/<spell_id>', methods=['POST'])
+@require_admin
+def admin_update_spell(spell_id):
+    data   = request.json or {}
+    fields = {f: (data.get(f) or '').strip() for f in SPELL_TEXT_FIELDS}
+    if not fields['name'] or not fields['description']:
+        return jsonify({'error': 'Le nom et la description sont obligatoires'}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    c.execute(f'UPDATE spells SET {", ".join(f + " = ?" for f in fields)} WHERE id = ?', (*fields.values(), spell_id))
+    if c.rowcount == 0:
+        conn.close(); return jsonify({'error': 'Sort introuvable'}), 404
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify(MAGIC_SCHOOLS)
+
+@app.route('/api/admin/spells/<spell_id>/delete', methods=['POST'])
+@require_admin
+def admin_delete_spell(spell_id):
+    """Supprime un sort ; ceux achetés en sort supplémentaire sont remboursés (leur niveau en XP)."""
+    conn = get_db()
+    c    = conn.cursor()
+    if not c.execute('SELECT 1 FROM spells WHERE id = ?', (spell_id,)).fetchone():
+        conn.close(); return jsonify({'error': 'Sort introuvable'}), 404
+    c.execute('''UPDATE players SET points = points + (SELECT level FROM player_spells
+                                                       WHERE player_name = players.name AND spell = ?)
+                 WHERE name IN (SELECT player_name FROM player_spells WHERE spell = ? AND extra = 1)''',
+              (spell_id, spell_id))
+    c.execute('DELETE FROM player_spells WHERE spell = ?', (spell_id,))
+    c.execute('DELETE FROM spells WHERE id = ?', (spell_id,))
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify(MAGIC_SCHOOLS)
+
+@app.route('/api/admin/provenances', methods=['POST'])
+@require_admin
+def admin_save_provenance():
+    """Crée ou modifie une provenance ; un changement de nom suit chez les joueurs qui en proviennent."""
+    data     = request.json or {}
+    original = data.get('originalName')
+    name     = (data.get('name') or '').strip()
+    if not name:
+        return jsonify({'error': 'Le nom est obligatoire'}), 400
+    if (name != original and name in PROVENANCES) or (original and original not in PROVENANCES):
+        return jsonify({'error': 'Une provenance porte déjà ce nom' if name in PROVENANCES else 'Provenance introuvable'}), 400
+    conn = get_db()
+    c    = conn.cursor()
+    skill_ids     = {r['id'] for r in c.execute('SELECT id FROM skills').fetchall()}
+    knowledge_ids = {k[0] for k in KNOWLEDGES}
+    skills, knowledges = data.get('skills') or [], data.get('knowledges') or []
+    if any(s not in skill_ids for s in skills) or any(k not in knowledge_ids for k in knowledges):
+        conn.close(); return jsonify({'error': 'Compétence ou connaissance inconnue'}), 400
+    rules = {'skills': skills, 'knowledges': knowledges}
+    try:
+        if int(data.get('extraFreeWeapons') or 0) > 0:
+            rules['extra_free_weapons'] = int(data['extraFreeWeapons'])
+        choice = data.get('languageChoice')
+        if choice and choice.get('options'):
+            if any(k not in knowledge_ids for k in choice['options']) or not 0 < int(choice['count']) <= len(choice['options']):
+                conn.close(); return jsonify({'error': 'Choix de langues invalide'}), 400
+            rules['language_choice'] = [int(choice['count']), choice['options']]
+    except (TypeError, ValueError, KeyError):
+        conn.close(); return jsonify({'error': 'Valeur invalide'}), 400
+    notes = [n.strip() for n in data.get('notes') or [] if n.strip()]
+    if notes:
+        rules['notes'] = notes
+    if original:
+        c.execute('UPDATE provenances SET name = ?, data = ? WHERE name = ?', (name, json.dumps(rules), original))
+        c.execute('UPDATE players SET provenance = ? WHERE provenance = ?', (name, original))
+    else:
+        position = c.execute('SELECT COALESCE(MAX(position), 0) + 1 FROM provenances').fetchone()[0]
+        c.execute('INSERT INTO provenances (name, position, data) VALUES (?, ?, ?)', (name, position, json.dumps(rules)))
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/provenances/delete', methods=['POST'])
+@require_admin
+def admin_delete_provenance():
+    name = (request.json or {}).get('name')
+    conn = get_db()
+    c    = conn.cursor()
+    users = [r['name'] for r in c.execute('SELECT name FROM players WHERE provenance = ?', (name,)).fetchall()]
+    if users:
+        conn.close(); return jsonify({'error': 'Des joueurs proviennent de cette provenance : ' + ', '.join(users)}), 400
+    c.execute('DELETE FROM provenances WHERE name = ?', (name,))
+    if c.rowcount == 0:
+        conn.close(); return jsonify({'error': 'Provenance introuvable'}), 404
+    conn.commit()
+    reload_content(c)
+    conn.close()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/docs/<doc>', methods=['POST'])
+@require_admin
+def admin_replace_document(doc):
+    """Remplace un document de règles. Il est rangé dans data/docs (hors git) et remplace celui du dépôt."""
+    if doc not in RULE_DOCUMENTS:
+        return jsonify({'error': 'Document introuvable'}), 404
+    upload = request.files.get('file')
+    if not upload or upload.stream.read(5) != b'%PDF-':
+        return jsonify({'error': 'Envoyez un fichier PDF'}), 400
+    upload.stream.seek(0)
+    os.makedirs(UPLOADED_DOCS_DIR, exist_ok=True)
+    upload.save(os.path.join(UPLOADED_DOCS_DIR, f'{doc}.pdf'))
+    return jsonify({'ok': True})
 
 @app.route('/api/admin/player/<name>/remove-knowledge', methods=['POST'])
 @require_admin

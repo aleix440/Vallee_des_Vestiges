@@ -363,6 +363,64 @@
             background-color: #f9f9f9;
         }
 
+        /* --- Animation : modifier le contenu --- */
+        .admin-edit-list { max-height: 480px; overflow-y: auto; border: 1px solid #e0e6ed; border-radius: 6px; }
+        .admin-edit-row { border-bottom: 1px solid #f0f2f5; padding: 0.5rem 0.8rem; }
+        .admin-edit-head { display: flex; align-items: center; gap: 0.6rem; }
+        .admin-edit-head .info { flex: 1; font-size: 0.9rem; }
+        .admin-edit-head .info small { color: #888; }
+        .admin-edit-group { background: #f7f8fa; font-weight: bold; font-size: 0.85rem; color: #8e44ad; padding: 0.4rem 0.8rem; }
+        .admin-small-btn { padding: 4px 10px; font-size: 0.8rem; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; }
+        .admin-small-btn.danger { color: #c0392b; border-color: #e6b0aa; }
+        .admin-edit-form { margin-top: 0.6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .admin-edit-form label { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.8rem; color: #666; }
+        .admin-edit-form .wide { grid-column: 1 / -1; }
+        .admin-edit-form input, .admin-edit-form select, .admin-edit-form textarea {
+            padding: 6px; border: 1px solid #ccc; border-radius: 4px; font: inherit; font-size: 0.9rem;
+        }
+        .admin-edit-form .buttons { grid-column: 1 / -1; display: flex; gap: 0.5rem; justify-content: flex-end; }
+        .admin-edit-form .buttons .admin-btn { width: auto; }
+        .picker-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.3rem; }
+        .picker-chip { background: #f3e9f8; color: #6c3483; border-radius: 12px; padding: 2px 4px 2px 10px; font-size: 0.8rem; }
+        .picker-chip button { border: none; background: none; cursor: pointer; color: #6c3483; }
+        .picker-add { display: flex; gap: 0.4rem; }
+        .picker-add select { flex: 1; }
+        .admin-doc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+        .admin-doc-row strong { min-width: 160px; }
+        .admin-doc-row .admin-btn { width: auto; }
+
+        /* --- Documents de règles --- */
+        .doc-container { display: flex; flex-direction: column; gap: 0.5rem; }
+        .doc-open-link { align-self: flex-end; font-size: 0.85rem; color: #8e44ad; }
+        .doc-frame {
+            width: 100%; height: calc(100vh - 260px); min-height: 500px;
+            border: 1px solid #e0e6ed; border-radius: 8px; background: #fff;
+        }
+        .player-tabs { flex-wrap: wrap; }
+
+        /* --- Avantages et désavantages --- */
+        .traits-editor { margin: 0.5rem 0 1rem; }
+        .traits-summary {
+            position: sticky; top: 0; z-index: 1; background: #fff;
+            display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; align-items: center;
+            padding: 0.6rem 0; border-bottom: 1px solid #e0e6ed; margin-bottom: 0.6rem; font-size: 0.9rem;
+        }
+        .traits-problem { color: #c0392b; }
+        .traits-warning { color: #d68910; }
+        .traits-ok      { color: #27ae60; }
+        .traits-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .traits-column h4 { margin: 0 0 0.4rem; color: var(--secondary); }
+        .traits-category { font-weight: bold; color: #8e44ad; font-size: 0.85rem; margin: 0.8rem 0 0.3rem; }
+        .trait-row {
+            display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.6rem; align-items: center;
+            padding: 0.25rem 0; border-bottom: 1px solid #f2f4f7; font-size: 0.9rem;
+        }
+        .trait-row label { display: flex; gap: 0.4rem; align-items: center; cursor: pointer; }
+        .trait-cost { padding: 2px 4px; font-size: 0.8rem; }
+        .trait-fixed-cost { color: #888; font-size: 0.8rem; }
+        .trait-desc { grid-column: 1 / -1; font-size: 0.8rem; color: #666; }
+        .trait-desc summary { cursor: pointer; color: #999; font-size: 0.75rem; }
+
         /* --- Magie : fenêtre de choix et onglet Sorts --- */
         #magic-dialog-overlay {
             position: fixed;
@@ -549,6 +607,8 @@
             <button id="tab-knowledge"  class="player-tab-btn"        onclick="switchPlayerTab('knowledge')">Connaissances</button>
             <button id="tab-spells"     class="player-tab-btn"        onclick="switchPlayerTab('spells')">Sorts</button>
             <button id="tab-character"  class="player-tab-btn"        onclick="switchPlayerTab('character')">Personnage</button>
+            <button id="tab-regles"     class="player-tab-btn"        onclick="switchPlayerTab('regles')">Livre des règles</button>
+            <button id="tab-magie"      class="player-tab-btn"        onclick="switchPlayerTab('magie')">Règlement de magie</button>
         </div>
 
         <input type="search" id="player-search" class="player-search" placeholder="Rechercher une compétence…"
@@ -561,6 +621,16 @@
         <div id="spells-container" class="hidden"></div>
 
         <div id="character-container" class="hidden"></div>
+
+        <!-- Documents de règles : le PDF n'est chargé qu'à la première ouverture de l'onglet -->
+        <div id="regles-container" class="hidden doc-container">
+            <a class="doc-open-link" href="/docs/regles" target="_blank" rel="noopener">Ouvrir dans un nouvel onglet ↗</a>
+            <iframe class="doc-frame" data-src="/docs/regles" title="Livre des règles"></iframe>
+        </div>
+        <div id="magie-container" class="hidden doc-container">
+            <a class="doc-open-link" href="/docs/magie" target="_blank" rel="noopener">Ouvrir dans un nouvel onglet ↗</a>
+            <iframe class="doc-frame" data-src="/docs/magie" title="Règlement de magie"></iframe>
+        </div>
     </section>
 
     <section id="admin-view" class="hidden">
@@ -655,6 +725,46 @@
                 <textarea id="admin-skill-desc" placeholder="Description de la compétence" rows="3"></textarea>
             </div>
             <button class="admin-btn" onclick="adminAddSkill()">Ajouter la Compétence</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Modifier les Compétences</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Nom, catégorie, coûts, prérequis et description. Supprimer une compétence rembourse les joueurs qui l'avaient achetée.</p>
+            <input type="search" id="admin-skill-search" class="player-search" placeholder="Rechercher une compétence…" oninput="renderAdminSkills()">
+            <div id="admin-skill-list" class="admin-edit-list"></div>
+        </div>
+
+        <div class="admin-card">
+            <h3>Modifier les Sorts</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Supprimer un sort le retire aux joueurs ; ceux achetés en sort supplémentaire sont remboursés.</p>
+            <div class="admin-form-group">
+                <select id="admin-spell-school" onchange="renderAdminSpells()"></select>
+            </div>
+            <div id="admin-spell-list" class="admin-edit-list"></div>
+        </div>
+
+        <div class="admin-card">
+            <h3>Modifier les Provenances</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Compétences et connaissances données gratuitement, choix de langues et notes.</p>
+            <div class="admin-form-group">
+                <select id="admin-prov-select" onchange="renderAdminProvenance()"></select>
+            </div>
+            <div id="admin-prov-form"></div>
+        </div>
+
+        <div class="admin-card">
+            <h3>Documents de Règles</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Remplace le PDF affiché aux joueurs dans les onglets « Livre des règles » et « Règlement de magie ».</p>
+            <div class="admin-doc-row">
+                <strong>Livre des règles</strong>
+                <input type="file" id="admin-doc-regles" accept="application/pdf">
+                <button class="admin-btn" onclick="adminReplaceDocument('regles')">Remplacer</button>
+            </div>
+            <div class="admin-doc-row">
+                <strong>Règlement de magie</strong>
+                <input type="file" id="admin-doc-magie" accept="application/pdf">
+                <button class="admin-btn" onclick="adminReplaceDocument('magie')">Remplacer</button>
+            </div>
         </div>
     </section>
 </main>
@@ -773,6 +883,7 @@
             document.getElementById('btn-admin').classList.add('active');
             document.getElementById('admin-view').classList.remove('hidden');
             renderPlayerList();
+            loadAdminContent();
         }
     }
 
@@ -1444,12 +1555,20 @@
         document.getElementById('tab-knowledge').classList.toggle('active', tab === 'knowledge');
         document.getElementById('tab-spells').classList.toggle('active',    tab === 'spells');
         document.getElementById('tab-character').classList.toggle('active', tab === 'character');
+        document.getElementById('tab-regles').classList.toggle('active',    tab === 'regles');
+        document.getElementById('tab-magie').classList.toggle('active',     tab === 'magie');
         document.getElementById('skill-tree-container').classList.toggle('hidden', tab !== 'skills');
         document.getElementById('knowledge-container').classList.toggle('hidden',  tab !== 'knowledge');
         document.getElementById('spells-container').classList.toggle('hidden',     tab !== 'spells');
         document.getElementById('character-container').classList.toggle('hidden', tab !== 'character');
+        document.getElementById('regles-container').classList.toggle('hidden',    tab !== 'regles');
+        document.getElementById('magie-container').classList.toggle('hidden',     tab !== 'magie');
         const search = document.getElementById('player-search');
-        search.classList.toggle('hidden', tab === 'character');
+        search.classList.toggle('hidden', !['skills', 'knowledge', 'spells'].includes(tab));
+        if (tab === 'regles' || tab === 'magie') {
+            const frame = document.querySelector(`#${tab}-container .doc-frame`);
+            if (!frame.src) frame.src = frame.dataset.src;   // chargé une seule fois, à la première ouverture
+        }
         search.placeholder = { knowledge: 'Rechercher une connaissance…', spells: 'Rechercher un sort…' }[tab]
                              ?? 'Rechercher une compétence…';
         if (tab === 'skills') renderSkillTree();
@@ -1528,6 +1647,115 @@
             ${armorNote}`;
     }
 
+    // --- AVANTAGES ET DÉSAVANTAGES ---
+    // Les désavantages donnent des points (entre le minimum et le maximum), les avantages en coûtent
+    const TRAIT_KINDS = [['desavantage', 'Désavantages'], ['avantage', 'Avantages']];
+
+    function traitById(id) {
+        return characterRules.traits.find(t => t.id === id);
+    }
+
+    function traitPoints(traits, kind) {
+        return Object.entries(traits).filter(([id]) => traitById(id).kind === kind).reduce((sum, [, cost]) => sum + cost, 0);
+    }
+
+    // Premier problème du choix (mêmes règles que le serveur), ou null
+    function traitsProblem(traits) {
+        const rules = characterRules;
+        for (const [id, cost] of Object.entries(traits)) {
+            const t = traitById(id);
+            if (t.requires && !t.requires.some(r => r in traits))
+                return `${t.name} se prend avec ${t.requires.map(r => traitById(r).name).join(' ou ')}`;
+            const clash = (t.incompatible ?? []).find(o => o in traits);
+            if (clash) return `${t.name} est incompatible avec ${traitById(clash).name}`;
+            if (rules.ruinedTrait in traits && t.kind === 'avantage' && t.category === 'Matériel')
+                return `Un personnage ruiné ne peut pas prendre d'avantage matériel (${t.name})`;
+        }
+        const malus = traitPoints(traits, 'desavantage'), bonus = traitPoints(traits, 'avantage');
+        if (malus < rules.disadvantageMin) return `Il faut au moins ${rules.disadvantageMin} points de désavantage`;
+        if (malus > rules.disadvantageMax) return `Maximum ${rules.disadvantageMax} points de désavantage`;
+        if (bonus > malus) return `Vos avantages coûtent ${bonus} points, vos désavantages n'en donnent que ${malus}`;
+        return null;
+    }
+
+    function traitsEditorHtml(prefix, selected) {
+        const column = (kind, title) => {
+            const traits = characterRules.traits.filter(t => t.kind === kind);
+            const categories = [...new Set(traits.map(t => t.category))];
+            return `<div class="traits-column"><h4>${title}</h4>${categories.map(cat => `
+                <div class="traits-category">${cat}</div>
+                ${traits.filter(t => t.category === cat).map(t => {
+                    const chosen = selected?.[t.id];
+                    const cost = t.costs.length > 1
+                        ? `<select class="trait-cost" data-trait="${t.id}" onchange="updateTraitsSummary('${prefix}')">
+                               ${t.costs.map(c => `<option value="${c}" ${c === chosen ? 'selected' : ''}>${c} pt${c > 1 ? 's' : ''}</option>`).join('')}
+                           </select>`
+                        : `<span class="trait-fixed-cost">${t.costs[0]} pt${t.costs[0] > 1 ? 's' : ''}</span>`;
+                    return `<div class="trait-row">
+                        <label><input type="checkbox" class="trait-check" value="${t.id}" ${chosen !== undefined ? 'checked' : ''}
+                                      onchange="updateTraitsSummary('${prefix}')"> ${t.name}</label>
+                        ${cost}
+                        <details class="trait-desc"><summary>Détails</summary>${t.description}
+                            ${t.approval ? '<em> À voir avec l\'Animation.</em>' : ''}</details>
+                    </div>`;
+                }).join('')}`).join('')}</div>`;
+        };
+        return `<div id="${prefix}-traits" class="traits-editor">
+                    <div class="traits-summary" id="${prefix}-traits-summary"></div>
+                    <div class="traits-columns">${TRAIT_KINDS.map(([k, title]) => column(k, title)).join('')}</div>
+                </div>`;
+    }
+
+    // {id: coût} des cases cochées dans l'éditeur
+    function readTraits(prefix) {
+        const traits = {};
+        document.querySelectorAll(`#${prefix}-traits .trait-check:checked`).forEach(cb => {
+            const sel = document.querySelector(`#${prefix}-traits .trait-cost[data-trait="${cb.value}"]`);
+            traits[cb.value] = sel ? Number(sel.value) : traitById(cb.value).costs[0];
+        });
+        return traits;
+    }
+
+    function updateTraitsSummary(prefix) {
+        const traits  = readTraits(prefix);
+        const malus   = traitPoints(traits, 'desavantage'), bonus = traitPoints(traits, 'avantage');
+        const problem = traitsProblem(traits);
+        const lost    = malus - bonus;
+        document.getElementById(`${prefix}-traits-summary`).innerHTML = `
+            <span><strong>Désavantages :</strong> ${malus} / ${characterRules.disadvantageMax} pts
+                  <small>(min ${characterRules.disadvantageMin})</small></span>
+            <span><strong>Avantages :</strong> ${bonus} / ${malus} pts</span>
+            ${problem ? `<span class="traits-problem">${problem}</span>`
+                      : lost > 0 ? `<span class="traits-warning">${lost > 1 ? `${lost} points non dépensés seront perdus` : '1 point non dépensé sera perdu'}</span>`
+                                 : '<span class="traits-ok">Choix valide</span>'}`;
+        const btn = document.getElementById(`${prefix}-traits-save`);
+        if (btn) btn.disabled = !!problem;
+    }
+
+    function traitsListHtml(traits) {
+        return TRAIT_KINDS.map(([kind, title]) => {
+            const items = Object.entries(traits).filter(([id]) => traitById(id)?.kind === kind);
+            if (!items.length) return '';
+            return `<div style="font-size:0.9rem;color:#555;margin-bottom:0.6rem;"><strong>${title} :</strong>
+                <ul style="margin:0.3rem 0;">${items.map(([id, cost]) => {
+                    const t = traitById(id);
+                    return `<li title="${escapeHtml(t.description)}">${t.name} (${cost} pt${cost > 1 ? 's' : ''})${t.approval ? ' — à voir avec l\'Animation' : ''}</li>`;
+                }).join('')}</ul></div>`;
+        }).join('');
+    }
+
+    async function saveTraits() {
+        const traits = readTraits('char');
+        const malus = traitPoints(traits, 'desavantage'), bonus = traitPoints(traits, 'avantage');
+        const lost  = malus - bonus;
+        if (!confirm(`Valider ${malus} points de désavantage et ${bonus} points d'avantage ?`
+                     + (lost > 0 ? `\n${lost} point(s) seront perdus.` : '') + '\nCe choix est définitif.')) return;
+        try {
+            playerData = await api(`/api/player/${encodeURIComponent(playerData.name)}/traits`, 'POST', { traits });
+            renderCharacter();
+        } catch (e) { alert(e.message); }
+    }
+
     function renderCharacter() {
         const container = document.getElementById('character-container');
         const ch = playerData.character;
@@ -1570,7 +1798,7 @@
                     <select id="char-religion-change" style="padding:6px;">
                         ${optionsHtml(characterRules.religions, ch.religion, 'Aucune')}
                     </select>
-                    <button class="admin-btn" style="margin:0;" onclick="saveReligion()">Changer</button>
+                    <button class="admin-btn" style="margin:0;width:auto;" onclick="saveReligion()">Changer</button>
                 </div>
                 ${ch.religion ? `<p style="margin:-0.4rem 0 0.8rem;font-size:0.9rem;color:#555;">
                     Connaissance gratuite : ${playerData.religionKnowledges.map(catalogName).join(', ')} (niveau 1)</p>` : ''}
@@ -1582,10 +1810,27 @@
                         ${ch.provenanceNotes.map(n => `<li>${n} (à voir avec l'Animation)</li>`).join('')}
                     </ul>
                 </div>
+                ${ch.traits ? traitsListHtml(ch.traits) : ''}
                 ${characterStatsHtml(ch)}`;
         }
         container.innerHTML = '';
         container.appendChild(card);
+
+        // Étape suivante de la création : avantages et désavantages, choisis une seule fois
+        if (ch.race && ch.traits === null) {
+            const traitsCard = document.createElement('div');
+            traitsCard.classList.add('admin-card');
+            traitsCard.innerHTML = `
+                <h3>Avantages et désavantages</h3>
+                <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">
+                    Prenez entre ${characterRules.disadvantageMin} et ${characterRules.disadvantageMax} points de désavantage,
+                    puis dépensez-les en avantages. Les points non dépensés sont perdus.
+                    Ce choix est définitif : ensuite, seule l'Animation peut le modifier.</p>
+                ${traitsEditorHtml('char', {})}
+                <button class="admin-btn" id="char-traits-save" onclick="saveTraits()">Valider mes avantages et désavantages</button>`;
+            container.appendChild(traitsCard);
+            updateTraitsSummary('char');
+        }
     }
 
     async function saveCharacter() {
@@ -1645,9 +1890,13 @@
                 <select id="admin-char-religion">${optionsHtml(characterRules.religions, ch.religion, '-- Religion (aucune) --')}</select>
                 <strong>Armure</strong>
                 ${armorRows}
+                <strong>Avantages et désavantages</strong>
+                <p style="color:#888;font-size:0.8rem;margin:0;">Tout décocher permet au joueur de les choisir de nouveau.</p>
+                ${traitsEditorHtml('admin-char', ch.traits ?? {})}
             </div>
             <button class="admin-btn" onclick="adminSaveCharacter('${record.name}')">Enregistrer la fiche</button>
             <div style="margin-top:1rem;">${characterStatsHtml(ch)}</div>`;
+        updateTraitsSummary('admin-char');
     }
 
     async function adminSaveCharacter(name) {
@@ -1661,6 +1910,8 @@
         const provenance = document.getElementById('admin-char-provenance').value;
         if (race)       body.race = race;
         if (provenance) { body.provenance = provenance; body.provenanceLanguages = chosenLanguages('admin-char'); }
+        const traits = readTraits('admin-char');
+        body.traits = Object.keys(traits).length ? traits : null;
         try {
             const record = await api(`/api/admin/player/${encodeURIComponent(name)}/character`, 'POST', body);
             renderAdminCharacter(record);
@@ -2017,14 +2268,277 @@
         if (cost === 0 && knowledgeCost === 0) { alert("Définissez au moins un coût (XP ou Connaissance)."); return; }
         try {
             await api('/api/skills', 'POST', { branch, name, cost, knowledge_cost: knowledgeCost, desc, prereq });
-            cachedTree = await api('/api/skills');
-            if (playerData.name) renderSkillTree();
+            await loadAdminContent();
             alert(`Compétence '${name}' ajoutée dans la branche ${branch}.`);
             document.getElementById('admin-skill-name').value = '';
             document.getElementById('admin-skill-cost').value = '0';
             document.getElementById('admin-skill-knowledge-cost').value = '0';
             document.getElementById('admin-skill-prereq').value = '';
             document.getElementById('admin-skill-desc').value = '';
+        } catch (e) { alert(e.message); }
+    }
+
+    // --- ANIMATION : MODIFIER LE CONTENU DU JEU ---
+    const ADMIN_CATEGORIES = ['Martial', 'Magie', 'Utilité', 'Craft', 'Économie', 'Autres'];
+
+    // Recharge compétences, connaissances, sorts et règles (partagés avec la vue joueur)
+    async function loadAdminContent() {
+        try {
+            [cachedTree, allKnowledges, magicSchools, characterRules] = await Promise.all([
+                api('/api/skills'), api('/api/knowledges'), api('/api/spells'), api('/api/character-rules')]);
+            const school = document.getElementById('admin-spell-school');
+            const current = school.value;
+            school.innerHTML = Object.entries(MAGIC_KIND_LABELS).map(([kind, label]) => `<optgroup label="${label}">
+                ${magicSchools.filter(s => s.kind === kind).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+            </optgroup>`).join('');
+            if (current) school.value = current;
+            renderAdminSkills();
+            renderAdminSpells();
+            renderAdminProvenanceSelect();
+            if (playerData.name) renderSkillTree();
+        } catch (e) { alert(e.message); }
+    }
+
+    function adminSkills() {
+        return cachedTree.flatMap(b => b.skills.map(s => ({ ...s, branch: b.branchName })));
+    }
+
+    function fieldHtml(label, input, wide = false) {
+        return `<label class="${wide ? 'wide' : ''}">${label}${input}</label>`;
+    }
+
+    // Compétences : liste filtrée par la recherche, regroupée par catégorie
+    function renderAdminSkills() {
+        const query  = normalizeSearch(document.getElementById('admin-skill-search').value.trim());
+        const skills = adminSkills().filter(s => matchesSearch(query, s.name, s.desc, s.branch, s.id));
+        const names  = Object.fromEntries(adminSkills().map(s => [s.id, s.name]));
+        document.getElementById('admin-skill-list').innerHTML = ADMIN_CATEGORIES.map(cat => {
+            const rows = skills.filter(s => s.branch === cat);
+            if (!rows.length) return '';
+            return `<div class="admin-edit-group">${cat}</div>` + rows.map(s => `
+                <div class="admin-edit-row" id="adm-skill-${s.id}">
+                    <div class="admin-edit-head">
+                        <div class="info"><strong>${s.name}</strong>
+                            <small>${s.cost} XP${s.knowledge_cost ? ` + ${s.knowledge_cost} Conn.` : ''}${s.prereq ? ` · prérequis : ${names[s.prereq] ?? s.prereq}` : ''}</small></div>
+                        <button class="admin-small-btn" onclick="editAdminSkill('${s.id}')">Modifier</button>
+                        <button class="admin-small-btn danger" onclick="deleteAdminSkill('${s.id}')">Supprimer</button>
+                    </div>
+                </div>`).join('');
+        }).join('') || '<p class="search-empty" style="padding:0.8rem;">Aucune compétence trouvée.</p>';
+    }
+
+    function editAdminSkill(id) {
+        const row = document.getElementById(`adm-skill-${id}`);
+        if (row.querySelector('.admin-edit-form')) { row.querySelector('.admin-edit-form').remove(); return; }
+        const s = adminSkills().find(x => x.id === id);
+        const others = adminSkills().filter(x => x.id !== id).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+        row.insertAdjacentHTML('beforeend', `
+            <div class="admin-edit-form">
+                ${fieldHtml('Nom', `<input data-f="name" value="${escapeHtml(s.name)}">`)}
+                ${fieldHtml('Catégorie', `<select data-f="branch">${ADMIN_CATEGORIES.map(c => `<option ${c === s.branch ? 'selected' : ''}>${c}</option>`).join('')}</select>`)}
+                ${fieldHtml('Coût en XP', `<input type="number" min="0" data-f="cost" value="${s.cost}">`)}
+                ${fieldHtml('Coût en Connaissance', `<input type="number" min="0" data-f="knowledge_cost" value="${s.knowledge_cost ?? 0}">`)}
+                ${fieldHtml('Prérequis', `<select data-f="prereq"><option value="">Aucun</option>
+                    ${others.map(o => `<option value="${o.id}" ${o.id === s.prereq ? 'selected' : ''}>${escapeHtml(o.name)}</option>`).join('')}</select>`, true)}
+                ${fieldHtml('Description', `<textarea data-f="desc" rows="3">${escapeHtml(s.desc)}</textarea>`, true)}
+                <div class="buttons">
+                    <button class="admin-small-btn" onclick="editAdminSkill('${id}')">Annuler</button>
+                    <button class="admin-btn" onclick="saveAdminSkill('${id}')">Enregistrer</button>
+                </div>
+            </div>`);
+    }
+
+    function readEditForm(container) {
+        const data = {};
+        container.querySelectorAll('[data-f]').forEach(el => {
+            data[el.dataset.f] = el.type === 'number' ? Number(el.value) : el.value;
+        });
+        return data;
+    }
+
+    async function saveAdminSkill(id) {
+        const data = readEditForm(document.querySelector(`#adm-skill-${id} .admin-edit-form`));
+        try {
+            await api(`/api/admin/skills/${encodeURIComponent(id)}`, 'POST', { ...data, prereq: data.prereq || null });
+            await loadAdminContent();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function deleteAdminSkill(id) {
+        const s = adminSkills().find(x => x.id === id);
+        if (!confirm(`Supprimer « ${s.name} » ? Les joueurs qui l'ont achetée seront remboursés.`)) return;
+        try {
+            const result = await api(`/api/admin/skills/${encodeURIComponent(id)}/delete`, 'POST');
+            await loadAdminContent();
+            if (result.refunded.length) alert(`Remboursés : ${result.refunded.join(', ')}`);
+        } catch (e) { alert(e.message); }
+    }
+
+    // Sorts de l'école choisie, par niveau
+    function renderAdminSpells() {
+        const school = magicSchools.find(s => s.id === document.getElementById('admin-spell-school').value) ?? magicSchools[0];
+        const levels = Object.entries(school?.levels ?? {});
+        document.getElementById('admin-spell-list').innerHTML = levels.map(([lv, spells]) =>
+            `<div class="admin-edit-group">Niveau ${lv}</div>` + spells.map(sp => `
+                <div class="admin-edit-row" id="adm-spell-${sp.id}">
+                    <div class="admin-edit-head">
+                        <div class="info"><strong>${sp.name}</strong> <small>${sp.type} · ${sp.incantation}</small></div>
+                        <button class="admin-small-btn" onclick="editAdminSpell('${sp.id}')">Modifier</button>
+                        <button class="admin-small-btn danger" onclick="deleteAdminSpell('${sp.id}')">Supprimer</button>
+                    </div>
+                </div>`).join('')).join('')
+            || '<p class="search-empty" style="padding:0.8rem;">Aucun sort dans cette école.</p>';
+    }
+
+    function findSpell(id) {
+        for (const s of magicSchools) for (const spells of Object.values(s.levels)) {
+            const sp = spells.find(x => x.id === id);
+            if (sp) return sp;
+        }
+    }
+
+    function editAdminSpell(id) {
+        const row = document.getElementById(`adm-spell-${id}`);
+        if (row.querySelector('.admin-edit-form')) { row.querySelector('.admin-edit-form').remove(); return; }
+        const sp = findSpell(id);
+        const input = f => `<input data-f="${f}" value="${escapeHtml(sp[f])}">`;
+        row.insertAdjacentHTML('beforeend', `
+            <div class="admin-edit-form">
+                ${fieldHtml('Nom', input('name'))} ${fieldHtml('Type', input('type'))}
+                ${fieldHtml('Incantation', input('incantation'))} ${fieldHtml('Cible', input('cible'))}
+                ${fieldHtml('Portée', input('portee'))} ${fieldHtml('Durée', input('duree'))}
+                ${fieldHtml('Résistance', input('resistance'), true)}
+                ${fieldHtml('Description', `<textarea data-f="description" rows="4">${escapeHtml(sp.description)}</textarea>`, true)}
+                <div class="buttons">
+                    <button class="admin-small-btn" onclick="editAdminSpell('${id}')">Annuler</button>
+                    <button class="admin-btn" onclick="saveAdminSpell('${id}')">Enregistrer</button>
+                </div>
+            </div>`);
+    }
+
+    async function saveAdminSpell(id) {
+        try {
+            magicSchools = await api(`/api/admin/spells/${encodeURIComponent(id)}`, 'POST',
+                                     readEditForm(document.querySelector(`#adm-spell-${id} .admin-edit-form`)));
+            renderAdminSpells();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function deleteAdminSpell(id) {
+        if (!confirm(`Supprimer le sort « ${findSpell(id).name} » ? Les joueurs qui l'ont le perdent.`)) return;
+        try {
+            magicSchools = await api(`/api/admin/spells/${encodeURIComponent(id)}/delete`, 'POST');
+            renderAdminSpells();
+        } catch (e) { alert(e.message); }
+    }
+
+    // Sélecteur multiple (compétences, connaissances, langues) : pastilles + liste pour en ajouter
+    const pickers = {};
+
+    function pickerHtml(id, options, selected) {
+        pickers[id] = { options, selected: [...selected] };
+        return `<div id="${id}"></div>`;
+    }
+
+    function renderPicker(id) {
+        const { options, selected } = pickers[id];
+        const name = v => options.find(o => o.id === v)?.name ?? v;
+        document.getElementById(id).innerHTML = `
+            <div class="picker-chips">${selected.map(v => `<span class="picker-chip">${escapeHtml(name(v))}
+                <button title="Retirer" onclick="pickerRemove('${id}', '${v}')">×</button></span>`).join('') || '<small>Aucun</small>'}</div>
+            <div class="picker-add"><select>${options.filter(o => !selected.includes(o.id))
+                .map(o => `<option value="${o.id}">${escapeHtml(o.name)}</option>`).join('')}</select>
+                <button class="admin-small-btn" onclick="pickerAdd('${id}')">Ajouter</button></div>`;
+    }
+
+    function pickerAdd(id) {
+        const value = document.querySelector(`#${id} .picker-add select`).value;
+        if (value) { pickers[id].selected.push(value); renderPicker(id); }
+    }
+
+    function pickerRemove(id, value) {
+        pickers[id].selected = pickers[id].selected.filter(v => v !== value);
+        renderPicker(id);
+    }
+
+    function renderAdminProvenanceSelect(selected = null) {
+        const select  = document.getElementById('admin-prov-select');
+        const current = selected ?? select.value;
+        select.innerHTML = '<option value="">-- Choisir une provenance --</option>'
+            + characterRules.provenances.map(p => `<option value="${escapeHtml(p.name)}">${p.name}</option>`).join('')
+            + '<option value="__new__">+ Nouvelle provenance</option>';
+        select.value = characterRules.provenances.some(p => p.name === current) || current === '__new__' ? current : '';
+        renderAdminProvenance();
+    }
+
+    function renderAdminProvenance() {
+        const value = document.getElementById('admin-prov-select').value;
+        const form  = document.getElementById('admin-prov-form');
+        if (!value) { form.innerHTML = ''; return; }
+        const p = characterRules.provenances.find(x => x.name === value)
+               ?? { name: '', skills: [], knowledges: [], notes: [], languageChoice: null, extraFreeWeapons: 0 };
+        const skillOptions = adminSkills().map(s => ({ id: s.id, name: s.name })).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+        const knowledgeOptions = allKnowledges.flatMap(c => c.knowledges.map(k => ({ id: k.id, name: `${k.name} (${c.category})` })));
+        const languages = allKnowledges.filter(c => c.category === 'Langues').flatMap(c => c.knowledges.map(k => ({ id: k.id, name: k.name })));
+        form.innerHTML = `
+            <div class="admin-edit-form">
+                ${fieldHtml('Nom', `<input id="adm-prov-name" value="${escapeHtml(p.name)}">`)}
+                ${fieldHtml('Armes de prédilection gratuites en plus', `<input type="number" min="0" id="adm-prov-weapons" value="${p.extraFreeWeapons ?? 0}">`)}
+                ${fieldHtml('Compétences gratuites (niveau donné)', pickerHtml('adm-prov-skills', skillOptions, p.skills), true)}
+                ${fieldHtml('Connaissances gratuites (niveau 1)', pickerHtml('adm-prov-knowledges', knowledgeOptions, p.knowledges), true)}
+                ${fieldHtml('Langues au choix du joueur (laisser vide si aucune)', pickerHtml('adm-prov-languages', languages, p.languageChoice?.options ?? []), true)}
+                ${fieldHtml('Nombre de langues à choisir', `<input type="number" min="0" id="adm-prov-lang-count" value="${p.languageChoice?.count ?? 0}">`)}
+                ${fieldHtml('Notes pour l\'Animation (une par ligne)', `<textarea id="adm-prov-notes" rows="2">${escapeHtml(p.notes.join('\n'))}</textarea>`, true)}
+                <div class="buttons">
+                    ${p.name ? `<button class="admin-small-btn danger" onclick="deleteAdminProvenance()">Supprimer</button>` : ''}
+                    <button class="admin-btn" onclick="saveAdminProvenance()">Enregistrer</button>
+                </div>
+            </div>`;
+        ['adm-prov-skills', 'adm-prov-knowledges', 'adm-prov-languages'].forEach(renderPicker);
+    }
+
+    async function saveAdminProvenance() {
+        const original = document.getElementById('admin-prov-select').value;
+        const name     = document.getElementById('adm-prov-name').value.trim();
+        const options  = pickers['adm-prov-languages'].selected;
+        try {
+            await api('/api/admin/provenances', 'POST', {
+                originalName: original === '__new__' ? null : original, name,
+                skills: pickers['adm-prov-skills'].selected, knowledges: pickers['adm-prov-knowledges'].selected,
+                extraFreeWeapons: Number(document.getElementById('adm-prov-weapons').value) || 0,
+                languageChoice: options.length ? { count: Number(document.getElementById('adm-prov-lang-count').value), options } : null,
+                notes: document.getElementById('adm-prov-notes').value.split('\n'),
+            });
+            characterRules = await api('/api/character-rules');
+            renderAdminProvenanceSelect(name);
+            alert(`Provenance « ${name} » enregistrée.`);
+        } catch (e) { alert(e.message); }
+    }
+
+    async function deleteAdminProvenance() {
+        const name = document.getElementById('admin-prov-select').value;
+        if (!confirm(`Supprimer la provenance « ${name} » ?`)) return;
+        try {
+            await api('/api/admin/provenances/delete', 'POST', { name });
+            characterRules = await api('/api/character-rules');
+            renderAdminProvenanceSelect('');
+        } catch (e) { alert(e.message); }
+    }
+
+    // Documents : envoi du PDF (formulaire de fichier, pas du JSON)
+    async function adminReplaceDocument(doc) {
+        const input = document.getElementById(`admin-doc-${doc}`);
+        if (!input.files.length) { alert('Choisissez un fichier PDF.'); return; }
+        const form = new FormData();
+        form.append('file', input.files[0]);
+        try {
+            const res  = await fetch(`/api/admin/docs/${doc}`, { method: 'POST', headers: { 'X-Admin-Key': adminKey }, body: form });
+            const json = await res.json();
+            if (!res.ok) throw new Error(json.error || 'Erreur serveur');
+            input.value = '';
+            // L'onglet du joueur recharge le nouveau document à sa prochaine ouverture
+            document.querySelector(`#${doc}-container .doc-frame`).removeAttribute('src');
+            alert('Document remplacé.');
         } catch (e) { alert(e.message); }
     }
 
