@@ -1,0 +1,10 @@
+magie
+Écriture de parchemin -ma -c 
+École de magie -ma
+École de magie avancée -ma 
+Éveil de l’esprit -ma
+Méditation -ma
+Prêtrise / Cultisme -ma 
+Prosélytisme -ma
+Sorts supplémentaire -ma
+Symbol de foi -ma 

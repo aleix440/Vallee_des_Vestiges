@@ -1,0 +1,7 @@
+economie
+Bûcheron -e
+Chasse -e
+Dénicheur -e
+Fermier -e
+Mineur -e
+Revenu (Rentrées d’argent) -e 

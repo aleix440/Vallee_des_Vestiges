@@ -1,0 +1,20 @@
+utilité
+Bandit de grand chemin -u 
+Camouflage -u
+Commérage -u 
+Contorsionniste -u
+Crochetage -u 
+Cuistot -u
+Dissimulation -u 
+Fouille -u
+Inspiration -u -m 
+Intimidation -u
+Lecture/écriture -u 
+Plaisir -u
+Premier soins -u
+Prestation -u -ma
+Résistance à la torture -u 
+Technologie -u
+Torture -u
+Traque -u
+Vol de bourse -u 

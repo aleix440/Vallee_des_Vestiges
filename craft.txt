@@ -1,0 +1,10 @@
+craft
+Alchimie -c
+Botanique -c
+Ébeniste -c
+Entretien d’arme -c
+Forge -c
+Druidisme -c
+Mathématique -c
+Runisme -c
+Tisserand/tanneur -c 

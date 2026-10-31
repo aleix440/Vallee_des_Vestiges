@@ -1,0 +1,2864 @@
+[
+ {
+  "id": "eau",
+  "name": "Eau",
+  "kind": "base",
+  "powerWord": "Aqua",
+  "levels": {
+   "1": [
+    {
+     "id": "eau-caresser-l-esprit",
+     "name": "Caresser l’esprit",
+     "type": "Soins",
+     "incantation": "Rituel (spéciale)",
+     "cible": "1 individu",
+     "portee": "Touché",
+     "duree": "un cycle",
+     "resistance": "-",
+     "description": "Vous pouvez annuler tout désavantage mental que la cible de ce sort possède, jusqu'à un maximum de points égal à votre niveau d’école de l’eau. Le rituel doit prendre 5 minutes par point à enlever. Ce sortilège est extrêmement demandant autant au mage qu’à la personne qui le reçoit. De ce fait, une personne peut bénéficier de ce sort uniquement une fois par événement et le mage peut lancer ce sort un nombre de fois par événement égal à son niveau de magie."
+    },
+    {
+     "id": "eau-touche-psionique",
+     "name": "Touché psionique",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "Un être vivant",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous touchez votre adversaire afin de lui arracher son énergie psychique. Votre toucher inflige 2 dégâts psy."
+    },
+    {
+     "id": "eau-peur-des-profondeurs",
+     "name": "Peur des profondeurs",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "10 mètres",
+     "duree": "2 minutes",
+     "resistance": "Courage",
+     "description": "La cible ressent un malaise en provenance du mage, comme s’il était plus puissant qu’il n’y paraît. Cette sensation d’inconnu inflige une crainte d’un niveau égal à son niveau de magie de l’eau."
+    },
+    {
+     "id": "eau-mal-de-mer",
+     "name": "Mal de Mer",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "5 mètres",
+     "duree": "10 secondes",
+     "resistance": "Aucune",
+     "description": "Le mage commence à contrôler les fluides dans le corps de sa victime au point où celles-ci les rejette lui-même, ce qui inflige un effet de vomissement à la cible pendant 10 secondes."
+    },
+    {
+     "id": "eau-calme",
+     "name": "Calme",
+     "type": "Soin / Contrôle",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "3 mètres",
+     "duree": "1 minutes",
+     "resistance": "Volonté",
+     "description": "Le mage affecte l’esprit de sa cible afin de lui enlever toute les émotions le rongeant et laisser place à une sérénité. La cible reçoit un effet de calme égal au niveau de maîtrise de l’école de l’eau du mage."
+    }
+   ],
+   "2": [
+    {
+     "id": "eau-choc-des-esprits",
+     "name": "Choc des esprits",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Lancé",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous propulsez votre propre énergie psychique afin de réduire à néant celle de votre cible. Votre projectile inflige 4 dégâts psy."
+    },
+    {
+     "id": "eau-installer-la-peur",
+     "name": "Installer la peur",
+     "type": "Debuff, sortillege",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "Événement",
+     "resistance": "Aucune",
+     "description": "Afin de pouvoir affecter sa victime avec ce rituel, le mage doit connaître le nom complet, la provenance et la religion de celle-ci. Ce sort fait gagner à la créature ciblée une phobie au choix du lanceur de sorts. Pendant la durée du sort, la victime gagne une phobie (comme le désavantage) d'une nature choisie par le lanceur de sorts. La nature de la phobie peut être refusée par l’animation si celle-ci juge la chose illogique (par exemple avoir peur de l’air ou des arbres). À ce moment les points d’esprit sont quand même perdus. Une seule personne peut être affectée par ce sortilège à la fois. Si le sort est lancé une 2e fois pendant l'événement, la malédiction la plus ancienne prend fin immédiatement."
+    },
+    {
+     "id": "eau-soif",
+     "name": "Soif",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "Jusqu’à guérison",
+     "resistance": "Aucune",
+     "description": "Le mage assoiffé la cible rendant celle-ci plus faible. Elle reçoit l’état faiblesse (-1 dégât) jusqu’à ce que celle-ci puisse s’abreuver."
+    },
+    {
+     "id": "eau-oubli",
+     "name": "Oubli",
+     "type": "Debuff",
+     "incantation": "Mot de pouvoir, formule ou rituel",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "Permanent",
+     "resistance": "Volonté",
+     "description": "Le mage joue dans l’esprit de sa victime afin de lui faire oublier ses derniers moments. Si le sort est lancé en “Mot de pouvoir”, la cible oublie les 10 dernières secondes. Si le sort est lancé en “formule”, la cible oublie les 10 dernières minutes. Si le sort est fait en “rituel”, chaque fois que le rituel est accompli, la victime oublie 2 heures. Le niveau de l’effet est égal à votre niveau de magie de l’eau."
+    },
+    {
+     "id": "eau-terreur-des-abysses",
+     "name": "Terreur des abysses",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "10 secondes",
+     "resistance": "Volonté",
+     "description": "Le mage montre les horreurs se trouvant dans les abysses à ses cibles. Il leur inflige une terreur 3 et affecte un nombre de personnes égales à son niveau de maîtrise de l’école de l’eau."
+    }
+   ],
+   "3": [
+    {
+     "id": "eau-vague-psionique",
+     "name": "Vague psionique",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "Toutes créature à 3 mètre autour du mage",
+     "portee": "Le mage",
+     "duree": "",
+     "resistance": "",
+     "description": "Durée:Instantané Résistance: - Vous propulsez votre propre énergie psychique comme un typhon dévastateur autour de vous. Tous ceux pris dans la zone d’effet subissent 5 dégâts psy."
+    },
+    {
+     "id": "eau-esprit-paisible",
+     "name": "Esprit paisible",
+     "type": "Buff (défensif)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage effectue un rituel afin de purger l’esprit de la cible des pensées intrusives et émotion forte laissant place à un esprit serein et fort. Pour la durée du sort, la cible est immunisée aux effets émotionnels, charme, crainte et peur (pas horreur et terreur). Toutefois, ce sort compromet les habiletés sociales de la cible et ne peut donc plus donner ces effets non plus (compétence, magie ou objet magique)."
+    },
+    {
+     "id": "eau-lecture-d-esprit",
+     "name": "Lecture d’esprit",
+     "type": "Utilité",
+     "incantation": "Formule ou Rituel",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "-",
+     "resistance": "Volonté",
+     "description": "Le mage est capable d’analyser les pensées d’une personne. Lorsque le sort est incanté en “formule”, le mage peut obtenir une information de la cible comme si la cible était sous l’emprise d’un effet de vérité niveau 3. Si le sort est fait en rituel, il peut poser une question par 5 minutes de rituel (le rituel doit durer au minimum 15 minutes). De plus, il est en mesure de voir si la mémoire de la cible à été modifiée et obtenir des informations qui auraient étées oubliées. Si ce sort est utilisé sur un personnage ayant le désavantage ‘’amnésie’’ afin de lui rappeler son passé, celui-ci échoue automatiquement."
+    },
+    {
+     "id": "eau-agent-double",
+     "name": "Agent double",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "10 seconde",
+     "resistance": "Volonté",
+     "description": "Le mage brouille l’esprit de plusieurs personnes afin que ceux-ci changent de camps et viennent à son aide. Le mage peut choisir un nombre de victime égal à son niveau de magie de l’eau. Ces personnes subissent l’effet trahison de niveau 3 pendant 10 secondes."
+    },
+    {
+     "id": "eau-vague-maritime",
+     "name": "Vague maritime",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantané",
+     "resistance": "Acrobatie",
+     "description": "Le mage invoque une immense vague qui part de lui pour déferler sur ses alentours. Toutes les personnes se trouvant dans la portée du sort sont propulsées à 5 mètres alors que la vague les emporte."
+    }
+   ]
+  }
+ },
+ {
+  "id": "air",
+  "name": "Air",
+  "kind": "base",
+  "powerWord": "Aero",
+  "levels": {
+   "1": [
+    {
+     "id": "air-attraction",
+     "name": "Attraction",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage canalise l’énergie des vents afin de créer une bourrasque intense dans le dos de sa victime. La cible de ce sort reçoit un effet d’attirement 3 mètres."
+    },
+    {
+     "id": "air-coup-de-vent",
+     "name": "Coup de vent",
+     "type": "Contrôle",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "Instantané",
+     "resistance": "Acrobatie, Juggernaut",
+     "description": "Le mage canalise l’énergie des vents dans sa main afin de propulser celui-ci comme un canon à air. La cible de ce canon se trouve propulsé de 3 mètres."
+    },
+    {
+     "id": "air-prestidigitation",
+     "name": "Prestidigitation",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Vous rendez un objet rentrant dans une main (lettre, potion, dague, etc.) invisible à tous les sens tant que celui-ci reste sur votre personne. Cet objet ne peut pas être découvert par la compétence fouille peu importe le niveau."
+    },
+    {
+     "id": "air-murmure",
+     "name": "Murmure",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage laisse sa voix être porté par le vent pour aller porter son message. Il peut dire un maximum d’une phrase par niveau de magie de l’air et la personne peut lui répondre le même nombre. Le joueur doit aller porter son message en étant hors-jeu et ne peut pas rejoindre un personnage qu’il ignore ou il se trouve."
+    },
+    {
+     "id": "air-second-souffle",
+     "name": "Second souffle",
+     "type": "Soins",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage force le vent à rentrer dans les poumons d’une personne mourante la revitalisant et lui donnant une dose d’adrénaline. Ce sort peut uniquement être utilisé sur les personnes agonisant et soigne de 1 point de vie."
+    }
+   ],
+   "2": [
+    {
+     "id": "air-nuage-d-euphorie",
+     "name": "Nuage d’euphorie",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "30 secondes",
+     "resistance": "Volonté",
+     "description": "Le mage invoque un nuage de gaz qui part de lui et enveloppe une zone autour de lui. Tous ceux prit dans la zone à l’exception du mage sont pris d’un éclat de rire franc à un point tel qu’il sont incapable de combattre pour la durée du sort. Si l’une des victimes se fait blesser, elle n’est plus affectée par le sort. Cet effet peut se résister avec volonté 2."
+    },
+    {
+     "id": "air-filtre",
+     "name": "Filtre",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "À force de manipuler les vents magiques pour affecter l’air, le mage s’est enveloppé d’un vent qui protège ses poumons. Le mage est immunisé aux effets respiratoires jusqu’à un niveau égal à son niveau de maîtrise de la magie de l’air."
+    },
+    {
+     "id": "air-protection-du-vent",
+     "name": "Protection du vent",
+     "type": "Utilitaire",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Instantané",
+     "resistance": "Perce-armure",
+     "description": "Le mage est capable de changer la course du vent juste avec un simple mouvement de la main. Grâce à ce sort, le mage peut bloquer un projectile magique ou non qui arrive sur lui au dernier moment. Ce sort ne fonctionne pas sur les projectiles perce-armure."
+    },
+    {
+     "id": "air-gaz-soporifique",
+     "name": "Gaz soporifique",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "2 minutes",
+     "resistance": "Volonté",
+     "description": "Vous envoyez un gaz qui provoque un sommeil profond à votre victime. Celle-ci tombe dans un sommeil profond pendant 2 minutes. Si elle est attaquée, si on la secoue ou si il y a beaucoup de bruit, celle-ci se réveille. Ce sort peut être résolu avec volonté 2."
+    },
+    {
+     "id": "air-souffle-court",
+     "name": "Souffle court",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "terrain",
+     "duree": "événement",
+     "resistance": "-",
+     "description": "Après avoir effectué un rituel ou le mage nomme sa cible ainsi que sa provenance et sa religion, son souffle se trouve extrêmement réduit. Pour la durée de l’événement la cible gagne le désavantage asthmatique. Si la cible a déjà ce désavantage, le sort est un échec. Une seule personne peut avoir cet effet actif à la fois."
+    }
+   ],
+   "3": [
+    {
+     "id": "air-malediction-du-vent",
+     "name": "Malédiction du vent",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Le terrain",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Le mage emploie un rituel afin de faire converger tous les projectile vers la cible de celui-ci. Pour maudire ainsi un individu par les vents, le mage doit connaître son nom complet, sa religion ainsi que sa provenance. Pour la durée de l’événement, la cible du sort voit tous les dégâts reçu d’attaque à distance (magique ou non) augmenter à 5. Un mage peut uniquement avoir une malédiction du vent active à la fois."
+    },
+    {
+     "id": "air-tournade",
+     "name": "Tournade",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantané",
+     "resistance": "Acrobatie",
+     "description": "Le mage déchaîne les vents magiques afin que l’air fasse de même autour de lui créant une tornade éphémère. Toutes les créatures dans la zone d’effet subissent un repoussement de 3 mètres."
+    },
+    {
+     "id": "air-vol",
+     "name": "Vol",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Grâce à ce sortilège, le mage devient aussi léger que l’air lui permettant de se déplacer comme il l’entend dans les airs. Pour montrer qu’il vole, il doit faire le signe de vol. Tant qu’il est dans les airs, il est immunisé aux attaques de corps-à-corps (à L’exception si elle provient d’une créature qui vole aussi)."
+    },
+    {
+     "id": "air-invisibilite",
+     "name": "Invisibilité",
+     "type": "Utilitaire",
+     "incantation": "Formule ou Rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Après le rituel le mage peut rendre invisible comme le vent un nombre de personnes égal à son niveau de magie de l’air. Les personnes sont simplement invisibles et peuvent être détectées avec le son. Il existe une version moindre de ce sortilège permettant à celui-ci d’être lancé avec une formule. Dans ce cas, uniquement une seule personne peut devenir invisible."
+    },
+    {
+     "id": "air-lance-du-vent",
+     "name": "Lance du vent",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Arme touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Le mage enveloppe l’arme ciblée dans un tourbillon d’air. Ce tourbillon tourne si rapidement que l’arme peut pénétrer les armures comme si elle n’existait pas, mais devient beaucoup plus dure à manipuler. L’arme gagne le qualificatif ‘’perce-armure’’, mais inflige -1 dégât (minimum 0)."
+    }
+   ]
+  }
+ },
+ {
+  "id": "terre",
+  "name": "Terre",
+  "kind": "base",
+  "powerWord": "Terra",
+  "levels": {
+   "1": [
+    {
+     "id": "terre-fermete",
+     "name": "Fermeté",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage concentre sa magie sur un objet (pas une armure) afin de créer une couche invisible protégeant celui-ci. Le propriétaire de l’objet pourra alors ignorer le prochain effet brisant son objet ou les prochains dégâts d’acide reçu sur celui-ci."
+    },
+    {
+     "id": "terre-ecu-de-terre",
+     "name": "Écu de terre",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Toucher",
+     "duree": "2 min",
+     "resistance": "-",
+     "description": "Le mage renforce la peau d,un individu afin que celui-ci puisse utiliser l’avant-bras touché comme un boulier. Bien que ces effets semblent extraordinaires, un bris de bouclier brisera l’avant-bras et les dégâts autre que le physique fonctionne normalement."
+    },
+    {
+     "id": "terre-soin",
+     "name": "Soin",
+     "type": "Soin",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Toucher",
+     "duree": "instantanée",
+     "resistance": "-",
+     "description": "Le mage infuse la blessure avec l’énergie de la terre mère. Celle-ci soigne et cicatrise la blessure donnant deux points de vie à la cible."
+    },
+    {
+     "id": "terre-roche-en-botte",
+     "name": "Roche en botte",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "10 mètres",
+     "duree": "15 secondes",
+     "resistance": "-",
+     "description": "En manipulant les vents magiques, le mage manifeste une roche incroyablement inconfortable dans les souliers de son adversaire l'empêchant ainsi de courir. La cible reçoit l’effet roche en botte pendant 15 secondes."
+    },
+    {
+     "id": "terre-purification",
+     "name": "Purification",
+     "type": "Soins",
+     "incantation": "Formule / Rituel",
+     "cible": "Un breuvage ou un repas (formule) / Un être vivant (Rituel)",
+     "portee": "Toucher",
+     "duree": "instantanée",
+     "resistance": "-",
+     "description": "La terre peut soigner tous les mots. Avec ce sort, le mage peut enlever un poison égal à son niveau de maîtrise de l’école de la terre d’un breuvage ou d’une assiette. Si le sort est lancé en rituel, il peut enlever un poison directement d’un être vivant. Contrairement aux rituels ordinaires, le temps nécessaire du rituel est basé sur le niveau du poison au lieu du niveau du sort."
+    }
+   ],
+   "2": [
+    {
+     "id": "terre-homme-d-argile",
+     "name": "Homme d’argile",
+     "type": "Invocation",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Le mage invoque une création de terre qui combattra à ses côtés. Le soldat d’argile possède 3 points de vie et 10 points d’armure, il frappe de 2 et ignore les effets mentaux. Il agit de manière mécanique et ne peut suivre qu’un ordre simple à la fois."
+    },
+    {
+     "id": "terre-mantelet",
+     "name": "Mantelet",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "2 minutes",
+     "resistance": "-",
+     "description": "Le mage met un bouclier magique devant un individu le protégeant des attaques à distances qu'elles soient magiques ou non. Pour la durée du sort, tous les projectiles ne feront que 1 dégât (sauf la foudre) à la cible du sort. La réduction de dégât se produit après la réduction des armures si la cible en possède."
+    },
+    {
+     "id": "terre-armure-de-la-terre",
+     "name": "Armure de la terre",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Toucher",
+     "duree": "1 heure ou jusqu’à perte des points d’armures",
+     "resistance": "-",
+     "description": "Le mage manipule l’énergie magique pour protéger une cible. La cible voit des plaques de terre et de roches se lever et coller à sa peau lui donnant l’équivalent de 6 points d’armure."
+    },
+    {
+     "id": "terre-regeneration",
+     "name": "Régénération",
+     "type": "Soins",
+     "incantation": "Formule ou rituel",
+     "cible": "Un être vivant",
+     "portee": "Toucher",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Le mage fait appel à l’énergie terrestre de l’être vivant afin d’accélérer la guérison de celui-ci. La régénération de la cible devient 1 point de vie minute au lieu d’un point de vie à l’heure et ce pour 5 minutes. Si le sort est lancé en rituel, il est possible pour le mage de faire repousser un membre ou un organe perdu au lieu de redonner des points de vie. Cependant, certains corps refusent de guérir à cause du traumatisme (point de désavantage du personnage)."
+    },
+    {
+     "id": "terre-pied-de-la-montagne",
+     "name": "Pied de la montagne",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "Une personne",
+     "portee": "Toucher",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Grâce à ce sort, un mage peut rendre une personne aussi endurante qu’une montagne. La cible du sort devient immunisée aux effets de repoussement et de mise à terre pendant 5 minutes."
+    }
+   ],
+   "3": [
+    {
+     "id": "terre-vitalite-cachee",
+     "name": "Vitalité cachée",
+     "type": "Soins",
+     "incantation": "Formule",
+     "cible": "Une personne vivante",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage accélère le métabolisme de la cible afin que ses blessures se ferment d’elles-même. Le sort soigne tous les points de vie d'une personne, mais ne peut pas être fait sur un agonisant puisque le corps ne le supporterait pas. Une personne affectée par ce sort à une douleur atroce de 30 secondes le temps que le corps se répare."
+    },
+    {
+     "id": "terre-la-lame-contre-le-roc",
+     "name": "La lame contre le roc",
+     "type": "Buff (défensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "Le mage",
+     "portee": "Le mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage solidifie instantanément sa peau afin qu’elle deviennent aussi dure que de l'adamantium. Ce sort, très court, permet au mage d’ignorer le coup reçu (sauf foudre) et inflige brise arme au porteur de celui-ci, si une arme a été utilisée."
+    },
+    {
+     "id": "terre-passage-souterrain",
+     "name": "Passage souterrain",
+     "type": "Utilitaire",
+     "incantation": "Rituel et mot de pouvoir",
+     "cible": "Le mage",
+     "portee": "Le terrain",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le sort se lance en deux phases: la première est un rituel qui déterminera le point d’origine du sort. Lorsque le rituel est fait, un indicateur doit être laissé sur place. Lors de la 2e phase, le mage n’aura qu’à prononcer le mot de pouvoir. Il pourra dès lors se mettre hors-jeu alors que la terre l’englobe et le déplace tranquillement. Le mage pourra alors marcher jusqu’au point d’origine ou il a effectué le rituel. Les points d’esprit doivent être dépensés lors du rituel et lors de l’utilisation du mot de pouvoir."
+    },
+    {
+     "id": "terre-vague-de-terre",
+     "name": "Vague de terre",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "instantané",
+     "resistance": "Acrobatie",
+     "description": "Le mage manipule la terre afin de créer une vague qui part de lui et s’éloigne vers ses ennemis. Tous ceux dans la zone d’effet du sort sont déstabilisés et se retrouvent à terre."
+    },
+    {
+     "id": "terre-peau-de-pierre",
+     "name": "Peau de pierre",
+     "type": "Buff (défensif)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage appelle les forces de la terre à protéger l’individu choisit contre tous les supplices qu’il pourrait subir. La cible ignore tous les dégâts physiques de 4 et moins tant que le sort fait effet. Les effets de brise-membre et tranche-membre sont ignorés. Toutefois, le sort l’empêche de bien se mouvoir et la cible ne peut plus plier les genoux et les coudes."
+    }
+   ]
+  }
+ },
+ {
+  "id": "feu",
+  "name": "Feu",
+  "kind": "base",
+  "powerWord": "Pyro",
+  "levels": {
+   "1": [
+    {
+     "id": "feu-forge-de-laframboise",
+     "name": "Forge de Laframboise",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "Le mage",
+     "portee": "Le mage",
+     "duree": "Concentration",
+     "resistance": "-",
+     "description": "Le mage canalise les vents arcaniques afin de créer un feu intense dans ses mains. Ce feu peut être utilisé pour la forge sans avoir besoin de charbon. Toutefois, cela demande une grande concentration au mage qui ne peut pas effectuer d’autre activité en même temps. Il peut se déplacer en marchant et discuter, mais sans plus."
+    },
+    {
+     "id": "feu-cauterisation",
+     "name": "Cautérisation",
+     "type": "Soins",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous brûler une plaie afin d'éviter que la personne ne se vide de son sang. Le sort arrête l’effet rasoir."
+    },
+    {
+     "id": "feu-main-de-feu",
+     "name": "Main de feu",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous concentrez les vents magiques dans la paume de votre main pour brûler la personne que vous touchez. Pour une attaque, votre main inflige 2 dégâts de feu."
+    },
+    {
+     "id": "feu-lumiere",
+     "name": "Lumière",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Soi-même",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Vous faites apparaître une boule lumineuse qui vous permet de voir dans le noir. Vous pouvez utiliser une lampe de poche pour vous éclairer à condition de toujours la pointer vers le sol."
+    },
+    {
+     "id": "feu-flash",
+     "name": "Flash",
+     "type": "Contrôle",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "5 secondes",
+     "resistance": "-",
+     "description": "Vous créez une explosion de flammes devant les yeux de votre cible. Bien que cette explosion ne soit pas assez chaude pour blesser, votre cible sera aveuglée pour 5 secondes."
+    }
+   ],
+   "2": [
+    {
+     "id": "feu-piege-de-feu",
+     "name": "Piège de feu",
+     "type": "Utilitaire / dégâts",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Vous mettez un symbole arcanique relier au feu à l'intérieur d’un coffre ou l’autre côté d’une porte. Si quelqu’un ouvre le contenant, il doit hurler de douleur et se prend 3 dégâts de feu. Il est important de laisser un carton écrit en rouge décrivant les effets du sort et qu’un personnage avec crochetage d’un niveau égal ou supérieur à votre école de magie du feu peut désactiver le piège."
+    },
+    {
+     "id": "feu-boule-de-feu",
+     "name": "Boule de feu",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Lancer",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "En accumulant le pouvoir des vents magiques, vous êtes capable de former des boules de feu que vous pouvez lancer dans chacune de vos mains . Le sort crée deux boules de feu qui doivent êtres représentées par des balles en mousse, et chacune d’elles inflige 2 dégâts de feu si vous touchez une cible."
+    },
+    {
+     "id": "feu-arme-de-feu",
+     "name": "Arme de feu",
+     "type": "Buff (offensif)",
+     "incantation": "Réflective, formule ou rituel",
+     "cible": "",
+     "portee": "Une arme au toucher",
+     "duree": "Prochain coup, 5 minutes ou 1 heures",
+     "resistance": "-",
+     "description": "La mage englobe une arme de chaleur de manière temporaire. En réflectif, l’arme fera des dégâts de feu pour le prochain coup. En formule, l’arme reste enchantée pour 5 minutes et pour 1 heures si cela est fait en rituel."
+    },
+    {
+     "id": "feu-bucher-arcanique",
+     "name": "Bûcher arcanique",
+     "type": "Soins / Dégât",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Le centre du rituel",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Ce rituel très dangereux permet d’enlever un effet mental, ou une possession, contracté par un seul individu. Pour cela, vous devez placer la personne sur un bûcher, puis enflammer le tout. Si la cible est affectée par plus d’un effet mental, l’effet de plus bas niveau disparaît en premier. Si la cible n’est pas affectée par un effet mental ou une possession, elle tombe agonisante automatiquement à la fin du rituel et subit 2 dégâts nécrotiques."
+    },
+    {
+     "id": "feu-immunite-au-feu",
+     "name": "Immunité au feu",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "Soi-même",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "À force de manipuler les vents magiques,votre corps s’en est trouvé modifié. Vous obtenez une immunité aux dégâts de feu égal à votre niveau de magie du feu"
+    }
+   ],
+   "3": [
+    {
+     "id": "feu-mur-de-feu",
+     "name": "Mur de feu",
+     "type": "Dégât",
+     "incantation": "Rituel + mot de pouvoir",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "spéciale",
+     "resistance": "-",
+     "description": "Le mage fait un rituel afin de rassembler les vents pour faire un mur de feu lors du moment opportun. Le mage doit laisser une corde d’un maximum de 5 mètres à l’endroit ou le rituel à été effectué. Lorsque le mage souhaitera l’activer il n’aura qu’à prononcer le mot de pouvoir et être à 5 mètres du mur. Tant que le mage reste immobile et pointant une main vers le mur, toute créature passant par-dessus la corde subira 2 dégâts de feu."
+    },
+    {
+     "id": "feu-malediction-des-flammes",
+     "name": "Malédiction des flammes",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Le terrain",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Le mage maudit une cible dont il connaît le nom complet, son origine ainsi que sa religion. Une victime d’un tel maléfice devient la proie des flammes qui se jettent sur elle. Tous les dégâts de feu reçus par la cible sont augmenter de 1 permettant de dépasser le 5 points de vie perdu maximum."
+    },
+    {
+     "id": "feu-explosion",
+     "name": "Explosion",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres autour du mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Une vague de feu qui épargne le mage qui la lance brûle tout sur son passage. Cette vague fait 3 dégâts de feu à tous ceux dans la zone d’effet."
+    },
+    {
+     "id": "feu-consomption-des-flammes",
+     "name": "Consomption des flammes",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "le mage",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Le mage canalise les vents arcaniques à l’intérieur même de son corps afin de renforcer sa magie. Pour la durée du sort, tous les dégâts de feu du mage sont augmenter de 1. Toutefois, ce sortilège n’est pas sans danger. Pour la même durée, le mage ne peut être soigné le feu le consumant lentement."
+    },
+    {
+     "id": "feu-propagation-de-la-flamme",
+     "name": "Propagation de la flamme",
+     "type": "Buff (offensif et défensif)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage contrôle les vents magiques du feu afin de réveiller la flamme d’un individu. La cible du sort gagne accès à tous les sorts de feu niveau 1 pour la durée du sortilège. Une seule personne à la fois peut avoir ce bonus à cause de la quantité d’énergie demandée."
+    }
+   ]
+  }
+ },
+ {
+  "id": "coeur",
+  "name": "Cœur",
+  "kind": "base",
+  "powerWord": null,
+  "levels": {
+   "1": [
+    {
+     "id": "coeur-chant-de-ralliement",
+     "name": "Chant de ralliement",
+     "type": "Soins",
+     "incantation": "Musique",
+     "cible": "1 personnes par niveau de magie",
+     "portee": "3 mètres",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Avec une musique sereine, le virtuose annule les effets suivant d’un niveau égal au niveau d’école de magie du cœur: peur, crainte, terreur, charme, possession, sommeil et enlève aussi l’état d’ébriété non magique."
+    },
+    {
+     "id": "coeur-hymne-du-courage",
+     "name": "Hymne du courage",
+     "type": "Buff (défensif)",
+     "incantation": "Musique",
+     "cible": "1 personnes",
+     "portee": "10 mètres",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Le virtuose entame une musique glorieuse donnant du courage à ceux qui l'écoute. Pour la durée du sort, la cible gagne +1 niveau de courage"
+    },
+    {
+     "id": "coeur-alcoolemie",
+     "name": "Alcoolémie",
+     "type": "Debuff",
+     "incantation": "Musique",
+     "cible": "Un être vivant",
+     "portee": "10 mètres",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "La cible sent des bouffées de chaleur l’accaparer et a de la difficulté à se déplacer correctement. Elle reçoit l’effet ‘’saoul’’ niveau 1 pour 5 minutes."
+    },
+    {
+     "id": "coeur-musique-emotionnelle",
+     "name": "Musique émotionnelle",
+     "type": "Debuff",
+     "incantation": "Musique",
+     "cible": "2 être vivant par niveau",
+     "portee": "10 mètres",
+     "duree": "5 minutes",
+     "resistance": "Volonté",
+     "description": "Le barde est capable de facilement émouvoir son public avec sa musique. Après sa performance, il peut forcer une émotion sur sa cible. Il peut affecter un nombre de cible égal à deux fois son niveau d’école de la magie du cœur. Le niveau de l’effet est égal à votre niveau d’école de magie du cœur."
+    },
+    {
+     "id": "coeur-attirer-l-attention",
+     "name": "Attirer l’attention",
+     "type": "Contrôle",
+     "incantation": "Musique",
+     "cible": "Un être vivant",
+     "portee": "5 mètres",
+     "duree": "-",
+     "resistance": "Volonté",
+     "description": "Le virtuoso enveloppe l’esprit de sa cible avec sa musique soumettant celui-ci à son charme. Tant que le mage continu de jouer de la musique dans la porté du sort, la cible du sort est ‘’fasciné’’. Le niveau de l’effet est égal à votre niveau de magie du cœur."
+    }
+   ],
+   "2": [
+    {
+     "id": "coeur-fan-numero-1",
+     "name": "Fan numéro 1",
+     "type": "Contrôle",
+     "incantation": "Musique",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "1 heure",
+     "resistance": "Volonté",
+     "description": "La musique du virtuose est capable de rendre n’importe qui amicale à son égard. Parfois, cette adoration peut même aller trop loin. Pour la durée du sort, la cible de celui-ci va vouloir protéger le barde contre les attaques physiques et qui porte atteinte à sa réputation ou ses idéaux. Cet effet est un effet de charme avec un niveau égal au niveau de la magie du coeur du lanceur de sort."
+    },
+    {
+     "id": "coeur-temps-de-paix",
+     "name": "Temps de paix",
+     "type": "Contrôle",
+     "incantation": "Musique",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "tant que le mage joue de la musique",
+     "resistance": "Volonté",
+     "description": "Le virtuoso joue une musique apaisante pour pacifier 2 personne en leur donnant un effet de calme égal au niveau de magie du cœur du virtuose."
+    },
+    {
+     "id": "coeur-langage-universel",
+     "name": "Langage universel",
+     "type": "Utilitaire",
+     "incantation": "Musique",
+     "cible": "Le virtuoso",
+     "portee": "Personnel",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "La musique est un élément rassembleur. Grâce à ce sort, le virtuoso peut se faire comprendre de n’importe qui comme s' il parlait dans leur langue. Toutefois, il est toujours incapable de comprendre ce qui lui est dit."
+    },
+    {
+     "id": "coeur-objet-de-jalousie",
+     "name": "Objet de jalousie",
+     "type": "Débuff",
+     "incantation": "Musique",
+     "cible": "Un être vivant",
+     "portee": "10 mètres",
+     "duree": "5 minutes",
+     "resistance": "Volonté",
+     "description": "La musique émis par le mage énerve sa cible la projetant dans une crise de jalousie dirigée envers la personne désirer du mage. L’effet est un effet mental de niveau 2."
+    },
+    {
+     "id": "coeur-danse-sans-fin",
+     "name": "Danse sans fin",
+     "type": "Debuff",
+     "incantation": "Musique",
+     "cible": "1 être vivant par niveau",
+     "portee": "Auditif",
+     "duree": "Tant que le virtuose joue",
+     "resistance": "-",
+     "description": "Il s’agit là du sort le plus réputé des mages du cœur. Ce sort oblige un nombre de personnes égales à votre niveau de magie du cœur à danser tant qu’il vous entend jouer de votre instrument. Cela ne les empêche pas d’essayer d’effectuer d'autres tâches en dansant."
+    }
+   ],
+   "3": [
+    {
+     "id": "coeur-hymne-sinistre",
+     "name": "Hymne sinistre",
+     "type": "Contrôle",
+     "incantation": "Musique",
+     "cible": "1 par niveau de magie du coeur",
+     "portee": "10 mètres",
+     "duree": "15 secondes",
+     "resistance": "Volonté",
+     "description": "Le virtuose joue une musique sinistre remplis de notes grinçantes gelant le sang dans les veines de ses victimes. Les cibles se sentent prisent de frissons et reçoivent un effet de terreur niveau 2 pendant 15 secondes."
+    },
+    {
+     "id": "coeur-avalanche-emotionnelle",
+     "name": "Avalanche émotionnelle",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "Une personne",
+     "portee": "10 mètres",
+     "duree": "15 secondes + 15 secondes",
+     "resistance": "Volonté",
+     "description": "Le barde déclenche une réaction en chaîne émotionnelle chez un nombre de cible égal à son niveau de magie du cœur, dont toute la charge émotionnelle est évacuée d’un coup. Les cibles reçoivent un effet de Rage niveau 3 pendant 15 secondes, puis pleure 15 secondes."
+    },
+    {
+     "id": "coeur-hymne-epique",
+     "name": "Hymne épique",
+     "type": "Buff (offensif et défensif)",
+     "incantation": "Musique",
+     "cible": "Un être vivant autre que le mage",
+     "portee": "3 mètres",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Le virtuoso joue des chansons connues racontant des batailles historiques ou de légendes. La cible du sort se voit inspirée par ses contes et ressent moins la douleur de ses propres blessures. La cible du sort reçoit un bonus de dégâts de 1 et 5 points de vie temporaire jusqu’à la fin du sort (les points de vie temporaire ne peuvent pas être soigné)"
+    }
+   ]
+  }
+ },
+ {
+  "id": "glace",
+  "name": "Glace",
+  "kind": "advanced",
+  "requires": [
+   "air",
+   "eau"
+  ],
+  "powerWord": "Glacies",
+  "levels": {
+   "1": [
+    {
+     "id": "glace-cryogenie",
+     "name": "Cryogénie",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Le mage canalise les vents magiques autour d’un membre de sa cible afin de créer une épaisse couche de glace autour de celle-ci. La cible ne peut plus utiliser le membre voulu qui se retrouve paralyser pour la durée du sort."
+    },
+    {
+     "id": "glace-presentation",
+     "name": "Présentation",
+     "type": "Contrôle",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "1 mètre",
+     "duree": "Instantané",
+     "resistance": "Volonté",
+     "description": "La mage envoûte l’esprit de sa cible afin de connaître son identité. La cible du mage subit un effet de charme égal à son niveau de magie de glace et sous cet effet doit révélé son nom complet et son pays de provenance."
+    },
+    {
+     "id": "glace-reve",
+     "name": "Rêve",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Le mage est capable de comprendre la signification cachée des rêves et de voir le futur parmi ceux-ci. Le mage peut poser un nombre de questions sur les événements à venir à l’animation égal à son niveau de magie de la glace avant d’aller se coucher. Il aura ses réponses le lendemain matin."
+    },
+    {
+     "id": "glace-touche-glaciale",
+     "name": "Touché glaciale",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage refroidit sa propre peau allant jusqu’à glacer instantanément la prochaine personne touchée. La personne touchée par le mage subit 2 dégâts de glace et une paralysie de 3 secondes."
+    },
+    {
+     "id": "glace-arme-de-givre",
+     "name": "Arme de givre",
+     "type": "Buff (offensif)",
+     "incantation": "Réflective, formule ou rituel",
+     "cible": "",
+     "portee": "Une arme au toucher",
+     "duree": "Prochain coup, 5 minutes ou 1 heure",
+     "resistance": "-",
+     "description": "La mage englobe une arme d’une aura de givre de manière temporaire. En réflectif, l’arme fera des dégâts de glace pour le prochain coup. En formule, l’arme reste enchantée pour 5 minutes et pour 1 heure si cela est fait en rituel."
+    }
+   ],
+   "2": [
+    {
+     "id": "glace-psychometrie",
+     "name": "Psychométrie",
+     "type": "Utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage performe un rituel pendant lequel il lie son esprit à l’objet qui est la cible de celui-ci. Le rituel une fois complété permet d’en apprendre plus sur un objet comme son origine, son propriétaire ou une partie de son histoire en allant voir l’animation une fois le rituel fait."
+    },
+    {
+     "id": "glace-immunite-a-la-glace",
+     "name": "Immunité à la glace",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Le mage habitué aux vents glaciale de sa propre magie gagne une immunité aux dégâts de glace égal au niveau de l’école de magie"
+    },
+    {
+     "id": "glace-identification",
+     "name": "Identification",
+     "type": "Utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Après un rituel de protection et une série de tests magiques, le mage dévoile les vents magiques qui affectent un objet. Le sort permet d’identifier un objet magique et de comprendre comment l’utiliser. Il se peut cependant que certains objets puissants ne dévoilent pas tous leurs secrets grâce à ce sort."
+    },
+    {
+     "id": "glace-eclat-de-givre",
+     "name": "Éclat de givre",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "lancé",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage lance un globe de glace qui explose à l’impact pénétrant la chair et gelant celle-ci. La personne touchée par le globe prend 3 dégâts de glace."
+    },
+    {
+     "id": "glace-oniromancie",
+     "name": "Oniromancie",
+     "type": "Utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "-",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Se sort est souvent utilisé pour faire passer des messages sans que personne ne s’en aperçoive ou bien tromper les gens. Le mage soumet un rêve à une victime qui le recevra lors de son réveil le matin. Le joueur devra connaître le nom du personnage et sa provenance pour l’identifier correctement. Par la suite, il pourra aller voir un animateur pour décrire le rêve qu’il souhaite transmettre. Le royaume des rêves est cependant méconnu et il se peut qu’il y ait quelque différence entre le rêve voulu et le rêve reçu."
+    }
+   ],
+   "3": [
+    {
+     "id": "glace-conseil-des-glaces",
+     "name": "Conseil des glaces",
+     "type": "Utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "-",
+     "duree": "jusqu’à 30 min",
+     "resistance": "-",
+     "description": "vous et un nombre égal à votre niveau de maîtrise de magie de glace tomber endormie. Vous pouvez vous rendre à un endroit hors-jeux afin de communiquer entre vous sans que personne ne puisse vous écouter. Vous devez laisser une note hors jeux expliquant la scène et ou vous trouver si on vous réveille."
+    },
+    {
+     "id": "glace-piege-de-glace",
+     "name": "Piège de glace",
+     "type": "Utilitaire",
+     "incantation": "Rituel+Mot de pouvoir",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage crée un cercle d’un maximum de 3 mètres de diamètre au sol remplis de l’énergie paralysante de la glace. Quand le mage l’active grâce au mot de pouvoir, tout ceux dans le cercle sont paralyzer tant que le mage pointe une mains vers le cercle et que le cercle n’est pas brisé"
+    },
+    {
+     "id": "glace-intuition",
+     "name": "Intuition",
+     "type": "Utilitaire",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Les devins ont l’habitude de voir le monde sans illusion et sans tromperie. De ce fait, lorsqu'un individu ment à côté d’eux, il y a un malaise chez celui-ci. Ce sort permet de savoir si la dernière affirmation dite par la cible est un mensonge ou une vérité."
+    },
+    {
+     "id": "glace-givre-hivernale",
+     "name": "Givre hivernale",
+     "type": "Dégât et contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "5 seconde",
+     "resistance": "-",
+     "description": "Le mage relâche une vague de givre qui frappe tous ceux qui l'entourent. Toutes les personnes dans son entourage prennent 3 dégâts de glace et se voient paralyser pour 5 secondes."
+    },
+    {
+     "id": "glace-bouclier-de-fortune",
+     "name": "Bouclier de fortune",
+     "type": "Buff (défensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Grâce à sa perception du temps et des possibilités, le mage peut concentrer les vents de magie afin d’absorber un impact avant qu’il se produise. Lorsque le mage utilise ce sort il pays un nombre de points d’esprit égal au dégât reçu. Le nombre de points d’esprit utilisé de cette manière ne peut pas dépasser 3, mais bloque le coup complet si les dégâts sont au-dessus de cette limite. Ce sort ne peut pas prévenir les dégâts de foudre, nécrotique, trauma ou de mort."
+    }
+   ]
+  }
+ },
+ {
+  "id": "foudre",
+  "name": "Foudre",
+  "kind": "advanced",
+  "requires": [
+   "air",
+   "feu"
+  ],
+  "powerWord": "Fulgor",
+  "levels": {
+   "1": [
+    {
+     "id": "foudre-frappe-electrique",
+     "name": "Frappe électrique",
+     "type": "Buff (offensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "touché",
+     "duree": "prochain coup ou 1 minute",
+     "resistance": "-",
+     "description": "le mage charge l’arme touchée d’énergie static. La prochaine frappe qui touche de l’arme inflige engourdissement 10 secondes en plus des dégâts normaux."
+    },
+    {
+     "id": "foudre-reanimation",
+     "name": "Réanimation",
+     "type": "Soins",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage émet une décharge électrique à une créature agonisante obligeant le corps à se réactiver. La cible du sort revient à la vie avec 2 points de vie et subit aussi un effet de douleur atroce 5 secondes. Ce sort peut uniquement être fait sur les personnes agonisantes."
+    },
+    {
+     "id": "foudre-decharge-de-l-anguille",
+     "name": "Décharge de l’anguille",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Vous infusez une décharge électrique dans votre main. Lorsque vous touchez votre cible, la décharge partira de votre main pour lui infliger 2 points de dégât de foudre. Si vous avez une arme en métal (épée, hache ou masse) vous pouvez faire le toucher avec celle-ci. À la fin de la formule, vous avez dix secondes pour toucher votre adversaire."
+    },
+    {
+     "id": "foudre-paralysie-nerveuse",
+     "name": "Paralysie nerveuse",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "5 secondes",
+     "resistance": "-",
+     "description": "Vous surchargez d’électricité le système nerveux de votre adversaire. Tous ses muscles sont activés, si bien que tout mouvement devient impossible. Le corps de la cible se paralyse pour 5 secondes."
+    },
+    {
+     "id": "foudre-bien-en-main",
+     "name": "Bien en main",
+     "type": "Utilitaire",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Soi-même",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage sait non seulement contrôler la foudre, mais aussi les champs magnétiques qui accompagnent l’électricité. Avec ce sort, il peut éviter un désarmement si son arme est majoritairement métallique."
+    }
+   ],
+   "2": [
+    {
+     "id": "foudre-defense-de-l-anguille",
+     "name": "Défense de l’anguille",
+     "type": "Contrôle, buff (défensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "le mage",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage s’entoure d’énergie électrique lui permettant de s’enfuir contre ses agresseurs. POur la durée du sort, lorsqu’un individu le touche au corps-à-corps le mage peut lui lancer un effet de paralysie 5 secondes. Les deux premières utilisation sont gratuites. Après cela, vous pouvez payer 1 point d’esprit par utilisation supplémentaire."
+    },
+    {
+     "id": "foudre-eclair",
+     "name": "Éclair",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "lancer",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous créez dans vos mains une énergie électrique pouvant être lancée. Pour cela,vous devez avoir une boule en mousse jaune jugée sécuritaire par l’animation. Si, lors de votre lancer, vous touchez un adversaire, celui-ci reçoit 3 points de dégâts de foudre."
+    },
+    {
+     "id": "foudre-surcharge-d-informations",
+     "name": "Surcharge d’informations",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Vous contrôlez les influx nerveux des divers corps vivants. Vous pouvez maintenant non seulement surcharger les muscles avec de l’électricité, mais aussi en envoyer directement au cerveau et causer une crise d’épilepsie à votre adversaire. Il subit alors les effets de convulsion 10 secondes."
+    },
+    {
+     "id": "foudre-perte-vocale",
+     "name": "Perte vocale",
+     "type": "Sorilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "terrain",
+     "duree": "événement",
+     "resistance": "-",
+     "description": "Après avoir effectué un rituel ou le mage nomme sa cible ainsi que sa provenance et sa religion, la voix de la cible du sort est malentendu par les vents magiques ou sa divinité. Pour la durée de l’événement lorsque la cible du sortilège incante un sort, il doit répéter la formule ou le mot de pouvoir une fois supplémentaire. Si le sort est un rituel, celui-ci prend 5 minutes de plus à effectuer. Une seule personne peut avoir cet effet actif à la fois."
+    },
+    {
+     "id": "foudre-desarmement",
+     "name": "Désarmement",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "Instantané",
+     "resistance": "Poigne d’acier",
+     "description": "Le contrôle des champs magnétiques devient plus facile pour le mage et peut donc affecter une plus grande zone. Avec ce sort, il peut désarmer un ennemi si son arme est majoritairement faite de métal."
+    }
+   ],
+   "3": [
+    {
+     "id": "foudre-temple-de-l-energie",
+     "name": "Temple de l’énergie",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Jusqu’à l’inconscience",
+     "resistance": "-",
+     "description": "Le mage effectue une manœuvre extrêmement dangereuse infusant son propre corps de foudre. À chaque 10 secondes, le mage subit 1 dégât de foudre. En contrepartie, celui-ci gagne une puissance inimaginable. Pour toute la durée du sort, tous ses sorts d'incantation en formule de foudre deviennent des sort d'Incantation en mots de pouvoir. De plus, tous les dégât de foudre qu’il infligent sont augmenter de 1 (respectant la règle du maximum de 5). Le sort prend fin lorsque le mage tombe à l’agonie."
+    },
+    {
+     "id": "foudre-champs-de-repulsion",
+     "name": "Champs de répulsion",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "1 minute",
+     "resistance": "-",
+     "description": "Vous créez une zone autour de vous ou vous contrôlez la gravité à votre guise. Tant que vous ne vous déplacez pas, vous pouvez renvoyer vos cibles loin de vous en les projetant (propulsion 5 mètres). Pour les affectés, ceux-ci doivent être à 5 mètres de vous. Si vous vous déplacez ou vous faites déplacer, le sort prend fin immédiatement."
+    },
+    {
+     "id": "foudre-arme-du-ciel",
+     "name": "Arme du ciel",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "toucher",
+     "duree": "",
+     "resistance": "",
+     "description": "Durer:  5 minute ou les trois prochains coups Résistance: - Vous forcez l’énergie magique à l’intérieur d’une arme afin que celle-ci soit enveloppée par la foudre. Les trois prochains coups portés par cette arme auront le qualificatif ‘’foudre’’ ."
+    },
+    {
+     "id": "foudre-tempete",
+     "name": "Tempête",
+     "type": "Dégâts",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantanée",
+     "resistance": "-",
+     "description": "Vous accumulez l’énergie statique qui vous entoure et la contenez pour la laisser se déchaîner dans une tempête d’éclairs. Toutes les créatures à 3 mètres de vous subissent 3 dégâts de foudre."
+    },
+    {
+     "id": "foudre-paratonnerre",
+     "name": "Paratonnerre",
+     "type": "Buff (défensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Le mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "À force de laissez la foudre vous parcourir, vous êtes en mesure de vous prémunir partiellement contre celle-ci. Lorsque vous recevez des dégâts de foudre, vous pouvez activer ce sort pour rediriger ceux-ci vers le sol. Les dégâts sont alors réduits à 1."
+    }
+   ]
+  }
+ },
+ {
+  "id": "sable",
+  "name": "Sable",
+  "kind": "advanced",
+  "requires": [
+   "air",
+   "terre"
+  ],
+  "powerWord": "Vitrum",
+  "levels": {
+   "1": [
+    {
+     "id": "sable-illusion-de-la-falaise",
+     "name": "Illusion de la falaise",
+     "type": "Contrôle",
+     "incantation": "Mot de pouvoir ou formule",
+     "cible": "",
+     "portee": "5 mètre",
+     "duree": "instantané",
+     "resistance": "Acrobatie",
+     "description": "Vous créez une illusion autour de votre cible que celle-ci est en train de tomber d'une hauteur importante. L'Illusion est telle que votre cible subit l’effet renversement. Lorsque vous lancez ce sort en formule, vous pouvez affecter un nombre de cible égal à votre niveau d’école du sable."
+    },
+    {
+     "id": "sable-toucher-du-desert",
+     "name": "Toucher du désert",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "touché",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Vous infusez votre touché de la chaleur accablante du sable évaporant toute eau que vous touchez. La personne que vous toucherez avec ce sort subit 2 dégâts perce-armure alors que son corps se dessèche."
+    },
+    {
+     "id": "sable-disparition",
+     "name": "Disparition",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètre",
+     "duree": "10 minutes",
+     "resistance": "Volonté",
+     "description": "Ce sort est originaire de Dulne et est souvent utilisé par les sahel afin de partager leur savoir en secret avec leur supérieur. Avec ce sort vous cibler un individu qui pourra soit ne pas vous voir, soit ne pas vous entendre pour la durée du sort (à votre choix). La cible du sort peut résister avec un niveau de volonté égal à votre niveau de maîtrise du sable."
+    },
+    {
+     "id": "sable-double",
+     "name": "Double",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "-",
+     "duree": "permanent",
+     "resistance": "-",
+     "description": "Les mages de sable utilisées principalement pour induire leurs ennemis en erreur. Un nombre de fois par jour égal à leur niveau de magie du sable, un pratiquant de cette magie peut devenir hors-jeu lorsqu’il reçoit un coup et faire 3 pas par niveau du sable qu’il possède afin de revenir en jeu. Le coup reçu n’est pas comptabilisé puisqu’il a frappé une illusion."
+    },
+    {
+     "id": "sable-aura-magique",
+     "name": "Aura magique",
+     "type": "Utilité",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage contrôle les vents afin de les coller sur un objet anodin. Celui-ci devient alors entouré d’une aura et tous croient que l’objet est magique alors qu’il n’est de plus qu’un objet ordinaire."
+    }
+   ],
+   "2": [
+    {
+     "id": "sable-simulacre",
+     "name": "Simulacre",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "En touchant un corps, le mage peut mettre l’illusion que les blessures apparente sont autres gênant ainsi les soins apporté. Tant que l’illusion reste active, les soins apportés au corps ou les autopsies faites sur celui-ci ne fonctionnent pas. Il est possible de briser cette illusion avec un niveau de volonté égal à votre niveau de magie du sable. (Donne le niveau de volonté requis à la personne affectée pour que celle-ci puisse le dire au besoin)"
+    },
+    {
+     "id": "sable-silence-du-desert",
+     "name": "Silence du désert",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "2 minutes",
+     "resistance": "-",
+     "description": "Le mage contrôle les vents afin que ceux-ci attrapent les sons formulés par la cible du sort, la rendant incappable de prononcer le moindre mot et donc de lancer des sorts pour la durée du sortilège."
+    },
+    {
+     "id": "sable-secheresse",
+     "name": "Sécheresse",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Lancé",
+     "duree": "Instantanée",
+     "resistance": "-",
+     "description": "Le mage lance un petit projectile transparent qui pénètre la chair de sa victime pour retirer l’eau de celle-ci. Une personne touchée par le projectile reçoit 3 dégâts perce armure."
+    },
+    {
+     "id": "sable-erosion",
+     "name": "Érosion",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 m",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Le mage vise une arme ou une armure en métal afin d’éroder celle-ci et la faire tomber en sable. L’armure ou l’arme ciblé par ce sort est alors détruite."
+    },
+    {
+     "id": "sable-tempete-de-sable",
+     "name": "Tempête de sable",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètre autour du mage",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Le mage lève une tempête de sable autour de lui afin de se dérober du regard de tous. Toutes les créature dans la zone subissent un effet d’aveuglement pendant 10 secondes"
+    }
+   ],
+   "3": [
+    {
+     "id": "sable-cape-de-sable",
+     "name": "Cape de sable",
+     "type": "Buff (défense)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Vous envelopper un individu dans un tourbillon de sable virevoltant. Pour la durée du sort, celui-ci peut dépenser un point d’esprit pour faire un effet d’aveuglement 5 secondes à un individu à 3 mètres de lui. Si vous lancez le sort sur vous même, les trois premières utilisation de ce pouvoir ne vous coûte aucun point d’esprit"
+    },
+    {
+     "id": "sable-copie",
+     "name": "Copie",
+     "type": "Invocation",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Un sort plus puissant basé sur homme d’argile. Le mage crée une copie conforme d’un personnage qu’il lui obéit. La copie a exactement les mêmes statistiques et compétences que le personnage copié. Cependant, elle possède 5 points de vie et 5 points de mana uniquement. Si la cible avait une armure, la copie la possède aussi."
+    },
+    {
+     "id": "sable-momification",
+     "name": "Momification",
+     "type": "Buff (défensif)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "2 heures",
+     "resistance": "-",
+     "description": "Le mage utilise les énergies arcaniques afin de préserver un être vivant comme on préserverait une dépouille. Pour la durée du sort, la cible ne peut recevoir d’effet hémorragique, de poison ou de maladie. De plus, si la cible était déjà sous l’emprise de poison ou de maladie, les effets de ceux-ci prennent pause et recommenceront uniquement lorsque le sort prendra fin."
+    },
+    {
+     "id": "sable-desertification",
+     "name": "Désertification",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres autour du mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage absorbe toute eau qui est autour de lui que cela soit une flaque, un verre ou encore à même les plantes ou les corps. Toutes créatures dans la zone d’effet subissent 3 dégâts perce-armure alors que leur corps se dessèche."
+    },
+    {
+     "id": "sable-chaleur-du-desert",
+     "name": "Chaleur du désert",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Le terrain",
+     "duree": "1 événement",
+     "resistance": "",
+     "description": "Le mage accumule des vents arcanique afin de les faire pénétrer le corps de la cible du sort. Afin de bien les diriger, le mage doit connaître le nom, la religion et la provenance de la cible du sort. Pour la durée du sortilège, la personne ciblée sera incappable de porter de l’armure à cause d’une chaleur suffocante. Si elle en a quand même sur elle, elle s’écroule sous la chaleur. Ce sortilège n’empêche pas cependant un individu d’avoir des points d’armure grâce à des sorts ou compétences. Un seul sortilège de chaleur du désert peut être actif à la fois."
+    }
+   ]
+  }
+ },
+ {
+  "id": "metal",
+  "name": "Métal",
+  "kind": "advanced",
+  "requires": [
+   "feu",
+   "terre"
+  ],
+  "powerWord": "Tallum",
+  "levels": {
+   "1": [
+    {
+     "id": "metal-locket-magique",
+     "name": "Locket magique",
+     "type": "Utilité",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "6 heures",
+     "resistance": "Crochetage",
+     "description": "Permet de barrer une porte ou un contenant. Il est nécessaire de laisser un papier écrit en rouge indiquant que la cible du sort est barré et qu'un personnage avec un niveau de crochetage égal à votre niveau de magie du métal peut débarrer la porte."
+    },
+    {
+     "id": "metal-durete-de-l-acier",
+     "name": "Dureté de l’acier",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "2 minutes",
+     "resistance": "-",
+     "description": "Ce sort très semblable à peau d’acier permet de figer la peau de la cible et de la rendre aussi résistante qu’une armure. Pour la durée du sort, la cible de celui-ci ignore les dégâts physiques égal au niveau de maîtrise de magie du métal du lanceur de sort."
+    },
+    {
+     "id": "metal-peau-d-acier",
+     "name": "Peau d’acier",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "personnel",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Le vent de magie du métal commence à affecter le corps du mage de manière permanente. Pour chaque niveau de magie du métal qu’il possède, il gagne 2 points d’armure qui suivent les mêmes règles que les armures."
+    },
+    {
+     "id": "metal-renforcement",
+     "name": "Renforcement",
+     "type": "Buff (défensif)",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "15 minutes",
+     "resistance": "-",
+     "description": "Le mage renforce une armure métallique en enlevant tous les défauts dans celle-ci. Ce sort donne 4 points d’armure supplémentaires. Si le sort est lancé en rituel, il permet de donner 6 points d’armure à la place OU de faire le sort sur une personne sans armure."
+    },
+    {
+     "id": "metal-reparation",
+     "name": "Réparation",
+     "type": "Soins / Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage utilise les vents magiques afin de renforcer et réparer la matière. Avec ce sort, le mage peut redonner 3 points d’armure à une armure en métal ou 2 points de structure à une arme. Le mage peut utiliser ce sort pour réparer son armure donner par Peau d’acier, mais pas celle d’un autre mage de métal. Si les points de structure de l’objet sont à 0, ce sort ne fonctionne pas."
+    }
+   ],
+   "2": [
+    {
+     "id": "metal-conjuration-d-arme",
+     "name": "Conjuration d’arme",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Vous invoquez une arme de corps-à-corps dans les mains de la personne ciblée. Cette arme bien que d’apparence ordinaire est indestructible et ne peut en aucun cas quitter les mains de la cible (même volontairement). Vous devez fournir l’arme lorsque vous lancez le sort."
+    },
+    {
+     "id": "metal-morsure-du-metal",
+     "name": "Morsure du métal",
+     "type": "Buff (offensif)",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "10 minutes ou 1 heure",
+     "resistance": "-",
+     "description": "Le mage canalise sa magie dans une arme de métal afin de solidifier et accroître le potentiel de celle-ci. L’arme gagne un bonus de +1 aux dégâts. Si le sort est fait en rituel, le mage peut affecter un nombre d'armes égal à son niveau de magie du métal et la durée du sort augmente à 1 heure."
+    },
+    {
+     "id": "metal-acier-faible",
+     "name": "Acier faible",
+     "type": "Debuff",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Événement",
+     "resistance": "-",
+     "description": "Après avoir effectué un rituel ou le mage nomme sa cible ainsi que sa provenance et sa religion, tout acier que la cible du sort tiendra deviendra inefficace. Pour la durée de l’événement la cible du sort ne peut augmenter les dégâts infligés avec des armes d’aucune manière possible (même arme de prédilection). Une seule personne peut avoir cet effet actif à la fois."
+    },
+    {
+     "id": "metal-malediction-de-la-rouille",
+     "name": "Malédiction de la rouille",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Le mage fragilise une arme en métal accélérant l’oxydation de celle-ci. L’arme devient inutilisable jusqu’à ce qu’elle soit réparée soit avec la compétence forge soit avec la compétence aiguisage."
+    },
+    {
+     "id": "metal-metabolisme-ralentit",
+     "name": "Métabolisme ralentit",
+     "type": "Buff (défensif)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "sois-même",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage renforce son côté machine et ralentit le système organique d’une personne sans le tuer. Ceci à pour effet d'immuniser la cible aux poisons et aux maladies pendant une heure. Le mage peut affecter une personne supplémentaire par niveau de magie de métal supérieur à 2."
+    }
+   ],
+   "3": [
+    {
+     "id": "metal-objet-mondain",
+     "name": "Objet mondain",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "le terrain",
+     "duree": "un cycle",
+     "resistance": "-",
+     "description": "Le mage contrôle les vents arcaniques afin de figer ceux-ci autour d'un objet magique le privant de ses pouvoirs. Pour ce faire, il faut qu’à la fin du rituel, le mage ait voir l’animation et soit capable de dire quel objets qu’il veut affecté et qui est son propriétaire. Ce sort peux ne pas fonctionner sur certains objets puissants à la discrétion de l’animation."
+    },
+    {
+     "id": "metal-dernier-rempart",
+     "name": "Dernier rempart",
+     "type": "Buff (défensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "le mage",
+     "duree": "2 minutes",
+     "resistance": "-",
+     "description": "Permet au mage de créer une barrière solide de métal autour de lui pour essayer de se sortir des pires situation possible. Pour la durée du sort, le joueur doit fermer les yeux et se boucher les oreilles puisqu’il lui est impossible de percevoir le monde autour de lui ou de se déplacer. Pendant ce temps, il est invulnérable à tous les dégâts reçus sauf si il avait un effet rasoir sur lui. Il est impossible pour le mage de terminer le sort plus tôt que la durée de celui-ci"
+    },
+    {
+     "id": "metal-homme-fusee",
+     "name": "Homme fusée",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "25 pas max",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Vous vous propulsez violemment dans la direction de votre choix voyageant toute la portée du sort ou jusqu’à ce que vous heurter quelque chose. Pour chaque 5 pieds que vous traversez, vous infligez 1 à ce que vous avez heurté. La créature que vous avez heurter subit aussi l’effet repoussement de 3 mètres."
+    },
+    {
+     "id": "metal-forteresse-de-fer",
+     "name": "Forteresse de fer",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Le mage améliore une armure au maximum de son potentiel rendant son porteur quasiment invulnérable. Pour la durée du sort, l’armure ciblé bloque 1 point de dégât physique supplémentaire et obtient un point d’armure supplémentaire pour chaque deux point qu’elle avait de base. (Une armure donnant 8 points en donne maintenant 12)."
+    },
+    {
+     "id": "metal-faiblesse-du-metal",
+     "name": "Faiblesse du métal",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "le terrain",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Après avoir effectué un rituel ou le mage nomme sa cible ainsi que sa provenance et sa religion, toute arme tenu dans les mains de la cible semble perdre son intégrité et devenir peu efficace. Pour la durée de l’événement les dégâts d’Arme de la cible du sort sont réduits de 1 (minimum 1). Cet état peu s’accumuler avec le debuff faiblesse. Un mage peu avoir uniquement un effet de faiblesse du métal actif à la fois."
+    }
+   ]
+  }
+ },
+ {
+  "id": "plantes",
+  "name": "Plantes",
+  "kind": "advanced",
+  "requires": [
+   "eau",
+   "terre"
+  ],
+  "powerWord": "Bio",
+  "levels": {
+   "1": [
+    {
+     "id": "plantes-malediction",
+     "name": "Malédiction",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "Un événement",
+     "resistance": "-",
+     "description": "Le mage manipule les vents arcaniques afin de fragiliser le système de la cible de son sort. La cible de ce sortilège ne peut pas résister au maladie et poison d’un niveau égal à votre maîtrise de magie des plantes et ce malgré remède, sort ou capacité. De plus, si il y a une chance que la cible soit affectée par une maladie, elle l’obtient automatiquement. Pour affecter un individu, vous devez connaître son nom, sa provenance et sa religion. Un seule personne peut être affectée par ce sort à la fois."
+    },
+    {
+     "id": "plantes-toucher-d-acide",
+     "name": "Toucher d’acide",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "touché",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Le mage enduit sa peau d’une substance corrosive. La prochaine cible qu’elle touche reçoit 1 dégât d’acide."
+    },
+    {
+     "id": "plantes-photosynthese",
+     "name": "Photosynthèse",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "-",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Comme les plantes qui vous entourent, vous avez la capacité d’absorber la lumière pour vous nourrir et vous reposer. Lorsque vous utilisez la compétence méditation, vous gagnez un nombre de points de vie ou de mana supplémentaire égal à votre niveau d’école de la magie des plantes."
+    },
+    {
+     "id": "plantes-les-epines-de-la-rose",
+     "name": "Les épines de la rose",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "La cible du sort sens des épines pousse partout sous son corps. Ces épines ne sont pas dangereuses pour la cible du sort mais pour ceux qui l'attaquent. Lorsque la cible du sort reçoit un coup, les épines sont lancées en direction de la personne qui l’a attaqué et inflige 1 dégât."
+    },
+    {
+     "id": "plantes-herbe-a-puce",
+     "name": "Herbe à puce",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "30 seconde",
+     "resistance": "-",
+     "description": "La cible du mage voit sa peau affectée par plusieurs plaques rouges causant de sévères démangeaisons. Elle ne peut s’empêcher de se gratter pendant 30 secondes."
+    }
+   ],
+   "2": [
+    {
+     "id": "plantes-pheromone",
+     "name": "Phéromone",
+     "type": "Buff (offensif) / contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "1 heure",
+     "resistance": "Volonté",
+     "description": "Vous augmentez les odeurs agréables provenant de la cible du sort la rendant charmante au yeux de tous. Pour la durée du sort, la cible de celui-ci peut dépenser des points d’esprit pour faire un effet de charme du même niveau à une créature à 1 mètre d’elle. Le niveau maximum de charme qu’elle peut infliger de cette manière est égal à votre niveau de magie des plantes. Si vous lancez le sort sur vous-même, les deux premiers points d’esprits utilisés par cette capacité sont gratuits."
+    },
+    {
+     "id": "plantes-les-crocs-du-serpent",
+     "name": "Les crocs du serpent",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Lancer",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Grâce au vent de magie, vous fabriquez dans votre main un crochet qui part à toute vitesse se fiche directement dans la chair de votre victime. Une fois dans celle-ci, les crochets libèrent un flot continu de poison infligeant 2 dégâts d’acide."
+    },
+    {
+     "id": "plantes-enracinement",
+     "name": "Enracinement",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Le mage contrôle les vents magiques afin de faire grandir rapidement des racines autour des jambes de ses cibles. Le mage peut affecter un nombre de cible égal à son niveau de magie des plantes et les personnes affectées ne peuvent plus se déplacer pour la durée du sort."
+    },
+    {
+     "id": "plantes-immunite-a-l-acide",
+     "name": "Immunité à l’acide",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "Soi-même",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "À force de manipuler les vents magiques,votre corps s’en est trouvé modifié. Vous obtenez une immunité aux dégâts d’acide égal à votre niveau d’école de magie des plantes. Votre équipement n’est pas protégé cependant."
+    },
+    {
+     "id": "plantes-peau-d-ecorce",
+     "name": "Peau d’écorce",
+     "type": "Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "La peau de la cible du sort devient dure comme de l’écorce de bois de fer. La cible est considérée comme portant une armure médium et ignore les dégâts physiques de 2 et moins. La cible du sort ne doit pas porter d’armure pour que le sort soit actif."
+    }
+   ],
+   "3": [
+    {
+     "id": "plantes-creation-de-poison",
+     "name": "Création de poison",
+     "type": "Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes ou le prochain coup",
+     "resistance": "-",
+     "description": "Vous créez un poison que vous apposez sur la lame que vous cibler. Le poison créé de cette manière est un poison de votre choix que vous connaissez et doit être un poison niveau 3 ou moins."
+    },
+    {
+     "id": "plantes-explosion-du-bulbe",
+     "name": "Explosion du bulbe",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètres",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous provoquer une explosion d’acide et de poison corrosif infligeant 2 dégâts d’acide à tous les individus à 3 mètres de vous."
+    },
+    {
+     "id": "plantes-appel-du-treant",
+     "name": "Appel du tréant",
+     "type": "Invocation",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le druide demande de l’aide aux plus fidèles serviteurs de la nature. Pour cela il lui faut un volontaire qui donnera sa force vitale à un arbre. Une fois la fusion faite, le joueur devenu un treant doit suivre au mieux les indications du prêtre. Il possède 30 points de vie et frappe de 5 dégâts. Cependant il ne peut pas courir et les dégâts de feu lui font le double de dégâts. Si le treant meurt, le joueur incarnant la créature retourne à l’arbre ou le sort a été fait et n’a aucun souvenir des actes qu’il a accomplis."
+    },
+    {
+     "id": "plantes-pourriture",
+     "name": "Pourriture",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètre",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "De la mousse et des plantes parasites commencent à pousser sur les cibles du sort. Celles-ci absorbent l’énergie de la victime et entrave ses mouvements causant un effet de faiblesse. vez cibler autant de personnes que votre niveau de magie des plantes."
+    },
+    {
+     "id": "plantes-vengeance-de-la-flore",
+     "name": "Vengeance de la flore",
+     "type": "Buff (offensif et défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "toucher",
+     "duree": "1h",
+     "resistance": "-",
+     "description": "Vous infusez l’individu choisi de la connaissance et de la puissance de la flore. Le champion obtient alors une force incommensurable tant qu’il garde les 2 pieds au sol. Ses dégâts augmentent de 1 et il peut briser des chaînes ou des cordes si il est attaché. De plus, il résiste à tous les effets qui l’empêche de se déplacer ou le force à se déplacer (excepter les effets de crainte, peur, terreur et horreur)"
+    }
+   ]
+  }
+ },
+ {
+  "id": "sang",
+  "name": "Sang",
+  "kind": "advanced",
+  "requires": [
+   "feu",
+   "eau"
+  ],
+  "powerWord": "Hémo",
+  "levels": {
+   "1": [
+    {
+     "id": "sang-uni-par-le-sang",
+     "name": "Uni par le sang",
+     "type": "Spéciale",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "deux individus volontaires",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le mage lie deux personnes volontaires par le sang. Si l’un reçoit un effet magique, les deux personnes le reçoivent. Ceci fonctionne autant pour les effets positifs que négatifs et les projectile comme les dégâts d’une boule de feu."
+    },
+    {
+     "id": "sang-rasoir",
+     "name": "Rasoir",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Le mage manipule le sang de sa cible afin de forcer celui-ci hors de son corps. La cible du sort subit l’effet hémorragique."
+    },
+    {
+     "id": "sang-pouvoir-du-sang",
+     "name": "Pouvoir du sang",
+     "type": "Passif",
+     "incantation": "-",
+     "cible": "",
+     "portee": "sois-même",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Les mages de sang sont capables de puiser les énergies arcaniques de leur propres corps lorsqu’ils sont trop fatigués. Lorsque le mage lance un sort, il peut utiliser des points de vie à la place des points d’esprits. Le sort doit être payé uniquement en point de vie OU d’esprit."
+    },
+    {
+     "id": "sang-bouillir-de-l-interieur",
+     "name": "Bouillir de l’intérieur",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Il s’agit de l’un des sorts les plus classiques de l’école du sang. Le mage fait chauffer le sang de sa cible et il y a alors deux possibilités. Soit celle-ci tombe à cause de la souffrance, soit celle-ci rentre dans une rage meurtrière. Le mage doit crier ‘’douleur atroce ou rage 10 secondes’’ et c’est la cible qui choisit la conséquence. À cause de la particularité du sort, la compétence volonté ne peut pas être appliquée."
+    },
+    {
+     "id": "sang-vol-de-sang",
+     "name": "Vol de sang",
+     "type": "Dégât / soins",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Lancé",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage propulse son énergie magique pour pomper directement le sang de la victime. Si le sort touche la cible, il inflige 2 dégâts perce-armure et soigne le mage du même montant."
+    }
+   ],
+   "2": [
+    {
+     "id": "sang-brise-membre",
+     "name": "Brise membre",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètre",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage utilise le sang de sa cible pour écraser l’un de ses membres. La cible du sort subit un effet de brise membre. C’est la cible du sort qui choisit quel membre est brisé."
+    },
+    {
+     "id": "sang-envoutement",
+     "name": "Envoûtement",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Sois-même",
+     "duree": "30 minutes",
+     "resistance": "Volonté",
+     "description": "effet de charme d’un niveau égal au maîtrise de magie du sang du lanceur de sort qui affecte la prochaine personne touchée. La personne charmée voit le mage comme un ami précieux et souhaite l’aider. Lorsque le sort termine elle ne se souvient pas d’être charmée"
+    },
+    {
+     "id": "sang-sang-chaud",
+     "name": "Sang chaud",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Sois-même",
+     "duree": "5 minutes",
+     "resistance": "Volonté",
+     "description": "Il s’agit d’un sort peu apprécié de la majorité de la population. Le mage utilise le sort sur lui-même afin de se rendre plus attirant et aimable. Il pourra lors de la prochaine minute toucher un individu et lui infliger Charme 3 pour une durée de 5 minutes."
+    },
+    {
+     "id": "sang-etat-de-choc",
+     "name": "État de choc",
+     "type": "Buff (offensif et/ou défensif)",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "2 minute ou 30 minutes",
+     "resistance": "-",
+     "description": "Le mage focus son énergie magique sur l’esprit de la cible afin de la faire rentrer dans un état de choc qui le met dans un mode de survie. La cile devient paranoïaque et agitée, mais à son choix elle gagne soit un bonus de +1 dégât (buff offensif) alors que son sang gonfle ses muscles ou soit qu'elle réduit ses dégâts reçus de 1 (buff défensif) alors que son sang refuse de couler. Si le sort est fait en rituel, la cible reçoit les deux bonus et la durée du sort est prolongé à 30 min."
+    },
+    {
+     "id": "sang-hemorragie",
+     "name": "Hémorragie",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "Événement",
+     "resistance": "-",
+     "description": "Le mage canalise toute son énergie afin de maudire une victime. Celle-ci se voit affaiblit et son sang semble être incapable de coaguler. Pour le reste de l’événement, tous les dégâts physiques qu’elle reçoit sont augmentés de 1. Cela permet de dépasser la règle des dégâts maximum. Pour effectuer le rituel correctement, vous devez connaître le nom de votre victime et d’où celle-ci vient. Vous pouvez uniquement faire ce rituel une fois par GN."
+    }
+   ],
+   "3": [
+    {
+     "id": "sang-hemophilie",
+     "name": "Hémophilie",
+     "type": "Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "Événement",
+     "resistance": "-",
+     "description": "Le mage canalise toute son énergie afin de maudire une victime. Celle-ci est incapable de se soigné correctement laissant son sang couler a flot.. Pour le reste de l’événement, la cible du sort gagne le désavantage hémophile. Si la cible a déjà le désavantage, le sort n’a aucun effet. Pour effectuer le rituel correctement, vous devez connaître le nom de votre victime et d’où celle-ci vient. Vous pouvez uniquement faire ce rituel une fois par GN."
+    },
+    {
+     "id": "sang-philtre-d-amour",
+     "name": "Philtre d’amour",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Sois-même",
+     "duree": "30 minutes",
+     "resistance": "Volonté",
+     "description": "Une version améliorée du sort envoûtement. effet de charme d’un niveau égal au maîtrise de magie du sang du lanceur de sort qui peut être lancé plus tard en touchant la personne (cela n’est pas obligatoirement la prochaine personne touchée). L'effet de charme peut être dirigé vers un autre individu que le mage si celui-ci le désire."
+    },
+    {
+     "id": "sang-explosion-sanglante",
+     "name": "Explosion sanglante",
+     "type": "Debuff / dégât / contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "permanent",
+     "resistance": "-",
+     "description": "Il s’agit d’un sort cruel et douloureux. La mage dilate les vaisseaux sanguins d’un membre de sa cible à un point tel que le membre éclate. Le sort inflige la destruction d’un membre de la cible à au choix du mage ainsi qu’une douleur atroce de 15 secondes."
+    },
+    {
+     "id": "sang-marionnettiste",
+     "name": "Marionnettiste",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "1 minutes",
+     "resistance": "-",
+     "description": "Vous contrôler le sang dans les veines de la victime de votre sort afin de la manipuler à votre guise. Elle subit l’effet domination et ne peut pas résister grâce à sa volonté. Vous devez indiquer les actions que vous souhaitez que votre marionnette entreprenne. Vous devez le plus possible rester dans la portée du sort afin de maintenir votre contrôle. Si vous n’êtes pas capable de rester dans la porte pendant 5 secondes, le sort prend fin et vous devez signaler à votre marionnette qu’elle est libérée. Le sort prend fin automatiquement si votre marionnette tombe à 0 point de vie."
+    },
+    {
+     "id": "sang-choc-de-l-esprit-et-du-corps",
+     "name": "Choc de l’esprit et du corps",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "3 mètre",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Sort extrêmement dangereux. Le mage perd tous ces points d’esprits et inflige le même nombre de dégâts magique à toutes les créatures à 3 mètres de lui, incluant celui-ci. Ces dégâts peuvent dépasser le maximum de 5 points de dégât."
+    }
+   ]
+  }
+ },
+ {
+  "id": "main-divine",
+  "name": "Main divine",
+  "kind": "divine",
+  "religion": "Main divine",
+  "powerWord": "Manus",
+  "levels": {
+   "1": [
+    {
+     "id": "main-divine-douceur-de-swana",
+     "name": "Douceur de Swana",
+     "type": "Bénédiction, soins",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre arrive à canaliser l’énergie de Swana dans la paume de sa main qu’il place sur la blessure. L’énergie soigne alors celle-ci et la cicatrise redonnant 2 points de vie à la cible"
+    },
+    {
+     "id": "main-divine-loi-de-goel",
+     "name": "Loi de Goel",
+     "type": "Malédiction, Contrôle",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "5 mètre",
+     "duree": "Instantané",
+     "resistance": "Volonté",
+     "description": "Suite a cette formule, le prochain mot du prêtre est rempli d’une puissance obligeant la cible de ce mot à obéir. Les mots pouvant être utiliser ainsi sont les suivants: Approche / Lâche / Fuit / À genoux. Ce sort est un effet mental avec un niveau égal à votre niveau de prêtrise."
+    },
+    {
+     "id": "main-divine-guider-par-cassary",
+     "name": "Guider par Cassary",
+     "type": "Buff (offensif), bénédiction",
+     "incantation": "Mot de pouvoir",
+     "cible": "Une arme",
+     "portee": "Toucher",
+     "duree": "1 minutes",
+     "resistance": "-",
+     "description": "Le prêtre invoque la fureur de Cassary dans le prochain coup que l’arme donnera. Ce sort est particulièrement apprécié des paladins qui l'utilisent sur leur propre arme, mais cela n’empêche pas de donner la furie de la déesse de la guerre à un autre priant. L’impact de l’arme augmente de +1 pour le prochain coup qui touchera."
+    },
+    {
+     "id": "main-divine-langue-d-alba",
+     "name": "Langue d’Alba",
+     "type": "Utilitaire, bénédiction",
+     "incantation": "Rituel",
+     "cible": "jusqu’à 5 personnes",
+     "portee": "toucher",
+     "duree": "15 minutes",
+     "resistance": "-",
+     "description": "Les personnes affectées par la bénédiction d’Alba comprennent maintenant le langage animal et peuvent le parler. Se faisant, les joueurs doivent clairement faire un signe de “L” avec la main ou dire “En animal” au début et à la fin de la phrase pour indiquer aux autres joueurs les écoutants qu’il ne peuvent comprendre. Le sort peut aussi être utilisé pour communiquer avec certains monstres."
+    },
+    {
+     "id": "main-divine-noirceur-du-domaine-des-morts",
+     "name": "Noirceur du domaine des morts",
+     "type": "Contrôle",
+     "incantation": "Formule",
+     "cible": "-",
+     "portee": "10 mètre",
+     "duree": "10 secondes",
+     "resistance": "-",
+     "description": "Le prêtre appelle sa divinité afin de faire voir une partie de son domaine à sa cible. La cible de ce sort subit un effet d'aveuglement de 10 secondes."
+    }
+   ],
+   "2": [
+    {
+     "id": "main-divine-benediction",
+     "name": "Bénédiction",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre apporte la bénédiction de son panthéon sur son suivant. La cible du sort perd le trait maudit et toute malédiction qui l’affecte si le prêtre connaît celle-ci. Le prêtre peut affecter un nombre de personnes égal à son niveau de prêtrise."
+    },
+    {
+     "id": "main-divine-communier-avec-les-morts",
+     "name": "Communier avec les morts",
+     "type": "Utilitaire",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "5 minutes",
+     "resistance": "Volonté",
+     "description": "Effet de calme sur un spectre égal au niveau du sort ou en rituel permet de poser une question par niveau de prêtrise à un mort. Il n’est pas obligé de répondre la vérité."
+    },
+    {
+     "id": "main-divine-forge-de-goel",
+     "name": "Forge de Goël",
+     "type": "Bénédiction, soins, utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage utilise les vents magiques afin de renforcer et réparer la matière. Avec ce sort, le mage peut redonner 3 points d’armure à une armure en métal ou 2 points de structure à une arme. Si les points de structure de l’objet sont à 0, ce sort ne fonctionne pas."
+    },
+    {
+     "id": "main-divine-esprit-du-guerrier",
+     "name": "Esprit du guerrier",
+     "type": "Bénédiction, buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre implore Cassary pour aiguiser l’esprit de son guerrier sans que celui-ci succombe à l’ivresse du combat. La cible du sort gagne +1 niveau de courage et peut utiliser la compétence courage pour résister aux effets de provocation et de rage au lieu de volonté."
+    },
+    {
+     "id": "main-divine-delivrance-des-sortileges",
+     "name": "Délivrance des sortilèges",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Description Permet au prêtre de supprimer un sortilège sur un croyant qui est de niveau égal ou inférieur à son niveau de prêtrise. Pour que la dissipation fonctionne, le prêtre devra être en mesure de déterminer l’école de magie, de prêtrise ou de cultisme du sortilège. Un seul essai est possible par sortilège."
+    }
+   ],
+   "3": [
+    {
+     "id": "main-divine-protection-de-goel",
+     "name": "Protection de Goel",
+     "type": "Buff (défensif), bénédiction",
+     "incantation": "Formule",
+     "cible": "Un croyant",
+     "portee": "Touché",
+     "duree": "10 minute",
+     "resistance": "-",
+     "description": "La peau du croyant devient aussi dure que l’acier alors que son système sanguin et ses organes se replace afin d'éviter d’être blessé. Pour la durée du sort, chaque fois que la cible perd des points de vie, elle en perd 1 de moins pour un minimum de 0. Les règles d’armures passent avant la réduction. Ce sort ne permet pas de résister aux effets des coups, donc même si la cible prend un seul dégât maudit. La cible ne perdra pas de point de vie, mais restera maudite."
+    },
+    {
+     "id": "main-divine-serviteur-de-voul",
+     "name": "Serviteur de Voul",
+     "type": "Invocation, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Le prêtre appelle un des serviteurs de Voul du monde des morts afin que celui-ci le serve. Le cadavre se relève en revenant avec 20 pv frappe de 2 peu importe son arme et peut émettre deux cris de terreur qui inflige une peur niveau 2 de 10 seconde à une cible."
+    },
+    {
+     "id": "main-divine-arme-benite",
+     "name": "Arme bénite",
+     "type": "Buff (offensif), bénédiction",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "10 minutes ou 1 heure",
+     "resistance": "-",
+     "description": "Le prêtre appelle la force des cinq afin que ceux-ci bénissent les armes de ceux qui combattent en leur nom. Pour la durée du sort, l’arme enchantée frappe bénit. Si le sort à été lancé en rituel, la durée de celui-ci augmente à une heure et le prêtre peut enchanter. un nombre d'armes égal à son niveau de prêtrise."
+    },
+    {
+     "id": "main-divine-un-avec-la-nature",
+     "name": "Un avec la nature",
+     "type": "Utilitaire, bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "spéciale",
+     "resistance": "-",
+     "description": "Ce sort ne peut être fait qu’en milieu naturel. Le prêtre invoque Alba afin que la cible du sort ne fasse qu’un avec la nature et devienne imperceptible. La cible du sort devient invisible tant que celle-ci ne bouge pas. Dès qu’elle commence un mouvement ou une parole, elle redevient visible. Toutefois, la compétence traque ne permet pas de la trouver le sort effaçant les traces de celle-ci ainsi que son odeur."
+    },
+    {
+     "id": "main-divine-exorcisme",
+     "name": "Exorcisme",
+     "type": "Bénédiction, soins",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "-",
+     "duree": "-",
+     "resistance": "Volonté",
+     "description": "description: Cette bénédiction permet de libérer l’esprit d’un croyant supprimant les effets de contrôle mental et de possession. en cas de possession, l'esprit ou le démon est sorti du corps. Si le sort est fait en rituel, il est impossible pour l’entité ou la personne de résister à cet effet."
+    }
+   ]
+  }
+ },
+ {
+  "id": "dragon",
+  "name": "Grand-père Dragon",
+  "kind": "divine",
+  "religion": "Vénération du Grand-père Dragon",
+  "powerWord": "Drakon",
+  "levels": {
+   "1": [
+    {
+     "id": "dragon-zele-du-combat",
+     "name": "Zèle du combat",
+     "type": "Bénédiction,buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Le prêtre appelle a l’esprit sauvage du guerrier afin que celui-ci ignore la douleur. Pour la durée du sort, la cible de celui-ci gagne l’avantage résistant à la douleur."
+    },
+    {
+     "id": "dragon-essence-d-atraxas",
+     "name": "Essence d’atraxas",
+     "type": "Bénédiction,buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Ce sort permet au prêtre de donner une Immunité aux poisons d’un niveau égal à la prêtrise du lanceur de sort. Ceci arrête aussi les effets des poisons en cours. Si le poison dure plus longtemps que le sort, l’effet du poison revient lorsque le sort est terminé."
+    },
+    {
+     "id": "dragon-guerrier-primale",
+     "name": "Guerrier primale",
+     "type": "Bénédiction, buff (défensif)",
+     "incantation": "Formule ou mot de pouvoir",
+     "cible": "",
+     "portee": "touché",
+     "duree": "Jusqu’à utilisation ou 10 minutes (le plus court des deux)",
+     "resistance": "-",
+     "description": "Se sort force une cible à faire face à ses peurs au lieu de fuir. Pour la durée du sort, si la cible doit subir un effet de peur ou de terreur et qu’elle ne peut pas résister, elle rentre dans une rage ciblant la source de la peur ou de la terreur pour la durée de l’effet reçu. Suite à cela le sort cesse de faire effet. Le sort peut être lancé en mot de pouvoir uniquement sur le prêtre lorsque celui-ci reçoit un effet de peur ou de peur ou de terreur qu'il ne peut pas résister."
+    },
+    {
+     "id": "dragon-crachat-d-ashar",
+     "name": "Crachat d’Ashar",
+     "type": "Dégât, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "lancer",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Vous invoquez la puissance élémentaire d’Ashar, le premier dragon noir. Votre salive devient verte et vous pouvez projeter celle-ci à distance (utiliser une balle verte pour simuler le crachat). L’impact du crachat inflige 1 dégât d’acide."
+    },
+    {
+     "id": "dragon-mot-de-puissance-rugissement",
+     "name": "Mot de puissance: Rugissement",
+     "type": "Contrôle, malédiction",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "3m",
+     "duree": "instantané",
+     "resistance": "Arobatie",
+     "description": "Vous poussez un puissant rugissement repoussant capable d’envoyer valser vos ennemis au loin. Vous faites un effet de repoussement 3m a une cible dans la porté du sort."
+    }
+   ],
+   "2": [
+    {
+     "id": "dragon-dernier-rite",
+     "name": "Dernier rite",
+     "type": "Bénédiction,sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Ce sortilège est utilisé par les prêtres du Grand-père Dragon afin de collectionner l’essence de tous. Ce rituel funéraire doit se faire en même temps que la consommation de la chair du défunt. Afin que le sortilège prend effet, le prêtre doit connaître le nom, la provenance et la religion du défunt. À la fin de l’incantation, celui qui a dévoré la victime gagne une compétence de son choix que le défunt connaissait pour le reste de l’événement. Une seule compétence peut être active de cette manière à la fois."
+    },
+    {
+     "id": "dragon-cuir-du-dragon",
+     "name": "Cuir du dragon",
+     "type": "Bénédiction, buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Le prêtre appelle la force des premiers dragons afin de renforcer la peau ou les écailles de la cible de ce sort. Pour la durée du sort, la cible de celui-ci peut bloquer un dégât supplémentaire avec sa peau. Ce bonus ne se cumule pas avec les amures."
+    },
+    {
+     "id": "dragon-benediction",
+     "name": "Bénédiction",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre apporte la bénédiction de son panthéon sur son suivant. La cible du sort perd le trait maudit et toute malédiction qui l’affecte si le prêtre connaît celle-ci. Le prêtre peut affecter un nombre de personne égal à son niveau de prêtrise."
+    },
+    {
+     "id": "dragon-force-du-grand-marcheur",
+     "name": "Force du grand marcheur",
+     "type": "Bénédiction, Buff (offensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Vou canaliser la force des grands marcheurs dans le corps de votre cible lui donnant une force surhumaine. Pour la durée du sort, votre cible inflige +1 dégât et peut facilement repousser des personnes à main nues."
+    },
+    {
+     "id": "dragon-mot-de-puissance-domination",
+     "name": "Mot de puissance: domination",
+     "type": "Malédiction, débuff",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "5 mètre",
+     "duree": "1 minute",
+     "resistance": "Volonté",
+     "description": "Le prêtre soumet un esprit faible à celui du grand-père dragon. La cible du sort est sous le contrôle mental du prêtre. Il est possible de résister à cet effet grâce à la compétence volonté d’un niveau égal ou supérieur au niveau de prêtrise du lanceur de sort."
+    }
+   ],
+   "3": [
+    {
+     "id": "dragon-malediction-du-grand-pere-dragon",
+     "name": "Malédiction du grand-père dragon",
+     "type": "Bénédiction, Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "1 événement",
+     "resistance": "-",
+     "description": "Le prêtre maudit une victime le rendant faible aux forces naturelles du Grand-père Dragon. La cible de cette malédiction doit doubler les dégâts qu’elle reçoit de feu, glace ou acide reçu au choix du lanceur de sort. Les dégâts doublés de cette manière peuvent dépasser le maximum de 5 de dégât et sont appliqués après les immunités."
+    },
+    {
+     "id": "dragon-chasser-les-impuro",
+     "name": "Chasser les impuro",
+     "type": "Malédiction, Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "2 minutes",
+     "resistance": "-",
+     "description": "Créer un objet bénit pour la durée du sort. Si un individu possède au moins un rang de corruption touche l’objet, celui-ci le brule lui causant une douleur atroce. Si aucun impure n’est trouvée avec ce sort, le grand-père dragon châtie le prêtre et celui-ci ne peut pas regagner les points d’esprit utilisés pour ce sort jusqu’à la fin de l’événement."
+    },
+    {
+     "id": "dragon-ecaille-du-dragon",
+     "name": "Écaille du dragon",
+     "type": "Bénédiction, Buff (défensif)",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Vous recouvrez votre cible d’une fine couche d’écaille des dragons primordiaux. Lorsque vous lancez le sort, choisissez entre feu, glace et acide. Votre cible gagne résistance 2 contre cet élément."
+    },
+    {
+     "id": "dragon-mot-de-puissance-vengeance",
+     "name": "Mot de puissance: vengeance",
+     "type": "Bénédiction, Utilitaire",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Ce sort peut uniquement être lancé lorsque le prêtre tombe à l'agonie. Celui-ci récupère tous ses points de vie lorsqu’il touche le sol et se relève en cherchant à tuer (en rage) la personne qui l’a achevé en ignorant toute autre cible potentielle. Le prêtre retombe agonisant s' il perd tous ses points de vie ou que son meurtrier est tué."
+    },
+    {
+     "id": "dragon-exorcisme",
+     "name": "Exorcisme",
+     "type": "Bénédiction, soins",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "-",
+     "duree": "-",
+     "resistance": "Volonté",
+     "description": "description: Cette bénédiction permet de libérer l’esprit d’un croyant supprimant les effets de contrôle mental et de possession. en cas de possession, l'esprit ou le démon est sorti du corps. Si le sort est fait en rituel, il est impossible pour l’entité ou la personne de résister à cet effet."
+    }
+   ]
+  }
+ },
+ {
+  "id": "absolue",
+  "name": "Culte de l'Absolue",
+  "kind": "divine",
+  "religion": "Culte de l'Absolue",
+  "powerWord": "Apolytos",
+  "levels": {
+   "1": [
+    {
+     "id": "absolue-union-fusionelle",
+     "name": "Union Fusionelle",
+     "type": "Bénédiction, buff (défensif)",
+     "incantation": "Formule",
+     "cible": "Deux personnes se tenant la main",
+     "portee": "touché",
+     "duree": "30 minutes",
+     "resistance": "",
+     "description": "Le prêtre élimine la division arbitraire entre deux êtres et crée une union véritable de ces deux individus, par le corps et par l’esprit. Pour la durée du sort, les cibles volontaire doivent se tenir par la main et ils peuvent être séparés uniquement si ceux-ci le désirent. Si les deux personnes sont tout de même séparées, le sort prend fin immédiatement. Les deux personnes additionnent leurs points de vie et leurs points d’esprit et partagent ces ressources pour la durée du sort. Quand le sort prend fin, peu importe de quelle manière, les deux cibles doivent se séparer de manière égale les points de vie et points d’esprit restant. Une seule des deux cible a besoin d’être un priant de la main divine pour que le sort prend effet."
+    },
+    {
+     "id": "absolue-touche-psionique",
+     "name": "Touché psionique",
+     "type": "Dégât",
+     "incantation": "Mot de pouvoir",
+     "cible": "Un être vivant",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous touchez votre adversaire afin de lui arracher son énergie psychique. Votre toucher inflige 2 dégâts psy."
+    },
+    {
+     "id": "absolue-vie-partage",
+     "name": "Vie partagé",
+     "type": "Soins, bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "nstantané",
+     "resistance": "-",
+     "description": "Le prêtre est capable de rediriger l'énergie vitale de ses suivants afin que ceux-ci puissent se soutenir les un les autres. Le sort permet de transférer jusqu’à 4 points de vie d’une cible à une autre. Les deux cibles doivent être volontaires et fervents du culte de l’absolu. L’une des cible peut être le prêtre."
+    },
+    {
+     "id": "absolue-spiritualite-commune",
+     "name": "Spiritualité commune",
+     "type": "Soins, bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "instantané",
+     "resistance": "-",
+     "description": "Le prêtre est capable de rediriger l'énergie mentale de ses suivants afin que ceux-ci puissent se soutenir les un les autres. Le sort permet de transférer jusqu’à 4 points d’esprit d’une cible à une autre. Les deux cibles doivent être volontaires et fervents du culte de l’absolu. L’une des cible peut être le prêtre."
+    },
+    {
+     "id": "absolue-expansion-des-sens",
+     "name": "Expansion des sens",
+     "type": "Utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Terrain",
+     "duree": "10 minutes",
+     "resistance": "-",
+     "description": "Après avoir accompli un rituel pour se connecter aux différents flux d’énergie divine qui l'entourent, le prêtre est capable de propulser ses sens loin de lui. Il peut alors aller hors-jeu espionner un endroit en jeu. Toutefois, une fois qu’il a choisi ou il s'installe, il ne peut plus se déplacer. Le prêtre doit laisser quelque chose de visible avec un papier qui dit ou il est à l’endroit ou le rituel a été fait. Cela représente son corps qui est dans un état catatonique alors que sa conscience est plus loin."
+    }
+   ],
+   "2": [
+    {
+     "id": "absolue-aura-rouge-la-racine",
+     "name": "Aura rouge : la racine",
+     "type": "Soins, buff (défensif)",
+     "incantation": "Rituel",
+     "cible": "Un être vivant",
+     "portee": "Touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Vous méditez le temps de l’incantation avec la ou les cibles de votre sort afin de rebalancer son énergie. Pour la prochaine heure, la cible du sort pourra ignorer le prochain dégât psychique reçu ou annulé le prochain effet reçu parmi les suivants: silence, faiblesse, incapacité à courir ou paralysie. Une fois l’effet annulé le sort prend fin. Vous pouvez affecté un nombre de cible égal à votre niveau de prêtrise."
+    },
+    {
+     "id": "absolue-choc-des-esprits",
+     "name": "Choc des esprits",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "Un être vivant",
+     "portee": "Lancé",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous propulsez votre propre énergie psychique afin de réduire à néant celle de votre cible. Votre projectile inflige 4 dégâts psy."
+    },
+    {
+     "id": "absolue-energie-brulante",
+     "name": "Énergie brûlante",
+     "type": "Dégât, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Lancer",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre accumule l’énergie divine de sa propre personne dans ses mains pour la propulser sur un ennemi. Le sort inflige 2 dégâts. Une balle en mousse doit être utilisé pour représenter la décharge d’énergie."
+    },
+    {
+     "id": "absolue-benediction",
+     "name": "Bénédiction",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre apporte la bénédiction de son panthéon sur son suivant. La cible du sort perd le trait maudit et toute malédiction qui l’affecte si le prêtre connaît celle-ci. Le prêtre peut affecter un nombre de personnes égal à son niveau de prêtrise."
+    },
+    {
+     "id": "absolue-ma-force-est-tienne",
+     "name": "Ma force est tienne",
+     "type": "Bénédiction, buff (offensif), debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "30 minutes",
+     "resistance": "-",
+     "description": "Le prêtre transfère la force d’un individu volontaire à un autre. Pour la durée du sort, l’une des cible gagne le bonus ‘’Force’’ infligeant +1 de dégât avec ses armes alors que la deuxième gagne le malus ‘’faiblesse’’ et inflige -1 dégât avec ses armes. Le prêtre peut être une des deux cibles."
+    }
+   ],
+   "3": [
+    {
+     "id": "absolue-energie-protectrice",
+     "name": "Énergie protectrice",
+     "type": "Bénédiction, buff (défense)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "le prêtre",
+     "duree": "8h",
+     "resistance": "-",
+     "description": "Pour la durée du sort, le prêtre peut décider de perdre de points d’esprit à la place de point de vie lorsqu’il reçoit des dégâts. Les seuls dégâts ne pouvant pas être affecté par cette défense sont les dégâts de foudre et nécrotique. Si cette perte de point d’esprit amène le prêtre à 0, le sort arrête de faire effet."
+    },
+    {
+     "id": "absolue-secret",
+     "name": "Secret",
+     "type": "Bénédiction, utilitaire",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "Permanent",
+     "resistance": "-",
+     "description": "Après avoir capté les énergies mystiques et les savoir flottant librement, le prêtre les infuse à l’intérieur de l’esprit de son suivant. La décharge d’information crue détient à la fois en elle la connaissance et des bribes de mystères incompréhensibles qui laissent une marque indélébile sur la psychée du récipient. La cible subit 1 dégât trauma et gagne 1 point de connaissance. Le rituel sert à essayer de préciser quelle connaissance sera obtenue, mais le prêtre n’exerce pas un contrôle parfait sur le résultat. Si ce sortilège amène les point d’esprit d’un individu à 0, celui-ci devient lobotomiser incapable de comprendre la réalité (le personnage n’est plus jouable)"
+    },
+    {
+     "id": "absolue-sagesse-universelle",
+     "name": "Sagesse universelle",
+     "type": "Bénédiction, utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "30 minutes",
+     "resistance": "-",
+     "description": "Le prêtre canalise un transfert de savoir-faire d’une cible à une autre. Pour la durée du sort, une cible gagne des compétences détenues par l’autre cible valant au total autant de points que le niveau de prêtrise du prêtre de l’absolu (ou moins). La cible ayant partagé ses compétences en perd l’usage pour la durée du sort."
+    },
+    {
+     "id": "absolue-bloquer-le-chi",
+     "name": "Bloquer le chi",
+     "type": "Malédiction, Sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Le terrain",
+     "duree": "L’Événement",
+     "resistance": "-",
+     "description": "Ce sortilège permet de bloquer les énergies naturelles chez la cible du sort l’empêchant ainsi de récupérer son énergie. Pour la durée du sort, la cible ne peut pas regagner des points d’esprit d’autre manière que la régénération naturelle. Une seule personne peut être affectée à la fois avec ce sortilège et pour ce faire le prêtre doit connaître le nom, la provenance et la religion de la cible."
+    },
+    {
+     "id": "absolue-vague-psionique",
+     "name": "Vague psionique",
+     "type": "Dégât",
+     "incantation": "Formule",
+     "cible": "Toutes créature à 3 mètre autour du mage",
+     "portee": "Le mage",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Vous propulsez votre propre énergie psychique comme un typhon dévastateur autour de vous. Tous ceux pris dans la zone d’effet subissent 5 dégâts psy."
+    }
+   ]
+  }
+ },
+ {
+  "id": "anciens",
+  "name": "Vénération des Anciens",
+  "kind": "divine",
+  "religion": "Vénération des Anciens",
+  "powerWord": "Ancestreas",
+  "levels": {
+   "1": [
+    {
+     "id": "anciens-resonance-au-dela-des-mots",
+     "name": "Résonance au-delà des mots",
+     "type": "Bénédiction, Utilitaire",
+     "incantation": "Rituel",
+     "cible": "Le prêtre",
+     "portee": "Personnel",
+     "duree": "5 minutes",
+     "resistance": "",
+     "description": "Le prêtre entre en synchronicité avec les présences autour de lui et s’harmonise avec le sens direct des informations qui résonnent dans l’espace. Il peut ainsi comprendre n’importe qui comme s'il parlait dans leur langue. Toutefois, il est toujours incapable de se faire comprendre."
+    },
+    {
+     "id": "anciens-invocation-de-la-lignee-le-guerrier",
+     "name": "Invocation de la lignée: Le guerrier",
+     "type": "Bénédiction, buff (offensif)",
+     "incantation": "Formule",
+     "cible": "Un individu",
+     "portee": "Touché",
+     "duree": "5 minutes",
+     "resistance": "",
+     "description": "Le prêtre appelle les guerriers de la ligne de la cible du sort. Celle-ci gagne alors un niveau de la compétence spécialisation d’arme dans l’arme de son choix. Le manieur n’a pas besoin d’avoir la compétence arme de prédilection pour la spécialisation d’arme. Ce sort permet de dépasser la limite de 3 niveaux de spécialisation d'armes."
+    },
+    {
+     "id": "anciens-armee-de-la-lignee",
+     "name": "Armée de la lignée",
+     "type": "Malédiction, Invocation",
+     "incantation": "Formule",
+     "cible": "Un agonisant",
+     "portee": "Touché",
+     "duree": "3 minutes",
+     "resistance": "",
+     "description": "Le prêtre appelle un esprit à prendre possession d’un corps afin de protéger celui-ci. Un corps possédé de cette manière frappe de deux peut importe son arme, possède 6 points de vie, se déplace et se bat lentement."
+    },
+    {
+     "id": "anciens-sur-le-fil",
+     "name": "Sur le fil",
+     "type": "Malédiction, soins",
+     "incantation": "Formule",
+     "cible": "Un agonisant",
+     "portee": "Touché",
+     "duree": "10 minutes",
+     "resistance": "",
+     "description": "Le prêtre est capable de renforcer l’esprit d’un agonisant afin de le tenir sur la limite du royaume de la mort. La cible de ce sort peut agoniser pour 10 minutes supplémentaires avant de mourir. Ce sort peut être fait uniquement une fois par agonisant."
+    }
+   ],
+   "2": [
+    {
+     "id": "anciens-le-vent-des-morts",
+     "name": "Le vent des morts",
+     "type": "Bénédiction, buff (défensif)",
+     "incantation": "Formule",
+     "cible": "Un croyant",
+     "portee": "Touché",
+     "duree": "10 minutes",
+     "resistance": "",
+     "description": "Le prêtre entoure la cible d’un vent de mort. Pour la durée du sort, celle-ci peut dépenser un point d’esprit pour infliger un effet de crainte d’un niveau égal au niveau de prêtrise du lanceur de sort. Si le prêtre lance ce sort sur lui-même, les deux premières utilisations sont gratuites."
+    },
+    {
+     "id": "anciens-communier-avec-les-morts",
+     "name": "Communier avec les morts",
+     "type": "Utilitaire",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "-",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Effet de calme sur un spectre égal au niveau du sort ou en rituel permet de poser une question par niveau de prêtrise à un mort. Il n’est pas obligé de répondre la vérité."
+    },
+    {
+     "id": "anciens-benediction",
+     "name": "Bénédiction",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre apporte la bénédiction de son panthéon sur son suivant. La cible du sort perd le trait maudit et toute malédiction qui l’affecte si le prêtre connaît celle-ci. Le prêtre peut affecter un nombre de personnes égal à son niveau de prêtrise."
+    },
+    {
+     "id": "anciens-lame-ancestrale",
+     "name": "Lame ancestrale",
+     "type": "Buff (offensif), bénédiction",
+     "incantation": "Formule ou rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "10 minutes ou 1 heure",
+     "resistance": "-",
+     "description": "Le prêtre appelle toute la lignée afin que celle-ci habite l’arme de la cible. Pour la durée du sort, l’arme enchantée frappe spectrale. Si le sort à été lancé en rituel, la durée de celui-ci augmente à une heure et le prêtre peut enchanter. un nombre d'armes égal à son niveau de prêtrise."
+    },
+    {
+     "id": "anciens-vision-du-voile",
+     "name": "Vision du voile",
+     "type": "Buff (offensif), bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Le prêtre permet à la cible du sort de voir par delà le voile de la mort. Pour la durée du sort, la cible de celui-ci peut voir les fantômes même quand ceux-ci sont invisibles."
+    }
+   ],
+   "3": [
+    {
+     "id": "anciens-invocation-de-la-lignee-le-lache",
+     "name": "Invocation de la lignée: le lâche",
+     "type": "Buff (défensif), bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Les lâches sont souvent juger par leur pairs, mais ils sont ceux avec le plus de descendance. Ce sort permet d'appeler un tel survivant à rendre visite à son successeur et lui donner ses trucs. La cible de ce sort peut devenir invisible au coût de 1 pe par 10 sec, ne peut pas être ralentie ou paralyser et lorsqu’elle recoit un effet d’horreur elle peut s’enfuir tout de suite."
+    },
+    {
+     "id": "anciens-marcher-avec-les-ancetres",
+     "name": "Marcher avec les ancêtres",
+     "type": "Buff (défensif), bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "5 minutes",
+     "resistance": "-",
+     "description": "Ce sort permet à la cible de devenir en partie immatérielle, la rendant invulnérable aux dégâts physiques, rasoir et poisons. Toutefois son matérielle ne la suis pas dans le monde des esprit et tant que le sort est actif, il lui est impossible d’avoir des points d’armure ou d’utiliser des armes."
+    },
+    {
+     "id": "anciens-retour-aux-racines",
+     "name": "Retour aux racines",
+     "type": "Spéciale, sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "touché",
+     "duree": "l’événement",
+     "resistance": "-",
+     "description": "Si la vénération des ancien a raison sur un point est que tous en possède et peuvent renouer avec leur racine. Ce sortilège peut être fait sur une seule personne qui n’est pas croyant aux anciens. Pour le reste de l’événement, elle est considéré comme un priant de la religion pour ce qui est de la règle des bénédictions. Vous pouvez avoir un retour aux racines actif à la fois."
+    }
+   ]
+  }
+ },
+ {
+  "id": "voix",
+  "name": "Secte de la Voix",
+  "kind": "divine",
+  "religion": "Secte de la Voix",
+  "powerWord": "Vox",
+  "levels": {
+   "1": [
+    {
+     "id": "voix-ne-voit-pas-le-mal",
+     "name": "Ne voit pas le mal",
+     "type": "Contrôle, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "10 seconde",
+     "resistance": "-",
+     "description": "Vous enchanter les yeux de la cible afin que ceux-ci cesse de fonctionner ne voyant alors aucun mal autour d’elle. La cible du sort devient aveugle pour 10 secondes."
+    },
+    {
+     "id": "voix-n-entend-pas-le-mal",
+     "name": "N’entend pas le mal",
+     "type": "Debuff, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "2 minute",
+     "resistance": "-",
+     "description": "Vous refuser que la personne propage le mal et souhaiter en même temps la protégé des paroles affreuses autour d’elle. La cible du sort devient sourde pour la durée du sort."
+    },
+    {
+     "id": "voix-le-poid-de-l-heresie",
+     "name": "Le poid de l’hérésie",
+     "type": "Debuff, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "1 minute",
+     "resistance": "-",
+     "description": "Le prêtre rend consciente la cible du sort de ses crimes qui pèsent sur ses épaules. Ce poids se manifeste physiquement empêchant la cible de la malédiction de courir pendant 1 minute."
+    },
+    {
+     "id": "voix-le-devoir-du-juste",
+     "name": "Le devoir du juste",
+     "type": "Contrôle, Malédiction",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "5 mètres",
+     "duree": "10 secondes",
+     "resistance": "Volonté",
+     "description": "La foi du prêtre envers la seule et véritable religion enrage la cible de la malédiction. Celle-ci subit un effet de provocation d’un niveau égal au niveau de prêtrise de l’incantateur et dure 10 secondes."
+    },
+    {
+     "id": "voix-psaume-de-protection",
+     "name": "Psaume de protection",
+     "type": "Utilitaire",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "Soi-même",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Le prêtre récite en boucle sa formule afin d’apporter la protection de la voix sur lui. Lorsqu’il effectue ce sort, il doit avoir les mains en prière et ne pas bouger. S' il enfreint une des trois règles, le sort termine automatiquement. Pendant qu’il récite ses psaumes, le prêtre est immunisé à tous dégâts qui ne sont pas foudre."
+    }
+   ],
+   "2": [
+    {
+     "id": "voix-destine-fatale",
+     "name": "Destiné fatale",
+     "type": "Debuff",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "3 mètre",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le mage utilise le sang de sa cible pour écraser l’un de ses membres. La cible du sort subit un effet de brise membre. C’est la cible du sort qui choisit quel membre est brisé."
+    },
+    {
+     "id": "voix-delivrance-des-sortileges",
+     "name": "Délivrance des sortilèges",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Toucher",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Description Permet au prêtre de supprimer un sortilège sur un croyant qui est de niveau égal ou inférieur à son niveau de prêtrise. Pour que la dissipation fonctionne, le prêtre devra être en mesure de déterminer l’école de magie, de prêtrise ou de cultisme du sortilège. Un seul essai est possible par sortilège."
+    },
+    {
+     "id": "voix-benediction",
+     "name": "Bénédiction",
+     "type": "Bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Instantané",
+     "resistance": "-",
+     "description": "Le prêtre apporte la bénédiction de son panthéon sur son suivant. La cible du sort perd le trait maudit et toute malédiction qui l’affecte si le prêtre connaît celle-ci. Le prêtre peut affecter un nombre de personne égal à son niveau de prêtrise."
+    },
+    {
+     "id": "voix-damnation",
+     "name": "Damnation",
+     "type": "Bénédiction, buff (offensif)",
+     "incantation": "Mot de pouvoir",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "1 minute ou le prochain coup donné",
+     "resistance": "-",
+     "description": "Le prêtre en appelle à la voix afin que celle-ci punissent ceux qui ne marchent pas sur le droit chemin. Le prochain coup donné avec l’arme enchantée obtient +1 dégât et frappe de maudit."
+    },
+    {
+     "id": "voix-psaume-de-soins",
+     "name": "Psaume de soins",
+     "type": "Bénédiction, soins",
+     "incantation": "Incantation",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "-",
+     "resistance": "-",
+     "description": "Le prêtre soigne les blessures du corps et de l’esprit avec les psaumes de la voix. Pour ce faire, il doit avoir une main placée dans le dos de la cible du sort pour tout le long de l’incantation. Tant que le prêtre a sa main dans le dos et récite sa prière, la cible du sort se soigne de 1pv par 10 secondes. Ce sort de soins ne cause pas de dégât."
+    }
+   ],
+   "3": [
+    {
+     "id": "voix-ressourcement-irreversible",
+     "name": "Ressourcement irréversible",
+     "type": "Soins, bénédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "touché",
+     "duree": "instantané",
+     "resistance": "",
+     "description": "Le prêtre est capable de puiser dans la structure fragile de son suivant pour lui insuffler une grande énergie, le rapprochant de son inéluctable destin. La cible regagne tous ses points de vie et ses points d’esprits, mais subit 1 dégât nécrotique. Si la cible n’est pas agonisante, elle doit être consentante."
+    },
+    {
+     "id": "voix-corriger-la-destine",
+     "name": "Corriger la destiné",
+     "type": "Buff (défensif), bénédiction, soins",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "toucher",
+     "duree": "1 heure",
+     "resistance": "-",
+     "description": "Vous permettez à la cible de votre sort de voir l’entropie du monde et comment les actions de chacun affecte celle-ci. De cette manière, votre cible peut porter les dernières volontés des morts autour d’elle pour corriger cette entropie. Pour la durée du sort, la cible de celui-ci peut toucher une créature agonisante pour utiliser son énergie afin d’accomplir sa destinée. Chaque créature peut être touchée une seule fois, et à chaque fois, la cible de votre sort récupère 1 point d’esprit."
+    },
+    {
+     "id": "voix-crise-existentiel",
+     "name": "Crise existentiel",
+     "type": "Debuff, malédiction, sortilège",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "le terrain",
+     "duree": "1 cycle",
+     "resistance": "-",
+     "description": "Vous faites un rituel afin de créer un malaise chez votre cible. Pour l’affecter correctement vous devez connaître le nom, la provenance et la religion de celle-ci. Une personne affectée par ce sort a une crise de foi absolu mettant ses propres croyances en doute. Elle ne compte plus comme un priant de sa religion pour les sort de type bénédiction et si elle pouvait lancer des sorts divins, celle-ci n’y a plus accès. Vous pouvez affecter une personne une seule fois au courant d’un même événement et vous pouvez avoir uniquement un effet de crise existentiel actif à la fois."
+    },
+    {
+     "id": "voix-ne-dit-pas-de-mal",
+     "name": "Ne dit pas de mal",
+     "type": "Debuff, malédiction",
+     "incantation": "Formule",
+     "cible": "",
+     "portee": "10 mètres",
+     "duree": "2 ou 10 minutes",
+     "resistance": "Volonté (pour l’effet vérité seulement)",
+     "description": "Cette formule peut avoir deux effets. La première est d’empêcher un nombre d'individus égal à votre niveau de prêtrise de transmettre des ignominies en les taisant au complet pendant 2 minutes. La seconde est qu’une personne ne puisse plus mentir et subit un effet de vérité niveau 3 pendant 10 minutes."
+    },
+    {
+     "id": "voix-grande-destine",
+     "name": "Grande destiné",
+     "type": "Bénédiction, soins, buff (défense)",
+     "incantation": "Rituel",
+     "cible": "",
+     "portee": "Touché",
+     "duree": "Une heure",
+     "resistance": "-",
+     "description": "Après une messe spéciale, le prêtre rappelle l’importance de la destinée de chacun et renforce la foi d’un nombre de personnes égal à son niveau de prêtrise. Les personnes affectées par ce sort, peuvent à n’importe quel moment lors de leur agonie se relever à 1 point de vie. Lorsque l’effet est utilisé le buff se dissipe."
+    }
+   ]
+  }
+ },
+ {
+  "id": "celestes",
+  "name": "Voie des Célestes",
+  "kind": "divine",
+  "religion": "Voie des Célestes",
+  "powerWord": null,
+  "levels": {}
+ },
+ {
+  "id": "damnes",
+  "name": "Dévotion aux Empereurs Damnés",
+  "kind": "divine",
+  "religion": "Dévotion aux Empereurs Damnés",
+  "powerWord": null,
+  "levels": {}
+ },
+ {
+  "id": "henos",
+  "name": "Dévotion aux Hénos",
+  "kind": "divine",
+  "religion": "Dévotion aux Hénos",
+  "powerWord": null,
+  "levels": {}
+ }
+]

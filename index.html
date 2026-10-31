@@ -268,6 +268,17 @@
             border-bottom-color: #8e44ad;
         }
 
+        .player-search {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .search-empty { color: #888; font-style: italic; }
+
         /* --- Page Connaissances --- */
         #knowledge-container { display: flex; flex-direction: column; gap: 2rem; }
 
@@ -350,6 +361,74 @@
             color: #888;
             font-size: 0.8rem;
             background-color: #f9f9f9;
+        }
+
+        /* --- Magie : fenêtre de choix et onglet Sorts --- */
+        #magic-dialog-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        #magic-dialog-body {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 640px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            box-sizing: border-box;
+        }
+        #magic-dialog-body h3 { margin: 0 0 0.5rem; color: var(--secondary); }
+        .magic-dialog-hint { color: #666; font-size: 0.9rem; margin: 0 0 1rem; }
+        .magic-school-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.6rem; }
+        .magic-school-btn {
+            display: flex; flex-direction: column; gap: 0.2rem; align-items: flex-start;
+            padding: 0.8rem 1rem; border: 2px solid #e0e6ed; border-radius: 8px;
+            background: #fff; cursor: pointer; font-size: 0.95rem; text-align: left;
+        }
+        .magic-school-btn span { color: #888; font-size: 0.8rem; }
+        .magic-school-btn:hover:not(:disabled) { border-color: #8e44ad; }
+        .magic-school-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .magic-dialog-buttons { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+        .spell-choice-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .spell-choice {
+            display: flex; gap: 0.7rem; align-items: flex-start;
+            border: 1px solid #e0e6ed; border-radius: 8px; padding: 0.7rem 0.9rem; cursor: pointer;
+        }
+        .spell-choice:has(input:checked) { border-color: #8e44ad; background: #f8f2fb; }
+        .spell-choice input { margin-top: 0.25rem; }
+        .spell-name { font-weight: bold; color: var(--secondary); }
+        .spell-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; font-size: 0.8rem; color: #666; margin: 0.3rem 0; }
+        .spell-desc { font-size: 0.85rem; color: #444; margin: 0.3rem 0 0; }
+        #spells-container { display: flex; flex-direction: column; gap: 2rem; }
+        .spell-level { padding: 0 1rem 1rem; }
+        .spell-level h4 { margin: 1rem 0 0.6rem; color: #8e44ad; }
+        .spell-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; }
+        .spell-choice-level { margin: 0.6rem 0 0; color: #8e44ad; }
+        .spell-badge {
+            font-size: 0.7rem; font-weight: normal; color: #8e44ad;
+            border: 1px solid #8e44ad; border-radius: 10px; padding: 0 0.45rem; margin-left: 0.3rem;
+        }
+        .incantation-editor { margin-top: 0.7rem; border-top: 1px dashed #e0e6ed; padding-top: 0.6rem; }
+        .incantation-editor label { font-weight: bold; font-size: 0.85rem; color: var(--secondary); }
+        .incantation-hint { font-size: 0.78rem; color: #888; margin: 0.15rem 0 0.4rem; }
+        .incantation-editor textarea {
+            width: 100%; box-sizing: border-box; padding: 0.5rem; font: inherit; font-size: 0.85rem;
+            border: 1px solid #d0d7de; border-radius: 6px; resize: vertical;
+        }
+        .incantation-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 0.4rem; font-size: 0.8rem; color: #888; }
+        .incantation-actions span { white-space: nowrap; }
+        .incantation-actions .admin-btn { margin: 0; padding: 0.35rem 0.9rem; width: auto; flex: none; }
+        .spell-card {
+            background: #fff; border-radius: 8px; padding: 0.9rem 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); border-left: 4px solid #8e44ad;
         }
 
         /* --- Modal Mot de Passe Admin --- */
@@ -468,11 +547,20 @@
         <div class="player-tabs">
             <button id="tab-skills"     class="player-tab-btn active" onclick="switchPlayerTab('skills')">Compétences</button>
             <button id="tab-knowledge"  class="player-tab-btn"        onclick="switchPlayerTab('knowledge')">Connaissances</button>
+            <button id="tab-spells"     class="player-tab-btn"        onclick="switchPlayerTab('spells')">Sorts</button>
+            <button id="tab-character"  class="player-tab-btn"        onclick="switchPlayerTab('character')">Personnage</button>
         </div>
+
+        <input type="search" id="player-search" class="player-search" placeholder="Rechercher une compétence…"
+               oninput="renderSearchedTab()">
 
         <div id="skill-tree-container"></div>
 
         <div id="knowledge-container" class="hidden"></div>
+
+        <div id="spells-container" class="hidden"></div>
+
+        <div id="character-container" class="hidden"></div>
     </section>
 
     <section id="admin-view" class="hidden">
@@ -533,6 +621,18 @@
         </div>
 
         <div class="admin-card">
+            <h3>Fiche Personnage d'un Joueur</h3>
+            <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Race, provenance et armure inspectée à l'inscription.</p>
+            <div class="admin-form-group">
+                <div style="display:flex;gap:0.5rem;">
+                    <input type="text" id="admin-char-player" placeholder="Nom exact du joueur" style="flex:1;">
+                    <button class="admin-btn" style="width:auto;padding:8px 14px;white-space:nowrap;" onclick="adminLoadCharacter()">Charger</button>
+                </div>
+            </div>
+            <div id="admin-char-form"></div>
+        </div>
+
+        <div class="admin-card">
             <h3>Joueurs Enregistrés</h3>
             <div id="admin-player-list"><p style="color:#888">Chargement...</p></div>
         </div>
@@ -542,13 +642,11 @@
             <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Laissez le coût à 0 si la compétence n'utilise pas cette devise.</p>
             <div class="admin-form-group">
                 <select id="admin-skill-branch">
-                    <option value="Combat">Combat</option>
-                    <option value="Furtivité">Furtivité</option>
-                    <option value="Corps &amp; Santé">Corps &amp; Santé</option>
-                    <option value="Social">Social</option>
-                    <option value="Magie &amp; Religion">Magie &amp; Religion</option>
-                    <option value="Arts &amp; Métiers">Arts &amp; Métiers</option>
-                    <option value="Connaissances">Connaissances</option>
+                    <option value="Martial">Martial</option>
+                    <option value="Magie">Magie</option>
+                    <option value="Utilité">Utilité</option>
+                    <option value="Craft">Craft</option>
+                    <option value="Économie">Économie</option>
                 </select>
                 <input type="text" id="admin-skill-name" placeholder="Nom de la compétence">
                 <input type="number" id="admin-skill-cost" placeholder="Coût en XP (0 si connaissance uniquement)" min="0" value="0">
@@ -560,6 +658,11 @@
         </div>
     </section>
 </main>
+
+<!-- Fenêtre de choix : école de magie puis sorts -->
+<div id="magic-dialog-overlay" class="hidden" onclick="if (event.target === this) closeMagicDialog()">
+    <div id="magic-dialog-body"></div>
+</div>
 
 <!-- Modal mot de passe Animation -->
 <div id="admin-login-overlay" class="hidden">
@@ -584,6 +687,9 @@
     let cachedTree    = [];
     let allKnowledges = [];
     let adminKey      = "";
+    let characterRules = null;
+    let magicSchools   = [];   // écoles de magie et leurs sorts par niveau (spells.json)
+    const KNOWLEDGE_MAX_LEVEL = 5;
 
     // --- UTILITAIRES API ---
     async function api(path, method = 'GET', body = null) {
@@ -610,14 +716,16 @@
 
     async function loadPlayerSession() {
         try {
-            const [record, tree, kList] = await Promise.all([
+            const [record, tree, kList, schools] = await Promise.all([
                 api('/api/me'),
                 api('/api/skills'),
-                api('/api/knowledges')
+                api('/api/knowledges'),
+                api('/api/spells')
             ]);
             playerData    = record;
             cachedTree    = tree;
             allKnowledges = kList;
+            magicSchools  = schools;
             document.getElementById('login-section').classList.add('hidden');
             switchRole('player');
             switchPlayerTab('skills');
@@ -723,9 +831,45 @@
         return m ? m[1] : null;
     }
 
+    // --- RECHERCHE ---
+    // Comparaison sans accents ni majuscules
+    function normalizeSearch(text) {
+        return (text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    }
+
+    function searchQuery() {
+        return normalizeSearch(document.getElementById('player-search').value.trim());
+    }
+
+    function matchesSearch(query, ...texts) {
+        return !query || texts.some(t => normalizeSearch(t).includes(query));
+    }
+
+    function renderSearchedTab() {
+        if (document.getElementById('tab-knowledge').classList.contains('active')) renderKnowledges();
+        else if (document.getElementById('tab-spells').classList.contains('active')) renderSpells();
+        else renderSkillTree();
+    }
+
+    function searchEmptyMessage(container) {
+        const el = document.createElement('p');
+        el.classList.add('search-empty');
+        el.textContent = 'Aucun résultat pour cette recherche.';
+        container.appendChild(el);
+    }
+
+    function skillPrereqOk(skill) {
+        return (!skill.prereq || playerData.acquiredSkills.includes(skill.prereq))
+            && (!skill.weaponPrereq || skill.weaponPrereq.some(w => (playerData.weapons ?? []).includes(w)))
+            && (!skill.requiresReligion || !!playerData.character?.religion)
+            && (!skill.requiresMagic || Object.keys(playerData.magicSchools ?? {}).length > 0);
+    }
+
     function renderSkillTree() {
         const container = document.getElementById('skill-tree-container');
         container.innerHTML = "";
+        const query = searchQuery();
+        let shown = 0;
 
         cachedTree.forEach(branch => {
             // Bloc de branche
@@ -745,8 +889,12 @@
                 groups.get(base).push(skill);
             });
 
-            // Une rangée par compétence
+            // Une rangée par compétence (seulement celles qui correspondent à la recherche)
+            const branchMatches = matchesSearch(query, branch.branchName);
+            let branchShown = 0;
             groups.forEach((skills, baseName) => {
+                if (!branchMatches && !matchesSearch(query, baseName, ...skills.map(s => s.desc))) return;
+                branchShown++;
                 const rowEl = document.createElement('div');
                 rowEl.classList.add('skill-row');
 
@@ -759,11 +907,15 @@
                 levelsEl.classList.add('skill-levels');
 
                 skills.forEach(skill => {
+                    if (skill.weaponChoices) { levelsEl.appendChild(weaponSkillNode(skill)); return; }
+                    if (skill.specEffects)   { levelsEl.appendChild(specSkillNode(skill));   return; }
+                    if (skill.magicKind)     { levelsEl.appendChild(magicSkillNode(skill));  return; }
+                    if (skill.extraSpell)    { levelsEl.appendChild(extraSpellNode(skill));  return; }
                     const levelSuffix = getLevelSuffix(skill.name);
                     const isMulti     = skills.length > 1;
 
                     const isAcquired  = playerData.acquiredSkills.includes(skill.id);
-                    const prereqOk    = !skill.prereq || playerData.acquiredSkills.includes(skill.prereq);
+                    const prereqOk    = skillPrereqOk(skill);
                     const hasXPCost   = skill.cost > 0;
                     const hasKPCost   = (skill.knowledge_cost ?? 0) > 0;
                     const canAffordXP = !hasXPCost || playerData.points >= skill.cost;
@@ -815,17 +967,706 @@
                 blockEl.appendChild(rowEl);
             });
 
-            container.appendChild(blockEl);
+            if (branchShown) { container.appendChild(blockEl); shown++; }
         });
+        if (!shown && query) searchEmptyMessage(container);
+    }
+
+    // Arme de prédilection : une catégorie d'arme par achat, la 1re (ou les 2 premières selon la provenance) gratuite
+    function weaponSkillNode(skill) {
+        const owned     = playerData.weapons ?? [];
+        const remaining = Object.entries(skill.weaponChoices).filter(([id]) => !owned.includes(id));
+        const cost      = playerData.nextWeaponCost ?? skill.cost;
+        const canAfford = playerData.points >= cost;
+
+        const nodeEl = document.createElement('div');
+        nodeEl.classList.add('skill-node');
+        if (owned.length)                   nodeEl.classList.add('acquired');
+        else if (canAfford)                 nodeEl.classList.add('available');
+        else                                nodeEl.classList.add('locked');
+
+        const ownedHtml = owned.length
+            ? `<p class="skill-desc"><strong>Acquises :</strong> ${owned.map(w => skill.weaponChoices[w]).join(', ')}</p>` : '';
+        nodeEl.innerHTML = `
+            <div class="skill-cost">${remaining.length ? (cost === 0 ? 'Gratuit' : `${cost} XP`) : '—'}</div>
+            <p class="skill-desc">${skill.desc}</p>
+            ${ownedHtml}`;
+
+        if (remaining.length) {
+            const select = document.createElement('select');
+            select.style.cssText = 'width:100%;padding:6px;margin-bottom:0.5rem;';
+            select.innerHTML = optionsHtml([], null, "-- Catégorie d'arme --")
+                + remaining.map(([id, label]) => `<option value="${id}">${label}</option>`).join('');
+            nodeEl.appendChild(select);
+
+            const btn = document.createElement('button');
+            btn.classList.add('btn-purchase');
+            if (canAfford) {
+                btn.textContent = cost === 0 ? 'Acheter (gratuit)' : `Acheter (${cost} XP)`;
+                btn.onclick = () => {
+                    if (!select.value) { alert("Choisissez une catégorie d'arme."); return; }
+                    purchaseSkill(skill.id, { weapon: select.value });
+                };
+            } else {
+                btn.textContent = 'Verrouillé'; btn.disabled = true;
+            }
+            nodeEl.appendChild(btn);
+        }
+        return nodeEl;
+    }
+
+    // Spécialisation d'arme : un niveau à la fois pour une de ses armes de prédilection, jusqu'au niveau max
+    function specSkillNode(skill) {
+        const owned      = playerData.weapons ?? [];
+        const specs      = playerData.weaponSpecs ?? {};
+        const upgradable = owned.filter(w => (specs[w] ?? 0) < skill.maxLevel);
+        const canAfford  = playerData.points >= skill.cost;
+
+        const nodeEl = document.createElement('div');
+        nodeEl.classList.add('skill-node');
+        if (Object.keys(specs).length)           nodeEl.classList.add('acquired');
+        else if (upgradable.length && canAfford) nodeEl.classList.add('available');
+        else                                     nodeEl.classList.add('locked');
+
+        const rows = owned.map(w => `<li><strong>${skill.weaponNames[w]}</strong> — niveau ${specs[w] ?? 0}/${skill.maxLevel}
+                                         <br><span style="color:#888;">${skill.specEffects[w]}</span></li>`).join('');
+        nodeEl.innerHTML = `
+            <div class="skill-cost">${skill.cost} XP / niveau</div>
+            <p class="skill-desc">${skill.desc}</p>
+            ${rows ? `<ul class="skill-desc" style="padding-left:1.1rem;">${rows}</ul>`
+                   : `<p class="skill-desc"><em>Achetez d'abord une arme de prédilection.</em></p>`}`;
+
+        if (upgradable.length) {
+            const select = document.createElement('select');
+            select.style.cssText = 'width:100%;padding:6px;margin-bottom:0.5rem;';
+            select.innerHTML = optionsHtml([], null, '-- Arme à spécialiser --')
+                + upgradable.map(w => `<option value="${w}">${skill.weaponNames[w]} (niveau ${(specs[w] ?? 0) + 1})</option>`).join('');
+            nodeEl.appendChild(select);
+
+            const btn = document.createElement('button');
+            btn.classList.add('btn-purchase');
+            if (canAfford) {
+                btn.textContent = `Acheter (${skill.cost} XP)`;
+                btn.onclick = () => {
+                    if (!select.value) { alert('Choisissez une arme à spécialiser.'); return; }
+                    purchaseSkill(skill.id, { weapon: select.value });
+                };
+            } else {
+                btn.textContent = 'Verrouillé'; btn.disabled = true;
+            }
+            nodeEl.appendChild(btn);
+        }
+        return nodeEl;
+    }
+
+    // --- MAGIE ---
+    // Trois compétences de magie (École de magie, Magie avancée, Prêtrise) : chaque achat ouvre une école
+    // de leur type ou la monte d'un niveau, avec un choix de sorts. Sorts supplémentaires : un sort à la fois.
+    const MAGIC_KIND_LABELS = { base: 'École de magie', advanced: 'Magie avancée', divine: 'Sorts divins' };
+    const MAGIC_KIND_HINTS  = {
+        base:     'Quelle sorte de magie voulez-vous apprendre ou faire progresser ?',
+        advanced: 'Une école avancée combine deux de vos écoles de base, et son niveau ne peut pas dépasser celui de ces deux écoles.',
+        divine:   'Les sorts divins viennent de votre religion. Il est impossible d\'avoir des sorts de plusieurs religions.',
+    };
+
+    function escapeHtml(text) {
+        return (text ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+
+    function schoolName(id) {
+        return magicSchools.find(s => s.id === id)?.name ?? id;
+    }
+
+    function knownSpellIds() {
+        return new Set((playerData.spells ?? []).map(s => s.id));
+    }
+
+    // Raison pour laquelle l'école ne peut pas monter d'un niveau, ou null (même règle que le serveur)
+    function schoolBlocker(school, maxLevel) {
+        const schools = playerData.magicSchools ?? {};
+        const level   = (schools[school.id] ?? 0) + 1;
+        if (level > maxLevel) return 'Niveau maximum';
+        if (school.kind === 'advanced') {
+            if (school.requires.some(r => (schools[r] ?? 0) < level))
+                return `Demande ${school.requires.map(schoolName).join(' et ')} au niveau ${level}`;
+        }
+        if (school.kind === 'divine') {
+            if (school.religion !== playerData.character?.religion) return `Demande de prier : ${school.religion}`;
+            const other = Object.keys(schools).find(id => id !== school.id
+                && magicSchools.find(s => s.id === id)?.kind === 'divine');
+            if (other) return `Vous avez déjà des sorts divins de ${schoolName(other)}`;
+        }
+        return null;
+    }
+
+    // Écoles proposées dans la fenêtre : pour la prêtrise, seulement celle de sa religion et celle déjà apprise
+    function dialogSchools(kind) {
+        const schools = playerData.magicSchools ?? {};
+        return magicSchools.filter(s => s.kind === kind
+            && (kind !== 'divine' || s.religion === playerData.character?.religion || schools[s.id]));
+    }
+
+    function magicSkillNode(skill) {
+        const kind      = skill.magicKind;
+        const schools   = playerData.magicSchools ?? {};
+        const mine      = magicSchools.filter(s => s.kind === kind && schools[s.id]);
+        const canAfford = playerData.points >= skill.cost;
+        const prereqOk  = skillPrereqOk(skill);
+        const canLevel  = dialogSchools(kind).some(s => !schoolBlocker(s, skill.maxLevel));
+
+        const nodeEl = document.createElement('div');
+        nodeEl.classList.add('skill-node');
+        if (mine.length)                                nodeEl.classList.add('acquired');
+        else if (prereqOk && canAfford && canLevel)     nodeEl.classList.add('available');
+        else                                            nodeEl.classList.add('locked');
+
+        const rows = mine.map(s => `<li><strong>${s.name}</strong> — niveau ${schools[s.id]}/${skill.maxLevel}</li>`).join('');
+        nodeEl.innerHTML = `
+            <div class="skill-cost">${skill.cost} XP / niveau</div>
+            <p class="skill-desc">${skill.desc}</p>
+            ${rows ? `<ul class="skill-desc" style="padding-left:1.1rem;">${rows}</ul>` : ''}`;
+
+        const btn = document.createElement('button');
+        btn.classList.add('btn-purchase');
+        if (prereqOk && canAfford && canLevel) {
+            btn.textContent = `Acheter (${skill.cost} XP)`;
+            btn.onclick = () => openMagicDialog(skill);
+        } else {
+            btn.textContent = !prereqOk || !canAfford ? 'Verrouillé'
+                            : kind === 'advanced' && !mine.length ? 'Demande deux écoles liées' : 'Aucune école disponible';
+            btn.disabled = true;
+        }
+        nodeEl.appendChild(btn);
+        return nodeEl;
+    }
+
+    function spellDetailsHtml(spell) {
+        const field = (label, value) => value && value !== '-' ? `<span><strong>${label} :</strong> ${value}</span>` : '';
+        return `
+            <div class="spell-meta">
+                ${field('Type', spell.type)} ${field('Incantation', spell.incantation)} ${field('Cible', spell.cible)}
+                ${field('Portée', spell.portee)} ${field('Durée', spell.duree)} ${field('Résistance', spell.resistance)}
+            </div>
+            <p class="spell-desc">${spell.description}</p>`;
+    }
+
+    let magicDialogSkill = null;
+
+    function showMagicDialog(html) {
+        document.getElementById('magic-dialog-body').innerHTML = html;
+        document.getElementById('magic-dialog-overlay').classList.remove('hidden');
+    }
+
+    // Étape 1 : choix de l'école (nouvelle école au niveau 1 ou école existante au niveau suivant)
+    function openMagicDialog(skill) {
+        magicDialogSkill = skill;
+        const schools = playerData.magicSchools ?? {};
+        showMagicDialog(`
+            <h3>${skill.name}</h3>
+            <p class="magic-dialog-hint">${MAGIC_KIND_HINTS[skill.magicKind]}</p>
+            <div class="magic-school-list">
+                ${dialogSchools(skill.magicKind).map(s => {
+                    const level   = schools[s.id] ?? 0;
+                    const blocker = schoolBlocker(s, skill.maxLevel);
+                    return `<button class="magic-school-btn" ${blocker ? 'disabled' : ''} onclick="showSpellChoice('${s.id}')">
+                                <strong>${s.name}</strong>
+                                <span>${blocker ?? (level ? `Niveau ${level} → ${level + 1}` : 'Nouvelle école (niveau 1)')}</span>
+                            </button>`;
+                }).join('')}
+            </div>
+            <div class="magic-dialog-buttons">
+                <button class="btn-cancel-admin" onclick="closeMagicDialog()">Annuler</button>
+            </div>`);
+    }
+
+    // Étape 2 : choix des sorts du nouveau niveau (sans ceux déjà appris en sort supplémentaire)
+    function showSpellChoice(schoolId) {
+        const school = magicSchools.find(s => s.id === schoolId);
+        const level  = ((playerData.magicSchools ?? {})[schoolId] ?? 0) + 1;
+        const known  = knownSpellIds();
+        const spells = (school.levels[level] ?? []).filter(sp => !known.has(sp.id));
+        const needed = Math.min(magicDialogSkill.spellsPerLevel, spells.length);
+        const hint   = !spells.length
+            ? `Le règlement ne contient pas de sorts de niveau ${level} pour cette école. Ce niveau peut demander l'approbation d'un scénariste.`
+            : needed === spells.length
+                ? `Il reste ${spells.length} sorts à ce niveau : vous les apprenez tous.`
+                : `Choisissez ${needed} sorts parmi les ${spells.length} de niveau ${level}.`;
+        showMagicDialog(`
+            <h3>${school.name} — niveau ${level}</h3>
+            <p class="magic-dialog-hint">${hint} <span id="spell-choice-count"></span></p>
+            <div class="spell-choice-list">
+                ${spells.map(sp => `
+                    <label class="spell-choice">
+                        <input type="checkbox" value="${sp.id}" ${needed === spells.length ? 'checked disabled' : ''}
+                               onchange="updateSpellChoice(${needed})">
+                        <div><div class="spell-name">${sp.name}</div>${spellDetailsHtml(sp)}</div>
+                    </label>`).join('')}
+            </div>
+            <div class="magic-dialog-buttons">
+                <button class="btn-cancel-admin" onclick="openMagicDialog(magicDialogSkill)">Retour</button>
+                <button class="admin-btn" id="spell-choice-confirm" style="flex:1;"
+                        onclick="confirmSpellChoice('${schoolId}')">Acheter (${magicDialogSkill.cost} XP)</button>
+            </div>`);
+        updateSpellChoice(needed);
+    }
+
+    function chosenSpells() {
+        return Array.from(document.querySelectorAll('.spell-choice input:checked')).map(cb => cb.value);
+    }
+
+    // Limite la sélection au nombre de sorts permis et n'active l'achat que lorsqu'il est atteint
+    function updateSpellChoice(needed) {
+        const count = chosenSpells().length;
+        document.querySelectorAll('.spell-choice input').forEach(cb => {
+            if (!cb.hasAttribute('checked')) cb.disabled = !cb.checked && count >= needed;
+        });
+        document.getElementById('spell-choice-count').textContent = needed ? `(${count}/${needed})` : '';
+        document.getElementById('spell-choice-confirm').disabled = count !== needed;
+    }
+
+    async function confirmSpellChoice(schoolId) {
+        if (await purchaseSkill(magicDialogSkill.id, { school: schoolId, spells: chosenSpells() })) closeMagicDialog();
+    }
+
+    function closeMagicDialog() {
+        document.getElementById('magic-dialog-overlay').classList.add('hidden');
+        magicDialogSkill = null;
+    }
+
+    // --- SORTS SUPPLÉMENTAIRES ---
+    // Sorts encore apprenables d'une école : niveau au plus celui de l'école, pas déjà connus
+    function learnableSpells(school) {
+        const level = (playerData.magicSchools ?? {})[school.id] ?? 0;
+        const known = knownSpellIds();
+        return Object.entries(school.levels)
+            .filter(([lv]) => Number(lv) <= level)
+            .flatMap(([lv, spells]) => spells.filter(sp => !known.has(sp.id)).map(sp => ({ ...sp, level: Number(lv) })));
+    }
+
+    function extraSpellSchools() {
+        const schools = playerData.magicSchools ?? {};
+        return magicSchools.filter(s => schools[s.id] && learnableSpells(s).length);
+    }
+
+    function extraSpellNode(skill) {
+        const extras    = (playerData.spells ?? []).filter(s => s.extra);
+        const available = extraSpellSchools();
+        const cheapest  = Math.min(...available.flatMap(s => learnableSpells(s).map(sp => sp.level)));
+        const canBuy    = available.length && playerData.points >= cheapest;
+
+        const nodeEl = document.createElement('div');
+        nodeEl.classList.add('skill-node');
+        if (extras.length)  nodeEl.classList.add('acquired');
+        else if (canBuy)    nodeEl.classList.add('available');
+        else                nodeEl.classList.add('locked');
+
+        const rows = extras.map(s => {
+            const spell = magicSchools.find(x => x.id === s.school)?.levels[s.level]?.find(x => x.id === s.id);
+            return `<li>${spell?.name ?? s.id} (${schoolName(s.school)}, niveau ${s.level})</li>`;
+        }).join('');
+        nodeEl.innerHTML = `
+            <div class="skill-cost">Niveau du sort en XP</div>
+            <p class="skill-desc">${skill.desc}</p>
+            ${rows ? `<ul class="skill-desc" style="padding-left:1.1rem;">${rows}</ul>` : ''}`;
+
+        const btn = document.createElement('button');
+        btn.classList.add('btn-purchase');
+        if (canBuy) {
+            btn.textContent = 'Choisir un sort';
+            btn.onclick = () => openExtraSpellDialog(skill);
+        } else {
+            btn.textContent = available.length ? 'Verrouillé' : 'Aucun sort disponible'; btn.disabled = true;
+        }
+        nodeEl.appendChild(btn);
+        return nodeEl;
+    }
+
+    function openExtraSpellDialog(skill) {
+        magicDialogSkill = skill;
+        const schools = playerData.magicSchools ?? {};
+        showMagicDialog(`
+            <h3>Sort supplémentaire</h3>
+            <p class="magic-dialog-hint">Dans quelle école voulez-vous apprendre un sort de plus ?</p>
+            <div class="magic-school-list">
+                ${extraSpellSchools().map(s => `
+                    <button class="magic-school-btn" onclick="showExtraSpellChoice('${s.id}')">
+                        <strong>${s.name}</strong>
+                        <span>${MAGIC_KIND_LABELS[s.kind]} — niveau ${schools[s.id]}</span>
+                    </button>`).join('')}
+            </div>
+            <div class="magic-dialog-buttons">
+                <button class="btn-cancel-admin" onclick="closeMagicDialog()">Annuler</button>
+            </div>`);
+    }
+
+    function showExtraSpellChoice(schoolId) {
+        const school = magicSchools.find(s => s.id === schoolId);
+        const spells = learnableSpells(school);
+        const levels = [...new Set(spells.map(sp => sp.level))];
+        showMagicDialog(`
+            <h3>${school.name} — sort supplémentaire</h3>
+            <p class="magic-dialog-hint">Choisissez un sort. Il coûte son niveau en XP (vous avez ${playerData.points} XP).</p>
+            <div class="spell-choice-list">
+                ${levels.map(lv => `<h4 class="spell-choice-level">Niveau ${lv} — ${lv} XP</h4>` + spells.filter(sp => sp.level === lv).map(sp => `
+                    <label class="spell-choice">
+                        <input type="radio" name="extra-spell" value="${sp.id}" data-cost="${lv}"
+                               ${playerData.points < lv ? 'disabled' : ''} onchange="updateExtraSpellChoice()">
+                        <div><div class="spell-name">${sp.name}</div>${spellDetailsHtml(sp)}</div>
+                    </label>`).join('')).join('')}
+            </div>
+            <div class="magic-dialog-buttons">
+                <button class="btn-cancel-admin" onclick="openExtraSpellDialog(magicDialogSkill)">Retour</button>
+                <button class="admin-btn" id="spell-choice-confirm" style="flex:1;" disabled
+                        onclick="confirmExtraSpell()">Choisissez un sort</button>
+            </div>`);
+    }
+
+    function updateExtraSpellChoice() {
+        const choice = document.querySelector('input[name="extra-spell"]:checked');
+        const btn    = document.getElementById('spell-choice-confirm');
+        btn.disabled    = !choice;
+        btn.textContent = choice ? `Acheter (${choice.dataset.cost} XP)` : 'Choisissez un sort';
+    }
+
+    async function confirmExtraSpell() {
+        const choice = document.querySelector('input[name="extra-spell"]:checked');
+        if (choice && await purchaseSkill(magicDialogSkill.id, { spell: choice.value })) closeMagicDialog();
+    }
+
+    // --- ONGLET SORTS ---
+    // Le joueur crée lui-même les formules, rituels et musiques : un espace pour les écrire
+    function incantationHint(spell, level, kind) {
+        const text  = spell.incantation.toLowerCase();
+        const parts = [];
+        if (text.includes('formule'))  parts.push(`Formule : ${10 + 5 * level} mots (10 + 5 par niveau)`);
+        if (text.includes('rituel'))   parts.push(`Rituel : au moins ${5 * level} minutes`);
+        if (text.includes('musique'))  parts.push('Musique : décrivez la chanson ou la mélodie');
+        if (!parts.length)             parts.push('Décrivez votre incantation');
+        if (kind === 'divine')         parts.push('nommez votre dieu');
+        return parts.join(' · ');
+    }
+
+    function isCreatedIncantation(spell) {
+        return /formule|rituel|musique|incantation/i.test(spell.incantation);
+    }
+
+    function countWords(text) {
+        return text.trim() ? text.trim().split(/\s+/).length : 0;
+    }
+
+    function incantationEditorHtml(spell, mine, level, kind) {
+        if (!isCreatedIncantation(spell)) return '';
+        const formula = spell.incantation.toLowerCase().includes('formule');
+        return `
+            <div class="incantation-editor">
+                <label for="inc-${spell.id}">Mon incantation</label>
+                <p class="incantation-hint">${incantationHint(spell, level, kind)}</p>
+                <textarea id="inc-${spell.id}" rows="3"
+                          oninput="incantationEdited('${spell.id}', ${formula ? 10 + 5 * level : 0})">${escapeHtml(mine.incantation)}</textarea>
+                <div class="incantation-actions">
+                    <span id="inc-count-${spell.id}">${formula ? `${countWords(mine.incantation)} mots` : ''}</span>
+                    <button class="admin-btn" onclick="saveIncantation('${spell.id}')">Enregistrer</button>
+                </div>
+            </div>`;
+    }
+
+    function incantationEdited(spellId, wordsNeeded) {
+        const status = document.getElementById(`inc-count-${spellId}`);
+        if (wordsNeeded) {
+            const count = countWords(document.getElementById(`inc-${spellId}`).value);
+            status.textContent = `${count} mots${count < wordsNeeded ? ` (${wordsNeeded} demandés)` : ''}`;
+        } else {
+            status.textContent = 'Non enregistré';
+        }
+    }
+
+    async function saveIncantation(spellId) {
+        const incantation = document.getElementById(`inc-${spellId}`).value;
+        try {
+            const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/spell-incantation`, 'POST',
+                                     { spell: spellId, incantation });
+            playerData.spells = result.spells;
+            document.getElementById(`inc-count-${spellId}`).textContent = 'Enregistré ✓';
+        } catch (e) { alert(e.message); }
+    }
+
+    // Les sorts du personnage, par école (de base, avancées puis divines) puis par niveau
+    function renderSpells() {
+        const container = document.getElementById('spells-container');
+        container.innerHTML = '';
+        const mine    = Object.fromEntries((playerData.spells ?? []).map(s => [s.id, s]));
+        const schools = playerData.magicSchools ?? {};
+        const query   = searchQuery();
+        let shown = 0;
+
+        if (!Object.keys(schools).length) {
+            container.innerHTML = `<p class="search-empty">Aucun sort pour l'instant : achetez École de magie ou Prêtrise/Cultisme.</p>`;
+            return;
+        }
+        ['base', 'advanced', 'divine'].forEach(kind => magicSchools.filter(s => s.kind === kind && schools[s.id]).forEach(school => {
+            const blockEl = document.createElement('div');
+            blockEl.classList.add('branch-block');
+            blockEl.innerHTML = `<div class="branch-title">${school.name}
+                <span style="font-size:0.8rem;font-weight:normal;opacity:0.8;">
+                    — ${MAGIC_KIND_LABELS[kind]} niveau ${schools[school.id]}${school.powerWord ? ` · mot de pouvoir : ${school.powerWord}` : ''}
+                </span></div>`;
+            let schoolShown = 0;
+            Object.entries(school.levels).forEach(([level, spells]) => {
+                const list = spells.filter(sp => mine[sp.id]
+                    && matchesSearch(query, school.name, sp.name, sp.type, sp.description, mine[sp.id].incantation));
+                if (!list.length) return;
+                schoolShown++;
+                const levelEl = document.createElement('div');
+                levelEl.classList.add('spell-level');
+                levelEl.innerHTML = `<h4>Niveau ${level}</h4>
+                    <div class="spell-grid">${list.map(sp => `
+                        <div class="spell-card">
+                            <div class="spell-name">${sp.name}${mine[sp.id].extra ? ' <span class="spell-badge">supplémentaire</span>' : ''}</div>
+                            ${spellDetailsHtml(sp)}
+                            ${incantationEditorHtml(sp, mine[sp.id], Number(level), kind)}
+                        </div>`).join('')}
+                    </div>`;
+                blockEl.appendChild(levelEl);
+            });
+            if (!schoolShown && !query) {
+                blockEl.insertAdjacentHTML('beforeend', `<p class="search-empty" style="padding:0 1rem 1rem;">
+                    Aucun sort dans le règlement pour cette école à votre niveau.</p>`);
+                schoolShown++;
+            }
+            if (schoolShown) { container.appendChild(blockEl); shown++; }
+        }));
+        if (!shown && query) searchEmptyMessage(container);
     }
 
     // --- ONGLETS JOUEUR ---
     function switchPlayerTab(tab) {
         document.getElementById('tab-skills').classList.toggle('active',    tab === 'skills');
         document.getElementById('tab-knowledge').classList.toggle('active', tab === 'knowledge');
+        document.getElementById('tab-spells').classList.toggle('active',    tab === 'spells');
+        document.getElementById('tab-character').classList.toggle('active', tab === 'character');
         document.getElementById('skill-tree-container').classList.toggle('hidden', tab !== 'skills');
         document.getElementById('knowledge-container').classList.toggle('hidden',  tab !== 'knowledge');
+        document.getElementById('spells-container').classList.toggle('hidden',     tab !== 'spells');
+        document.getElementById('character-container').classList.toggle('hidden', tab !== 'character');
+        const search = document.getElementById('player-search');
+        search.classList.toggle('hidden', tab === 'character');
+        search.placeholder = { knowledge: 'Rechercher une connaissance…', spells: 'Rechercher un sort…' }[tab]
+                             ?? 'Rechercher une compétence…';
+        if (tab === 'skills') renderSkillTree();
         if (tab === 'knowledge') renderKnowledges();
+        if (tab === 'spells') renderSpells();
+        if (tab === 'character') refreshCharacter();
+    }
+
+    // --- PERSONNAGE ---
+    async function refreshCharacter() {
+        // Les totaux dépendent des compétences achetées : on recharge la fiche à chaque ouverture
+        try {
+            await ensureCatalogs();
+            playerData = await api('/api/me');
+            renderCharacter();
+        } catch (e) { alert(e.message); }
+    }
+
+    function optionsHtml(values, selected, placeholder) {
+        return `<option value="">${placeholder}</option>` + values.map(v =>
+            `<option value="${v}" ${v === selected ? 'selected' : ''}>${v}</option>`).join('');
+    }
+
+    async function ensureCatalogs() {
+        if (!characterRules)            characterRules = await api('/api/character-rules');
+        if (cachedTree.length === 0)    cachedTree     = await api('/api/skills');
+        if (allKnowledges.length === 0) allKnowledges  = await api('/api/knowledges');
+    }
+
+    function catalogName(id) {
+        for (const b of cachedTree)    { const s = b.skills.find(x => x.id === id);     if (s) return s.name; }
+        for (const c of allKnowledges) { const k = c.knowledges.find(x => x.id === id); if (k) return k.name; }
+        return id;
+    }
+
+    // Résumé des avantages d'une provenance + cases à cocher si elle demande un choix de langues
+    function provenanceHtml(provName, prefix, chosenLanguages = []) {
+        const prov = characterRules.provenances.find(p => p.name === provName);
+        if (!prov) return '';
+        const items = [...prov.skills, ...prov.knowledges].map(id => `<li>${catalogName(id)}</li>`)
+            .concat(prov.extraFreeWeapons ? ["<li>2e arme de prédilection gratuite</li>"] : [])
+            .concat(prov.notes.map(n => `<li>${n} (à voir avec l'Animation)</li>`)).join('');
+        const choice = prov.languageChoice ? `
+            <p style="margin:0.5rem 0 0.3rem;font-size:0.9rem;">Choisissez ${prov.languageChoice.count} langues :</p>
+            ${prov.languageChoice.options.map(id => `
+                <label style="display:flex;gap:0.5rem;font-size:0.9rem;">
+                    <input type="checkbox" class="${prefix}-lang" value="${id}" ${chosenLanguages.includes(id) ? 'checked' : ''}>
+                    ${catalogName(id)}
+                </label>`).join('')}` : '';
+        return `<div style="font-size:0.9rem;color:#555;"><strong>Avantages de ${provName} :</strong>
+                    <ul style="margin:0.3rem 0;">${items}</ul>${choice}</div>`;
+    }
+
+    function chosenLanguages(prefix) {
+        return Array.from(document.querySelectorAll(`.${prefix}-lang:checked`)).map(cb => cb.value);
+    }
+
+    function characterStatsHtml(ch) {
+        const rows = characterRules.armorParts.filter(p => ch.armor[p.id]).map(p => {
+            const mat = characterRules.armorMaterials.find(m => m.id === ch.armor[p.id]);
+            return `<li>${p.name} : ${mat.name} (immunité aux dégâts de ${mat.immunity})</li>`;
+        }).join('');
+        const armorNote = ch.race === 'Xuhatek'
+            ? '<p style="color:#888;font-size:0.85rem;">Armure naturelle : immunité aux dégâts physiques de 2 et moins, aucune armure portée.</p>'
+            : (rows ? `<ul style="margin:0.5rem 0 0;font-size:0.9rem;color:#555;">${rows}</ul>`
+                    : '<p style="color:#888;font-size:0.85rem;">Aucune armure enregistrée (inspectée par l\'Animation).</p>');
+        return `
+            <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1rem;">
+                <div><span style="color:#888;font-size:0.85rem;">Points de vie</span><br>
+                     <strong style="font-size:1.6rem;color:#c0392b;">${ch.pv}</strong></div>
+                <div><span style="color:#888;font-size:0.85rem;">Points d'esprit</span><br>
+                     <strong style="font-size:1.6rem;color:#2980b9;">${ch.pe}</strong></div>
+                <div><span style="color:#888;font-size:0.85rem;">Points d'armure</span><br>
+                     <strong style="font-size:1.6rem;color:#7f8c8d;">${ch.armorPoints}</strong></div>
+            </div>
+            ${armorNote}`;
+    }
+
+    function renderCharacter() {
+        const container = document.getElementById('character-container');
+        const ch = playerData.character;
+        const card = document.createElement('div');
+        card.classList.add('admin-card');
+
+        if (!ch.race) {
+            card.innerHTML = `
+                <h3>Création du personnage</h3>
+                <p style="color:#666;font-size:0.9rem;margin:0 0 1rem">Ce choix est définitif : ensuite, seule l'Animation peut le modifier.</p>
+                <div class="admin-form-group">
+                    <select id="char-race" onchange="document.getElementById('char-human-bonus').style.display = this.value === 'Humain' ? '' : 'none'">
+                        ${optionsHtml(characterRules.races.map(r => r.name), null, '-- Race --')}
+                    </select>
+                    <select id="char-human-bonus" style="display:none;">
+                        <option value="">-- Versatile : bonus de l'humain --</option>
+                        <option value="pv">+1 point de vie</option>
+                        <option value="pe">+1 point d'esprit</option>
+                    </select>
+                    <select id="char-provenance" onchange="document.getElementById('char-provenance-info').innerHTML = provenanceHtml(this.value, 'char')">
+                        ${optionsHtml(characterRules.provenances.map(p => p.name), null, '-- Provenance --')}
+                    </select>
+                    <div id="char-provenance-info"></div>
+                    <select id="char-religion">${optionsHtml(characterRules.religions, null, '-- Religion (aucune) --')}</select>
+                </div>
+                <ul style="font-size:0.85rem;color:#666;margin:0 0 1rem;">
+                    ${characterRules.races.map(r => `<li><strong>${r.name}</strong> — ${r.pv} pv / ${r.pe} pe — ${r.talent}</li>`).join('')}
+                </ul>
+                <button class="admin-btn" onclick="saveCharacter()">Valider</button>`;
+        } else {
+            const bonus = ch.race === 'Humain' && ch.humanBonus
+                ? ` (Versatile : +1 ${ch.humanBonus === 'pv' ? 'point de vie' : "point d'esprit"})` : '';
+            card.innerHTML = `
+                <h3>${playerData.name}</h3>
+                <p style="margin:0 0 0.3rem;"><strong>Race :</strong> ${ch.race}${bonus}</p>
+                <p style="margin:0 0 0.3rem;color:#666;font-size:0.9rem;">${ch.talent}</p>
+                <p style="margin:0 0 0.5rem;"><strong>Provenance :</strong> ${ch.provenance ?? '—'}</p>
+                <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin:0 0 0.8rem;">
+                    <strong>Religion :</strong>
+                    <select id="char-religion-change" style="padding:6px;">
+                        ${optionsHtml(characterRules.religions, ch.religion, 'Aucune')}
+                    </select>
+                    <button class="admin-btn" style="margin:0;" onclick="saveReligion()">Changer</button>
+                </div>
+                ${ch.religion ? `<p style="margin:-0.4rem 0 0.8rem;font-size:0.9rem;color:#555;">
+                    Connaissance gratuite : ${playerData.religionKnowledges.map(catalogName).join(', ')} (niveau 1)</p>` : ''}
+                <div style="font-size:0.9rem;color:#555;margin-bottom:1rem;">
+                    <strong>Avantages de provenance (gratuits) :</strong>
+                    <ul style="margin:0.3rem 0;">
+                        ${[...playerData.provenanceSkills, ...playerData.provenanceKnowledges].map(id => `<li>${catalogName(id)}</li>`).join('')}
+                        ${characterRules.provenances.find(p => p.name === ch.provenance)?.extraFreeWeapons ? '<li>2e arme de prédilection gratuite</li>' : ''}
+                        ${ch.provenanceNotes.map(n => `<li>${n} (à voir avec l'Animation)</li>`).join('')}
+                    </ul>
+                </div>
+                ${characterStatsHtml(ch)}`;
+        }
+        container.innerHTML = '';
+        container.appendChild(card);
+    }
+
+    async function saveCharacter() {
+        const race       = document.getElementById('char-race').value;
+        const provenance = document.getElementById('char-provenance').value;
+        const humanBonus = document.getElementById('char-human-bonus').value || null;
+        const religion   = document.getElementById('char-religion').value || null;
+        if (!confirm(`Confirmer : ${race} de ${provenance} ? Ce choix est définitif (la religion pourra changer).`)) return;
+        try {
+            playerData = await api(`/api/player/${encodeURIComponent(playerData.name)}/character`, 'POST',
+                                   { race, provenance, humanBonus, religion, provenanceLanguages: chosenLanguages('char') });
+            renderCharacter();
+        } catch (e) { alert(e.message); }
+    }
+
+    async function saveReligion() {
+        const religion = document.getElementById('char-religion-change').value || null;
+        try {
+            playerData = await api(`/api/player/${encodeURIComponent(playerData.name)}/religion`, 'POST', { religion });
+            renderCharacter();
+            alert(religion ? `Religion : ${religion}` : 'Votre personnage ne prie plus aucune religion.');
+        } catch (e) { alert(e.message); }
+    }
+
+    async function adminLoadCharacter() {
+        const name = document.getElementById('admin-char-player').value.trim();
+        if (!name) { alert("Entrez le nom du joueur."); return; }
+        try {
+            await ensureCatalogs();
+            renderAdminCharacter(await api(`/api/player/${encodeURIComponent(name)}`));
+        } catch (e) { alert(e.message); }
+    }
+
+    function renderAdminCharacter(record) {
+        const ch = record.character;
+        const materials = characterRules.armorMaterials;
+        const armorRows = characterRules.armorParts.map(p => `
+            <label style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;font-size:0.9rem;">
+                ${p.name}
+                <select data-armor-part="${p.id}" style="padding:6px;">
+                    <option value="">Aucune</option>
+                    ${materials.map(m => `<option value="${m.id}" ${ch.armor[p.id] === m.id ? 'selected' : ''}>${m.name}</option>`).join('')}
+                </select>
+            </label>`).join('');
+        document.getElementById('admin-char-form').innerHTML = `
+            <div class="admin-form-group">
+                <select id="admin-char-race">${optionsHtml(characterRules.races.map(r => r.name), ch.race, '-- Race --')}</select>
+                <select id="admin-char-human-bonus">
+                    <option value="">-- Bonus humain (Versatile) --</option>
+                    <option value="pv" ${ch.humanBonus === 'pv' ? 'selected' : ''}>+1 point de vie</option>
+                    <option value="pe" ${ch.humanBonus === 'pe' ? 'selected' : ''}>+1 point d'esprit</option>
+                </select>
+                <select id="admin-char-provenance" onchange="document.getElementById('admin-char-provenance-info').innerHTML = provenanceHtml(this.value, 'admin-char')">
+                    ${optionsHtml(characterRules.provenances.map(p => p.name), ch.provenance, '-- Provenance --')}
+                </select>
+                <div id="admin-char-provenance-info">${provenanceHtml(ch.provenance, 'admin-char', ch.provenanceLanguages)}</div>
+                <select id="admin-char-religion">${optionsHtml(characterRules.religions, ch.religion, '-- Religion (aucune) --')}</select>
+                <strong>Armure</strong>
+                ${armorRows}
+            </div>
+            <button class="admin-btn" onclick="adminSaveCharacter('${record.name}')">Enregistrer la fiche</button>
+            <div style="margin-top:1rem;">${characterStatsHtml(ch)}</div>`;
+    }
+
+    async function adminSaveCharacter(name) {
+        const armor = {};
+        document.querySelectorAll('#admin-char-form [data-armor-part]').forEach(sel => {
+            if (sel.value) armor[sel.dataset.armorPart] = sel.value;
+        });
+        const body = { armor, humanBonus: document.getElementById('admin-char-human-bonus').value || null,
+                       religion: document.getElementById('admin-char-religion').value || null };
+        const race       = document.getElementById('admin-char-race').value;
+        const provenance = document.getElementById('admin-char-provenance').value;
+        if (race)       body.race = race;
+        if (provenance) { body.provenance = provenance; body.provenanceLanguages = chosenLanguages('admin-char'); }
+        try {
+            const record = await api(`/api/admin/player/${encodeURIComponent(name)}/character`, 'POST', body);
+            renderAdminCharacter(record);
+            if (name === playerData.name) playerData = { ...playerData, character: record.character };
+            alert(`Fiche de ${name} enregistrée.`);
+        } catch (e) { alert(e.message); }
     }
 
     // --- CONNAISSANCES ---
@@ -833,9 +1674,9 @@
         const container = document.getElementById('knowledge-container');
         container.innerHTML = '';
 
-        const acquired = playerData.acquiredKnowledges ?? [];
+        const levels   = playerData.knowledgeLevels ?? {};
         const kp       = playerData.knowledgePoints ?? 0;
-        const total    = acquired.length;
+        const total    = Object.values(levels).reduce((a, b) => a + b, 0);
 
         // Résumé en haut
         const summaryEl = document.createElement('div');
@@ -843,50 +1684,59 @@
         summaryEl.innerHTML = `
             <div><span style="color:#888;font-size:0.85rem;">Points disponibles</span><br>
                  <strong style="font-size:1.4rem;color:#8e44ad;">${kp}</strong></div>
-            <div><span style="color:#888;font-size:0.85rem;">Connaissances acquises</span><br>
+            <div><span style="color:#888;font-size:0.85rem;">Points investis</span><br>
                  <strong style="font-size:1.4rem;color:var(--acquired);">${total}</strong></div>
             <div style="flex:1;display:flex;align-items:center;font-size:0.82rem;color:#999;">
-                Toutes les connaissances coûtent <strong style="color:#8e44ad;margin:0 4px;">1 point</strong>.
+                Chaque niveau coûte <strong style="color:#8e44ad;margin:0 4px;">1 point</strong>,
+                jusqu'au niveau ${KNOWLEDGE_MAX_LEVEL}.
                 Les connaissances marquées <em>(3 par point)</em> ou <em>(1 par point)</em>
                 demandent de préciser votre choix avec l'animation.
             </div>`;
         container.appendChild(summaryEl);
 
+        const query = searchQuery();
+        let shown = 0;
         allKnowledges.forEach(cat => {
+            const catMatches = matchesSearch(query, cat.category);
+            const visible    = cat.knowledges.filter(k => catMatches || matchesSearch(query, k.name, k.description));
+            if (!visible.length) return;
+            shown++;
             const blockEl = document.createElement('div');
             blockEl.classList.add('branch-block');
 
             const titleEl = document.createElement('div');
             titleEl.classList.add('branch-title');
-            const catAcquired = cat.knowledges.filter(k => acquired.includes(k.id)).length;
+            const catAcquired = cat.knowledges.filter(k => levels[k.id]).length;
             titleEl.innerHTML = `${cat.category} <span style="font-size:0.8rem;font-weight:normal;opacity:0.7;">(${catAcquired}/${cat.knowledges.length})</span>`;
             blockEl.appendChild(titleEl);
 
             const gridEl = document.createElement('div');
             gridEl.classList.add('knowledge-grid');
 
-            cat.knowledges.forEach(k => {
-                const isAcquired = acquired.includes(k.id);
-                const canAfford  = kp >= 1;
+            visible.forEach(k => {
+                const level     = levels[k.id] ?? 0;
+                const isMaxed   = level >= KNOWLEDGE_MAX_LEVEL;
+                const canAfford = kp >= 1;
 
                 const nodeEl = document.createElement('div');
                 nodeEl.classList.add('knowledge-node');
-                if (isAcquired)       nodeEl.classList.add('acquired');
+                if (level > 0)        nodeEl.classList.add('acquired');
                 else if (canAfford)   nodeEl.classList.add('available');
                 else                  nodeEl.classList.add('locked');
 
                 nodeEl.innerHTML = `
                     <div class="knowledge-name">${k.name}</div>
                     ${k.description ? `<p class="knowledge-desc">${k.description}</p>` : ''}
+                    ${level > 0 ? `<div class="knowledge-count">Niveau ${level}/${KNOWLEDGE_MAX_LEVEL}</div>` : ''}
                 `;
 
                 const btn = document.createElement('button');
                 btn.classList.add('btn-purchase');
-                if (isAcquired) {
-                    btn.textContent = 'Acquise'; btn.disabled = true;
+                if (isMaxed) {
+                    btn.textContent = 'Niveau max'; btn.disabled = true;
                     btn.style.backgroundColor = 'var(--acquired)';
                 } else if (canAfford) {
-                    btn.textContent = 'Acheter (1 Conn.)';
+                    btn.textContent = level > 0 ? `Niveau ${level + 1} (1 Conn.)` : 'Acheter (1 Conn.)';
                     btn.classList.add('knowledge-btn');
                     btn.onclick = () => buyKnowledge(k.id);
                 } else {
@@ -900,6 +1750,7 @@
             blockEl.appendChild(gridEl);
             container.appendChild(blockEl);
         });
+        if (!shown && query) searchEmptyMessage(container);
     }
 
     async function buyKnowledge(knowledgeId) {
@@ -907,6 +1758,7 @@
             const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/buy-knowledge`, 'POST', { knowledgeId });
             playerData.knowledgePoints    = result.knowledgePoints;
             playerData.acquiredKnowledges = result.acquiredKnowledges;
+            playerData.knowledgeLevels    = result.knowledgeLevels;
             renderPlayerInfo();
             renderKnowledges();
         } catch (e) { alert(e.message); }
@@ -921,14 +1773,20 @@
     }
 
     // --- 3. ACHAT ---
-    async function purchaseSkill(skillId) {
+    async function purchaseSkill(skillId, extra = {}) {
         try {
-            const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/purchase`, 'POST', { skillId });
+            const result = await api(`/api/player/${encodeURIComponent(playerData.name)}/purchase`, 'POST', { skillId, ...extra });
             playerData.points          = result.points;
             playerData.knowledgePoints = result.knowledgePoints;
             playerData.acquiredSkills  = result.acquiredSkills;
+            playerData.weapons         = result.weapons;
+            playerData.nextWeaponCost  = result.nextWeaponCost;
+            playerData.weaponSpecs     = result.weaponSpecs;
+            playerData.magicSchools    = result.magicSchools;
+            playerData.spells          = result.spells;
             renderPlayerInfo();
             renderSkillTree();
+            return true;
         } catch (e) { alert(e.message); }
     }
 
@@ -1112,7 +1970,7 @@
             record.acquiredKnowledges.forEach(kid => {
                 const opt = document.createElement('option');
                 opt.value = kid;
-                opt.textContent = kMap[kid] || kid;
+                opt.textContent = `${kMap[kid] || kid} (niveau ${record.knowledgeLevels[kid]})`;
                 select.appendChild(opt);
             });
             select.style.display = '';
@@ -1129,16 +1987,17 @@
         const kMap = {};
         allKnowledges.forEach(cat => cat.knowledges.forEach(k => kMap[k.id] = k.name));
         const kName = kMap[kid] || kid;
-        if (!confirm(`Retirer "${kName}" à ${name} ?${refund ? '\nLe point sera remboursé.' : '\nAucun remboursement.'}`)) return;
+        if (!confirm(`Retirer 1 niveau de "${kName}" à ${name} ?${refund ? '\nLe point sera remboursé.' : '\nAucun remboursement.'}`)) return;
         try {
             const r = await api(`/api/admin/player/${encodeURIComponent(name)}/remove-knowledge`, 'POST', { knowledgeId: kid, refund });
             if (name === playerData.name) {
                 playerData.knowledgePoints    = r.knowledgePoints;
                 playerData.acquiredKnowledges = r.acquiredKnowledges;
+                playerData.knowledgeLevels    = r.knowledgeLevels;
                 renderPlayerInfo();
                 renderKnowledges();
             }
-            alert(`"${kName}" retirée de ${name}.${refund ? ` Point remboursé. Total : ${r.knowledgePoints}` : ''}`);
+            alert(`1 niveau de "${kName}" retiré à ${name}.${refund ? ` Point remboursé. Total : ${r.knowledgePoints}` : ''}`);
             document.getElementById('admin-revoke-select').style.display = 'none';
             document.getElementById('admin-revoke-select').innerHTML = '<option value="">-- Choisir --</option>';
             document.getElementById('admin-revoke-refund-label').style.display = 'none';
@@ -1186,7 +2045,13 @@
                 playerData.points             = 9;
                 playerData.knowledgePoints    = 3;
                 playerData.acquiredSkills     = [];
+                playerData.weapons            = [];
+                playerData.nextWeaponCost     = 0;
+                playerData.weaponSpecs        = {};
+                playerData.magicSchools       = {};
+                playerData.spells             = [];
                 playerData.acquiredKnowledges = [];
+                playerData.knowledgeLevels    = {};
                 renderPlayerInfo();
                 renderSkillTree();
                 renderKnowledges();

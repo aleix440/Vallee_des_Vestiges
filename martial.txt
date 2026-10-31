@@ -1,0 +1,22 @@
+martial
+Acrobatie -m 
+Application de poison -m 
+Arme de prédilection -m -
+Assommement -m -u -
+Attaque sournoise -m -  
+Brise arme -m -
+Brise bouclier -m - 
+Brise Membre -m -
+Charge -m 
+Coup déloyal -m 
+Courage -m  
+Endurance -m 
+Entraînement Défensif: Phalange -m -
+Entraînement Offensif: Assaut -m -
+Entretien d’arme -m -c -
+Gardien -m -
+Maniement des armes lourdes -m -
+Poigne d’acier -m 
+Spécialisation d’arme -m -
+Tranche membre -m -
+Volonté -m 
