@@ -1,2 +1,6 @@
 data/secret_key
 __pycache__/
+.venv/
+admin_password.txt
+data/server.log
+data/game.db

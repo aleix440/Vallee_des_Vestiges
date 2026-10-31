@@ -1,0 +1,2032 @@
+[
+ {
+  "id": "chasse1",
+  "branch": "Arts & Métiers",
+  "name": "Chasse I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des animaux. 1 ressource de nourriture + 1 fourrure à chaque début de GN.",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "chasse2",
+  "branch": "Arts & Métiers",
+  "name": "Chasse II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2 nourritures + 2 fourrures.",
+  "prereq": "chasse1",
+  "sort_order": 2
+ },
+ {
+  "id": "chasse3",
+  "branch": "Arts & Métiers",
+  "name": "Chasse III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "3 nourritures + 3 fourrures.",
+  "prereq": "chasse2",
+  "sort_order": 3
+ },
+ {
+  "id": "chasse4",
+  "branch": "Arts & Métiers",
+  "name": "Chasse IV",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "4 nourritures + 4 fourrures.",
+  "prereq": "chasse3",
+  "sort_order": 4
+ },
+ {
+  "id": "chasse5",
+  "branch": "Arts & Métiers",
+  "name": "Chasse V",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "5 nourritures + 5 fourrures.",
+  "prereq": "chasse4",
+  "sort_order": 5
+ },
+ {
+  "id": "botanique1",
+  "branch": "Arts & Métiers",
+  "name": "Botanique I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des plantes. 3 points d'achat de plantes en début de GN, ou cherchez 30 min en forêt.",
+  "prereq": null,
+  "sort_order": 6
+ },
+ {
+  "id": "botanique2",
+  "branch": "Arts & Métiers",
+  "name": "Botanique II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "6 points d'achat.",
+  "prereq": "botanique1",
+  "sort_order": 7
+ },
+ {
+  "id": "botanique3",
+  "branch": "Arts & Métiers",
+  "name": "Botanique III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "9 points d'achat.",
+  "prereq": "botanique2",
+  "sort_order": 8
+ },
+ {
+  "id": "botanique4",
+  "branch": "Arts & Métiers",
+  "name": "Botanique IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "12 points d'achat. Cueillette en 25 min.",
+  "prereq": "botanique3",
+  "sort_order": 9
+ },
+ {
+  "id": "botanique5",
+  "branch": "Arts & Métiers",
+  "name": "Botanique V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "15 points d'achat. Cueillette en 20 min.",
+  "prereq": "botanique4",
+  "sort_order": 10
+ },
+ {
+  "id": "bucheron1",
+  "branch": "Arts & Métiers",
+  "name": "Bûcheron I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance du bois. 3 ressources de bois en début de GN (ou 30 min en forêt).",
+  "prereq": null,
+  "sort_order": 11
+ },
+ {
+  "id": "bucheron2",
+  "branch": "Arts & Métiers",
+  "name": "Bûcheron II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "6 ressources de bois.",
+  "prereq": "bucheron1",
+  "sort_order": 12
+ },
+ {
+  "id": "bucheron3",
+  "branch": "Arts & Métiers",
+  "name": "Bûcheron III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "9 ressources de bois.",
+  "prereq": "bucheron2",
+  "sort_order": 13
+ },
+ {
+  "id": "bucheron4",
+  "branch": "Arts & Métiers",
+  "name": "Bûcheron IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "12 ressources de bois. Cueillette en 25 min.",
+  "prereq": "bucheron3",
+  "sort_order": 14
+ },
+ {
+  "id": "bucheron5",
+  "branch": "Arts & Métiers",
+  "name": "Bûcheron V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "15 ressources de bois. Cueillette en 20 min.",
+  "prereq": "bucheron4",
+  "sort_order": 15
+ },
+ {
+  "id": "fermier1",
+  "branch": "Arts & Métiers",
+  "name": "Fermier I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des animaux ou des plantes. 3 ressources de nourriture en début de GN.",
+  "prereq": null,
+  "sort_order": 16
+ },
+ {
+  "id": "fermier2",
+  "branch": "Arts & Métiers",
+  "name": "Fermier II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "6 nourritures.",
+  "prereq": "fermier1",
+  "sort_order": 17
+ },
+ {
+  "id": "fermier3",
+  "branch": "Arts & Métiers",
+  "name": "Fermier III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "9 nourritures.",
+  "prereq": "fermier2",
+  "sort_order": 18
+ },
+ {
+  "id": "fermier4",
+  "branch": "Arts & Métiers",
+  "name": "Fermier IV",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "12 nourritures.",
+  "prereq": "fermier3",
+  "sort_order": 19
+ },
+ {
+  "id": "fermier5",
+  "branch": "Arts & Métiers",
+  "name": "Fermier V",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "15 nourritures.",
+  "prereq": "fermier4",
+  "sort_order": 20
+ },
+ {
+  "id": "mineur1",
+  "branch": "Arts & Métiers",
+  "name": "Mineur I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des métaux. 3 ressources de métal en début de GN.",
+  "prereq": null,
+  "sort_order": 21
+ },
+ {
+  "id": "mineur2",
+  "branch": "Arts & Métiers",
+  "name": "Mineur II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "6 métaux.",
+  "prereq": "mineur1",
+  "sort_order": 22
+ },
+ {
+  "id": "mineur3",
+  "branch": "Arts & Métiers",
+  "name": "Mineur III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "9 métaux.",
+  "prereq": "mineur2",
+  "sort_order": 23
+ },
+ {
+  "id": "mineur4",
+  "branch": "Arts & Métiers",
+  "name": "Mineur IV",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "12 métaux.",
+  "prereq": "mineur3",
+  "sort_order": 24
+ },
+ {
+  "id": "mineur5",
+  "branch": "Arts & Métiers",
+  "name": "Mineur V",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "15 métaux.",
+  "prereq": "mineur4",
+  "sort_order": 25
+ },
+ {
+  "id": "denicheur1",
+  "branch": "Arts & Métiers",
+  "name": "Dénicheur I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "1 ressource aléatoire en début de GN.",
+  "prereq": null,
+  "sort_order": 26
+ },
+ {
+  "id": "denicheur2",
+  "branch": "Arts & Métiers",
+  "name": "Dénicheur II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2 ressources aléatoires.",
+  "prereq": "denicheur1",
+  "sort_order": 27
+ },
+ {
+  "id": "denicheur3",
+  "branch": "Arts & Métiers",
+  "name": "Dénicheur III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "3 ressources aléatoires.",
+  "prereq": "denicheur2",
+  "sort_order": 28
+ },
+ {
+  "id": "denicheur4",
+  "branch": "Arts & Métiers",
+  "name": "Dénicheur IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3 aléatoires + 1 ressource de votre choix.",
+  "prereq": "denicheur3",
+  "sort_order": 29
+ },
+ {
+  "id": "denicheur5",
+  "branch": "Arts & Métiers",
+  "name": "Dénicheur V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "3 aléatoires + 2 ressources de votre choix.",
+  "prereq": "denicheur4",
+  "sort_order": 30
+ },
+ {
+  "id": "cuistot1",
+  "branch": "Arts & Métiers",
+  "name": "Cuistot I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "1 ressource nourriture: repas en 15 min pour 5 personnes, +1 PV max pendant 1h.",
+  "prereq": null,
+  "sort_order": 31
+ },
+ {
+  "id": "cuistot2",
+  "branch": "Arts & Métiers",
+  "name": "Cuistot II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "+2 PV max pendant 1h pour 5 personnes.",
+  "prereq": "cuistot1",
+  "sort_order": 32
+ },
+ {
+  "id": "cuistot3",
+  "branch": "Arts & Métiers",
+  "name": "Cuistot III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "+2 PV max pour 8 personnes.",
+  "prereq": "cuistot2",
+  "sort_order": 33
+ },
+ {
+  "id": "cuistot4",
+  "branch": "Arts & Métiers",
+  "name": "Cuistot IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "+2 PV max pour 8 personnes. De plus, tous les soins reçus sont +1 pendant l'heure.",
+  "prereq": "cuistot3",
+  "sort_order": 34
+ },
+ {
+  "id": "cuistot5",
+  "branch": "Arts & Métiers",
+  "name": "Cuistot V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Repas en 10 min pour 10 personnes, +3 PV max, soins +1 pendant l'heure.",
+  "prereq": "cuistot4",
+  "sort_order": 35
+ },
+ {
+  "id": "forge1",
+  "branch": "Arts & Métiers",
+  "name": "Forge",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des métaux. Forgez et réparez armes, armures et outils en métal. Document de forge requis.",
+  "prereq": null,
+  "sort_order": 36
+ },
+ {
+  "id": "ebeniste1",
+  "branch": "Arts & Métiers",
+  "name": "Ébéniste",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance du bois. Fabriquez et entretenez les armes et boucliers en bois. Document d'ébéniste requis.",
+  "prereq": null,
+  "sort_order": 37
+ },
+ {
+  "id": "tiss1",
+  "branch": "Arts & Métiers",
+  "name": "Tisserand/Tanneur",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des cuirs/tissus. Créez ou réparez vêtements et armures en tissu ou cuir. Document de tisserand requis.",
+  "prereq": null,
+  "sort_order": 38
+ },
+ {
+  "id": "prestation1",
+  "branch": "Arts & Métiers",
+  "name": "Prestation I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Spectacle de 5 min (payant): donnez 1 pm à 5 personnes max. Impossible de faire plus d'une prestation par heure.",
+  "prereq": null,
+  "sort_order": 39
+ },
+ {
+  "id": "prestation2",
+  "branch": "Arts & Métiers",
+  "name": "Prestation II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 8 personnes affectées.",
+  "prereq": "prestation1",
+  "sort_order": 40
+ },
+ {
+  "id": "prestation3",
+  "branch": "Arts & Métiers",
+  "name": "Prestation III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "2 pm par personne au lieu de 1. Nécessite l'approbation de l'animation.",
+  "prereq": "prestation2",
+  "sort_order": 41
+ },
+ {
+  "id": "tatouage1",
+  "branch": "Arts & Métiers",
+  "name": "Tatouage I",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "1 pm + 10 min: dessinez un tatouage (1 pm pour l'utiliser): vague/bûcher/arbre/nuage/fleur/foudre/soleil/nuit. Effet 1×, jusqu'à fin de cycle.",
+  "prereq": null,
+  "sort_order": 42
+ },
+ {
+  "id": "tatouage2",
+  "branch": "Arts & Métiers",
+  "name": "Tatouage II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "2 pm + 15 min: tatouage utilisable 2×.",
+  "prereq": "tatouage1",
+  "sort_order": 43
+ },
+ {
+  "id": "tatouage3",
+  "branch": "Arts & Métiers",
+  "name": "Tatouage III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3 pm + 20 min: utilisable 3×.",
+  "prereq": "tatouage2",
+  "sort_order": 44
+ },
+ {
+  "id": "tatouage4",
+  "branch": "Arts & Métiers",
+  "name": "Tatouage IV",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Un individu peut avoir 2 tatouages actifs simultanément. Durée: 2 cycles ou jusqu'à utilisation.",
+  "prereq": "tatouage3",
+  "sort_order": 45
+ },
+ {
+  "id": "tatouage5",
+  "branch": "Arts & Métiers",
+  "name": "Tatouage V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "3 tatouages actifs. Faites 2 tatouages en une session (même personne).",
+  "prereq": "tatouage4",
+  "sort_order": 46
+ },
+ {
+  "id": "torture1",
+  "branch": "Arts & Métiers",
+  "name": "Torture I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Séance de 10 min: la victime perd 1 PV et doit répondre honnêtement à 1 question.",
+  "prereq": null,
+  "sort_order": 47
+ },
+ {
+  "id": "torture2",
+  "branch": "Arts & Métiers",
+  "name": "Torture II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Appliquez peur ou crainte (= votre niveau) à la victime pour le reste de l'événement.",
+  "prereq": "torture1",
+  "sort_order": 48
+ },
+ {
+  "id": "torture3",
+  "branch": "Arts & Métiers",
+  "name": "Torture III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Brisez un membre pour raccourcir la séance de 5 min.",
+  "prereq": "torture2",
+  "sort_order": 49
+ },
+ {
+  "id": "torture4",
+  "branch": "Arts & Métiers",
+  "name": "Torture IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Après la séance, la victime est maudite.",
+  "prereq": "torture3",
+  "sort_order": 50
+ },
+ {
+  "id": "torture5",
+  "branch": "Arts & Métiers",
+  "name": "Torture V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Appliquez horreur 5 et terreur 5 aux victimes passées de vos tortures.",
+  "prereq": "torture4",
+  "sort_order": 51
+ },
+ {
+  "id": "technologie1",
+  "branch": "Arts & Métiers",
+  "name": "Technologie I",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Utilisez, réparez et fabriquez les objets technologiques de base du quotidien (briquet, montre, appareil photo…) tant qu'ils sont décorum.",
+  "prereq": null,
+  "sort_order": 100
+ },
+ {
+  "id": "technologie2",
+  "branch": "Arts & Métiers",
+  "name": "Technologie II",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Accès aux technologies militaires : réparez, fabriquez et utilisez les armes à feu et leurs munitions. Demandez le document de technologie à l'animation.",
+  "prereq": "technologie1",
+  "sort_order": 101
+ },
+ {
+  "id": "arme1",
+  "branch": "Combat",
+  "name": "Arme de prédilection",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Choisissez une catégorie d'arme : au lieu d'infliger 1 dégât de base, elle en inflige 2. La 1re catégorie est gratuite, chaque catégorie suivante coûte 1 XP.",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "specarm1",
+  "branch": "Combat",
+  "name": "Spécialisation d'arme",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Utilisez l'effet spécial d'une de vos armes de prédilection. Chaque catégorie se spécialise séparément, jusqu'au niveau 3.",
+  "prereq": "arme1",
+  "sort_order": 2
+ },
+ {
+  "id": "mannlourdes1",
+  "branch": "Combat",
+  "name": "Maniement armes lourdes",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "+1 dégât avec les armes à deux mains.",
+  "prereq": null,
+  "sort_order": 5
+ },
+ {
+  "id": "charge1",
+  "branch": "Combat",
+  "name": "Charge I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "1× par combat: courez au moins 5 pas en ligne droite vers un adversaire. Votre coup inflige +1 dégât.",
+  "prereq": null,
+  "sort_order": 6
+ },
+ {
+  "id": "charge2",
+  "branch": "Combat",
+  "name": "Charge II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2× par combat. Bonus: Charge du taureau — 1 pm pour un effet de repoussement à la fin.",
+  "prereq": "charge1",
+  "sort_order": 7
+ },
+ {
+  "id": "charge3",
+  "branch": "Combat",
+  "name": "Charge III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "2× par combat, au moins 4 pas en ligne droite.",
+  "prereq": "charge2",
+  "sort_order": 8
+ },
+ {
+  "id": "charge4",
+  "branch": "Combat",
+  "name": "Charge IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3× par combat. Bonus Juggernaut: 2 pm pour ne pas être interrompu pendant la charge.",
+  "prereq": "charge3",
+  "sort_order": 9
+ },
+ {
+  "id": "charge5",
+  "branch": "Combat",
+  "name": "Charge V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "3× par combat, +2 dégâts au lieu de +1.",
+  "prereq": "charge4",
+  "sort_order": 10
+ },
+ {
+  "id": "attsour1",
+  "branch": "Combat",
+  "name": "Attaque sournoise I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: Arme de prédilection (dague). Par surprise sur le torse: +4 dégâts. Utilisable en combat uniquement si invisible ou camouflé.",
+  "prereq": "arme1",
+  "sort_order": 11
+ },
+ {
+  "id": "attsour2",
+  "branch": "Combat",
+  "name": "Attaque sournoise II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Bonus total de +8 dégâts.",
+  "prereq": "attsour1",
+  "sort_order": 12
+ },
+ {
+  "id": "attsour3",
+  "branch": "Combat",
+  "name": "Attaque sournoise III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "L'attaque sournoise obtient le trait perce-armure.",
+  "prereq": "attsour2",
+  "sort_order": 13
+ },
+ {
+  "id": "attsour4",
+  "branch": "Combat",
+  "name": "Attaque sournoise IV",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Peut être faite à distance (dague de lancer, arc ou arbalète) sur le torse.",
+  "prereq": "attsour3",
+  "sort_order": 14
+ },
+ {
+  "id": "assim1",
+  "branch": "Combat",
+  "name": "Assommement I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Hors combat: léger coup sur la tête avec une arme contondante. Cible inconsciente 5 minutes.",
+  "prereq": null,
+  "sort_order": 15
+ },
+ {
+  "id": "assim2",
+  "branch": "Combat",
+  "name": "Assommement II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Inconscient 10 minutes.",
+  "prereq": "assim1",
+  "sort_order": 16
+ },
+ {
+  "id": "assim3",
+  "branch": "Combat",
+  "name": "Assommement III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Utilisable avec le pommeau d'une arme. Inconscient 10 minutes.",
+  "prereq": "assim2",
+  "sort_order": 17
+ },
+ {
+  "id": "coupd1",
+  "branch": "Combat",
+  "name": "Coup déloyal",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jet de farine: aveuglement 3 sec 1× par combat (cible par surprise). OU pression/pincement: paralysie 5 sec (1 pm, hors combat).",
+  "prereq": null,
+  "sort_order": 18
+ },
+ {
+  "id": "brisearme1",
+  "branch": "Combat",
+  "name": "Brise arme",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Brise n'importe quelle arme 1× par combat en payant 1 pm. Nécessite l'approbation d'un scénariste.",
+  "prereq": null,
+  "sort_order": 19
+ },
+ {
+  "id": "brisbou1",
+  "branch": "Combat",
+  "name": "Brise bouclier I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: arme de prédilection (hache, masse ou marteau). Brise un bouclier 1× par cycle. +1 utilisation pour 3 pm.",
+  "prereq": "arme1",
+  "sort_order": 20
+ },
+ {
+  "id": "brisbou2",
+  "branch": "Combat",
+  "name": "Brise bouclier II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2× par cycle. +2 utilisations pour 3 pm chacune.",
+  "prereq": "brisbou1",
+  "sort_order": 21
+ },
+ {
+  "id": "brisbou3",
+  "branch": "Combat",
+  "name": "Brise bouclier III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "2× par cycle. +3 utilisations pour 2 pm chacune.",
+  "prereq": "brisbou2",
+  "sort_order": 22
+ },
+ {
+  "id": "brisbou4",
+  "branch": "Combat",
+  "name": "Brise bouclier IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "4× par cycle. +4 utilisations pour 2 pm chacune.",
+  "prereq": "brisbou3",
+  "sort_order": 23
+ },
+ {
+  "id": "brisbou5",
+  "branch": "Combat",
+  "name": "Brise bouclier V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "5× par cycle. Utilisations illimitées pour 2 pm chacune.",
+  "prereq": "brisbou4",
+  "sort_order": 24
+ },
+ {
+  "id": "brismemb1",
+  "branch": "Combat",
+  "name": "Brise membre I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: arme de prédilection (masse ou marteau). Coup sur un membre: engourdissement 10 sec. 1× par combat.",
+  "prereq": "arme1",
+  "sort_order": 25
+ },
+ {
+  "id": "brismemb2",
+  "branch": "Combat",
+  "name": "Brise membre II",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Brise le membre 1× par combat pour 2 pm. Soins nécessaires pour récupérer le membre.",
+  "prereq": "brismemb1",
+  "sort_order": 26
+ },
+ {
+  "id": "trancmemb1",
+  "branch": "Combat",
+  "name": "Tranche membre",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: maîtrise arme tranchante à deux mains. 1× par combat: TRANCHE MEMBRE pour 2 pm. Nécessite l'approbation d'un scénariste.",
+  "prereq": "arme1",
+  "sort_order": 27
+ },
+ {
+  "id": "gardien1",
+  "branch": "Combat",
+  "name": "Gardien I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "1× par combat: protégez un allié à portée de bras, les dégâts vous sont redirigés.",
+  "prereq": null,
+  "sort_order": 28
+ },
+ {
+  "id": "gardien2",
+  "branch": "Combat",
+  "name": "Gardien II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2× par combat. Sacrifice du bouclier: 1 pm pour que le bouclier subisse brise bouclier à la place.",
+  "prereq": "gardien1",
+  "sort_order": 29
+ },
+ {
+  "id": "gardien3",
+  "branch": "Combat",
+  "name": "Gardien III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3× par combat.",
+  "prereq": "gardien2",
+  "sort_order": 30
+ },
+ {
+  "id": "gardien4",
+  "branch": "Combat",
+  "name": "Gardien IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "4× par combat. 1× par combat: si le coup devrait vous rendre agonisant, restez à 1 PV.",
+  "prereq": "gardien3",
+  "sort_order": 31
+ },
+ {
+  "id": "gardien5",
+  "branch": "Combat",
+  "name": "Gardien V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Utilisable même en état d'agonie.",
+  "prereq": "gardien4",
+  "sort_order": 32
+ },
+ {
+  "id": "entrarme1",
+  "branch": "Combat",
+  "name": "Entretien d'arme I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Entretenez une arme 10 min: +1 dégât sur le prochain coup touchant la cible.",
+  "prereq": null,
+  "sort_order": 33
+ },
+ {
+  "id": "entrarme2",
+  "branch": "Combat",
+  "name": "Entretien d'arme II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "+1 dégât sur les 2 prochains coups touchant la cible.",
+  "prereq": "entrarme1",
+  "sort_order": 34
+ },
+ {
+  "id": "entrarme3",
+  "branch": "Combat",
+  "name": "Entretien d'arme III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "+1 dégât sur les 3 prochains coups.",
+  "prereq": "entrarme2",
+  "sort_order": 35
+ },
+ {
+  "id": "entrarme4",
+  "branch": "Combat",
+  "name": "Entretien d'arme IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "+1 dégât sur les 4 prochains coups.",
+  "prereq": "entrarme3",
+  "sort_order": 36
+ },
+ {
+  "id": "entrarme5",
+  "branch": "Combat",
+  "name": "Entretien d'arme V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "+2 dégâts sur les 4 prochains coups.",
+  "prereq": "entrarme4",
+  "sort_order": 37
+ },
+ {
+  "id": "phalange1",
+  "branch": "Combat",
+  "name": "Entraînement Défensif I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Après 15 min d'entraînement avec 5 personnes: 1 résistance à brise bouclier/arme pour 1h.",
+  "prereq": null,
+  "sort_order": 38
+ },
+ {
+  "id": "phalange2",
+  "branch": "Combat",
+  "name": "Entraînement Défensif II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 8 personnes. Entraînement intensif: -5 min pour 1 pm par participant.",
+  "prereq": "phalange1",
+  "sort_order": 39
+ },
+ {
+  "id": "phalange3",
+  "branch": "Combat",
+  "name": "Entraînement Défensif III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 8 personnes, 2 résistances chacune.",
+  "prereq": "phalange2",
+  "sort_order": 40
+ },
+ {
+  "id": "assaut1",
+  "branch": "Combat",
+  "name": "Entraînement Offensif I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Après 15 min d'entraînement avec 5 personnes: 1 charge gratuite (niv 1) pour 1h.",
+  "prereq": null,
+  "sort_order": 41
+ },
+ {
+  "id": "assaut2",
+  "branch": "Combat",
+  "name": "Entraînement Offensif II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "2 charges gratuites. Entraînement intensif: -5 min pour 1 pm par participant.",
+  "prereq": "assaut1",
+  "sort_order": 42
+ },
+ {
+  "id": "assaut3",
+  "branch": "Combat",
+  "name": "Entraînement Offensif III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 8 personnes, 2 charges gratuites.",
+  "prereq": "assaut2",
+  "sort_order": 43
+ },
+ {
+  "id": "acrobatie1",
+  "branch": "Corps & Santé",
+  "name": "Acrobatie",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Ignorez les effets de chute. Lors d'un repoussement, vous n'êtes pas obligé de tomber au sol.",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "endurance1",
+  "branch": "Corps & Santé",
+  "name": "Endurance I",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "+3 points de vie.",
+  "prereq": null,
+  "sort_order": 2
+ },
+ {
+  "id": "endurance2",
+  "branch": "Corps & Santé",
+  "name": "Endurance II",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "+3 points de vie supplémentaires (total +6).",
+  "prereq": "endurance1",
+  "sort_order": 3
+ },
+ {
+  "id": "eveil1",
+  "branch": "Corps & Santé",
+  "name": "Éveil de l'esprit I",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "+3 points d'esprit.",
+  "prereq": null,
+  "sort_order": 4
+ },
+ {
+  "id": "eveil2",
+  "branch": "Corps & Santé",
+  "name": "Éveil de l'esprit II",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "+3 points d'esprit supplémentaires (total +6).",
+  "prereq": "eveil1",
+  "sort_order": 5
+ },
+ {
+  "id": "premiersoin1",
+  "branch": "Corps & Santé",
+  "name": "Premiers soins",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Réanimez un agonisant en 1 min (jeu de rôle requis) à 1 PV. Permet de déplacer les agonisants et de forcer des potions.",
+  "prereq": null,
+  "sort_order": 6
+ },
+ {
+  "id": "medecine1",
+  "branch": "Corps & Santé",
+  "name": "Médecine I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: Premiers soins. Bandage (2 min): soigne 2 PV. Désinfectant: retire infections ≤ votre niveau.",
+  "prereq": "premiersoin1",
+  "sort_order": 7
+ },
+ {
+  "id": "medecine2",
+  "branch": "Corps & Santé",
+  "name": "Médecine II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Amputation (10 min, -1 PV / 2 min). Pharmacien: recettes de remèdes et drogues à base de plantes.",
+  "prereq": "medecine1",
+  "sort_order": 8
+ },
+ {
+  "id": "medecine3",
+  "branch": "Corps & Santé",
+  "name": "Médecine III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Ramancheur: répare membres tordus/brisés en 5 min. Couturier: bandage soigne 4 PV au lieu de 2.",
+  "prereq": "medecine2",
+  "sort_order": 9
+ },
+ {
+  "id": "medecine4",
+  "branch": "Corps & Santé",
+  "name": "Médecine IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Repos forcé: le patient récupère 1 PV/min, maladies/poisons mis sur pause. Jusqu'à 5 patients simultanément.",
+  "prereq": "medecine3",
+  "sort_order": 10
+ },
+ {
+  "id": "medecine5",
+  "branch": "Corps & Santé",
+  "name": "Médecine V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Chirurgie infernale: ramenez un mort (< 1h) à la vie 1× par personnage. Expertise: bandage soigne 6 PV.",
+  "prereq": "medecine4",
+  "sort_order": 11
+ },
+ {
+  "id": "poigne1",
+  "branch": "Corps & Santé",
+  "name": "Poigne d'acier I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Retenez un contorsionniste niv 1. Résistez à 1 désarmement par cycle.",
+  "prereq": null,
+  "sort_order": 12
+ },
+ {
+  "id": "poigne2",
+  "branch": "Corps & Santé",
+  "name": "Poigne d'acier II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Retenez niv 2. Résistez à 2 désarmements par cycle.",
+  "prereq": "poigne1",
+  "sort_order": 13
+ },
+ {
+  "id": "poigne3",
+  "branch": "Corps & Santé",
+  "name": "Poigne d'acier III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Retenez niv 3. Résistez à 3 désarmements par cycle.",
+  "prereq": "poigne2",
+  "sort_order": 14
+ },
+ {
+  "id": "harmochim1",
+  "branch": "Corps & Santé",
+  "name": "Harmonisation Alchimique I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Seuil de surdose alchimique: 7 au lieu de 6 (soul à 3/7, inconscient à 7/7).",
+  "prereq": null,
+  "sort_order": 15
+ },
+ {
+  "id": "harmochim2",
+  "branch": "Corps & Santé",
+  "name": "Harmonisation Alchimique II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Seuil porté à 8 (soul à 4/8, inconscient à 8/8).",
+  "prereq": "harmochim1",
+  "sort_order": 16
+ },
+ {
+  "id": "restort1",
+  "branch": "Corps & Santé",
+  "name": "Résistance à la torture I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Temps de torture augmenté de 5 min par question.",
+  "prereq": null,
+  "sort_order": 17
+ },
+ {
+  "id": "restort2",
+  "branch": "Corps & Santé",
+  "name": "Résistance à la torture II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pouvez mentir à la 1re question posée.",
+  "prereq": "restort1",
+  "sort_order": 18
+ },
+ {
+  "id": "restort3",
+  "branch": "Corps & Santé",
+  "name": "Résistance à la torture III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Pouvez mentir à une question de votre choix.",
+  "prereq": "restort2",
+  "sort_order": 19
+ },
+ {
+  "id": "restort4",
+  "branch": "Corps & Santé",
+  "name": "Résistance à la torture IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Pouvez mentir à trois questions de votre choix.",
+  "prereq": "restort3",
+  "sort_order": 20
+ },
+ {
+  "id": "restort5",
+  "branch": "Corps & Santé",
+  "name": "Résistance à la torture V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Mentez autant que vous voulez (1 pm par mensonge au-delà du 3e).",
+  "prereq": "restort4",
+  "sort_order": 21
+ },
+ {
+  "id": "cam1",
+  "branch": "Furtivité",
+  "name": "Camouflage I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Après 10 sec de camouflage, devenez invisible. Annulé si vous bougez, attaquez ou lancez un sort.",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "cam2",
+  "branch": "Furtivité",
+  "name": "Camouflage II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Camouflage en 5 sec. Embuscade: cachez une autre personne en contact physique pour 2 pm.",
+  "prereq": "cam1",
+  "sort_order": 2
+ },
+ {
+  "id": "cam3",
+  "branch": "Furtivité",
+  "name": "Camouflage III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Vous pouvez vous déplacer en marchant camouflé. Embuscade: plusieurs personnes sans contact physique (2 pm chacune, niv 1 pour elles).",
+  "prereq": "cam2",
+  "sort_order": 3
+ },
+ {
+  "id": "traque1",
+  "branch": "Furtivité",
+  "name": "Traque I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Lorsque vous voyez quelqu'un se camoufler, vous savez qu'il est dans les environs et pouvez le trouver en 3 min.",
+  "prereq": null,
+  "sort_order": 4
+ },
+ {
+  "id": "traque2",
+  "branch": "Furtivité",
+  "name": "Traque II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Trouvez un camouflé en 2 minutes.",
+  "prereq": "traque1",
+  "sort_order": 5
+ },
+ {
+  "id": "traque3",
+  "branch": "Furtivité",
+  "name": "Traque III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "1× par cycle: criez 'traque 3', les invisibles/camouflés à portée doivent répondre 'ICI'. Nécessite l'approbation d'un scénariste.",
+  "prereq": "traque2",
+  "sort_order": 6
+ },
+ {
+  "id": "dissim1",
+  "branch": "Furtivité",
+  "name": "Dissimulation I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Dissimulez sur vous 1 fiole ou dague, détectable uniquement par fouille niv 1+.",
+  "prereq": null,
+  "sort_order": 7
+ },
+ {
+  "id": "dissim2",
+  "branch": "Furtivité",
+  "name": "Dissimulation II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 2 fioles et/ou dagues.",
+  "prereq": "dissim1",
+  "sort_order": 8
+ },
+ {
+  "id": "dissim3",
+  "branch": "Furtivité",
+  "name": "Dissimulation III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 3 objets.",
+  "prereq": "dissim2",
+  "sort_order": 9
+ },
+ {
+  "id": "dissim4",
+  "branch": "Furtivité",
+  "name": "Dissimulation IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 4 objets.",
+  "prereq": "dissim3",
+  "sort_order": 10
+ },
+ {
+  "id": "dissim5",
+  "branch": "Furtivité",
+  "name": "Dissimulation V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 5 objets.",
+  "prereq": "dissim4",
+  "sort_order": 11
+ },
+ {
+  "id": "fouille1",
+  "branch": "Furtivité",
+  "name": "Fouille I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Contre dissimulation niv 1. Fouille en 45 sec pour détecter les objets cachés.",
+  "prereq": null,
+  "sort_order": 12
+ },
+ {
+  "id": "fouille2",
+  "branch": "Furtivité",
+  "name": "Fouille II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Contre dissimulation niv 2. Fouille en 40 sec.",
+  "prereq": "fouille1",
+  "sort_order": 13
+ },
+ {
+  "id": "fouille3",
+  "branch": "Furtivité",
+  "name": "Fouille III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Contre dissimulation niv 3. Fouille en 35 sec.",
+  "prereq": "fouille2",
+  "sort_order": 14
+ },
+ {
+  "id": "fouille4",
+  "branch": "Furtivité",
+  "name": "Fouille IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Contre dissimulation niv 4. Fouille en 30 sec.",
+  "prereq": "fouille3",
+  "sort_order": 15
+ },
+ {
+  "id": "fouille5",
+  "branch": "Furtivité",
+  "name": "Fouille V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Contre dissimulation niv 5. Fouille en 25 sec.",
+  "prereq": "fouille4",
+  "sort_order": 16
+ },
+ {
+  "id": "croch1",
+  "branch": "Furtivité",
+  "name": "Crochetage I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Crochetez des serrures de niveau 1 (1 min).",
+  "prereq": null,
+  "sort_order": 17
+ },
+ {
+  "id": "croch2",
+  "branch": "Furtivité",
+  "name": "Crochetage II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Crochetez des serrures de niveau 2.",
+  "prereq": "croch1",
+  "sort_order": 18
+ },
+ {
+  "id": "croch3",
+  "branch": "Furtivité",
+  "name": "Crochetage III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Crochetez des serrures de niveau 3.",
+  "prereq": "croch2",
+  "sort_order": 19
+ },
+ {
+  "id": "voldebourse1",
+  "branch": "Furtivité",
+  "name": "Vol de bourse I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Après 20 sec de contact avec une bourse, prenez une poignée d'argent/ressource (pas les ressources mauves et blanches).",
+  "prereq": null,
+  "sort_order": 20
+ },
+ {
+  "id": "voldebourse2",
+  "branch": "Furtivité",
+  "name": "Vol de bourse II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "15 sec de contact. Planter une évidence: remplacez au lieu de prendre (2 pm pour les deux).",
+  "prereq": "voldebourse1",
+  "sort_order": 21
+ },
+ {
+  "id": "voldebourse3",
+  "branch": "Furtivité",
+  "name": "Vol de bourse III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "10 sec de contact.",
+  "prereq": "voldebourse2",
+  "sort_order": 22
+ },
+ {
+  "id": "bandit1",
+  "branch": "Furtivité",
+  "name": "Bandit de grand chemin I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Prenez 1 ressource blanche supplémentaire sur un cadavre ou une personne inconsciente.",
+  "prereq": null,
+  "sort_order": 23
+ },
+ {
+  "id": "bandit2",
+  "branch": "Furtivité",
+  "name": "Bandit de grand chemin II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 2 ressources blanches supplémentaires.",
+  "prereq": "bandit1",
+  "sort_order": 24
+ },
+ {
+  "id": "bandit3",
+  "branch": "Furtivité",
+  "name": "Bandit de grand chemin III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 3 ressources blanches supplémentaires.",
+  "prereq": "bandit2",
+  "sort_order": 25
+ },
+ {
+  "id": "bandit4",
+  "branch": "Furtivité",
+  "name": "Bandit de grand chemin IV",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 4 ressources blanches supplémentaires.",
+  "prereq": "bandit3",
+  "sort_order": 26
+ },
+ {
+  "id": "bandit5",
+  "branch": "Furtivité",
+  "name": "Bandit de grand chemin V",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 5 ressources blanches supplémentaires.",
+  "prereq": "bandit4",
+  "sort_order": 27
+ },
+ {
+  "id": "contor1",
+  "branch": "Furtivité",
+  "name": "Contorsionniste I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Libérez-vous de quelqu'un qui vous tient.",
+  "prereq": null,
+  "sort_order": 28
+ },
+ {
+  "id": "contor2",
+  "branch": "Furtivité",
+  "name": "Contorsionniste II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Libérez-vous d'une corde en 10 sec.",
+  "prereq": "contor1",
+  "sort_order": 29
+ },
+ {
+  "id": "contor3",
+  "branch": "Furtivité",
+  "name": "Contorsionniste III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Libérez-vous de menottes ou chaînes en 15 sec.",
+  "prereq": "contor2",
+  "sort_order": 30
+ },
+ {
+  "id": "ecomagie1",
+  "branch": "Magie & Religion",
+  "name": "École de magie",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Choisissez une école de magie (eau, air, terre, feu ou cœur) puis 3 sorts parmi les 5 du niveau. Chaque école monte séparément ; les niveaux 4 et 5 demandent l'approbation d'un scénariste.",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "ecoavance1",
+  "branch": "Magie & Religion",
+  "name": "Magie avancée",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Combinez deux de vos écoles de base : Air+Eau=Glace, Air+Feu=Foudre, Air+Terre=Sable, Feu+Terre=Métal, Eau+Terre=Plantes, Feu+Eau=Sang. Le niveau ne peut pas dépasser celui des deux écoles requises. 3 sorts parmi les 5 du niveau.",
+  "prereq": "ecomagie1",
+  "sort_order": 6
+ },
+ {
+  "id": "sortsupp1",
+  "branch": "Magie & Religion",
+  "name": "Sorts supplémentaires",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Apprenez un sort supplémentaire d'une école de magie ou de prêtrise que vous connaissez déjà, d'un niveau que vous maîtrisez. Coût : le niveau du sort en XP. Peut être acheté plusieurs fois.",
+  "prereq": null,
+  "sort_order": 11
+ },
+ {
+  "id": "pretrise1",
+  "branch": "Magie & Religion",
+  "name": "Prêtrise/Cultisme",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis : prier une religion (fiche Personnage). Sorts divins de votre religion : 3 sorts parmi les 5 du niveau. Impossible d'avoir des sorts de plusieurs religions ; les niveaux 4 et 5 demandent l'approbation d'un scénariste.",
+  "prereq": null,
+  "sort_order": 12
+ },
+ {
+  "id": "symboifoi1",
+  "branch": "Magie & Religion",
+  "name": "Symbole de foi I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis : prier une religion (à choisir dans la fiche Personnage). Portez le symbole de votre religion (min 1 pied) : +2 PA se régénérant entre les combats.",
+  "prereq": null,
+  "sort_order": 17
+ },
+ {
+  "id": "symboifoi2",
+  "branch": "Magie & Religion",
+  "name": "Symbole de foi II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "1× par combat: donnez le qualificatif bénit à l'un de vos coups.",
+  "prereq": "symboifoi1",
+  "sort_order": 18
+ },
+ {
+  "id": "symboifoi3",
+  "branch": "Magie & Religion",
+  "name": "Symbole de foi III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Ignorez un effet négatif (hors dégâts) reçu lors d'un combat.",
+  "prereq": "symboifoi2",
+  "sort_order": 19
+ },
+ {
+  "id": "alchimie1",
+  "branch": "Magie & Religion",
+  "name": "Alchimie",
+  "cost": 5,
+  "knowledge_cost": 0,
+  "desc": "Réalisez des expériences pour découvrir des formules. Apprenez 2 formules parmi une liste. La puissance dépend des ingrédients (max 7).",
+  "prereq": null,
+  "sort_order": 20
+ },
+ {
+  "id": "applpoison1",
+  "branch": "Magie & Religion",
+  "name": "Application de poison",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: connaissance des poisons. Utilisez des poisons en combat sans risque de s'infecter soi-même.",
+  "prereq": null,
+  "sort_order": 21
+ },
+ {
+  "id": "druidisme1",
+  "branch": "Magie & Religion",
+  "name": "Druidisme",
+  "cost": 4,
+  "knowledge_cost": 0,
+  "desc": "Appelez les vieux esprits pour créer des rituels aux effets variés. Demandez le document de druidisme à l'animation.",
+  "prereq": null,
+  "sort_order": 22
+ },
+ {
+  "id": "runisme1",
+  "branch": "Magie & Religion",
+  "name": "Runisme",
+  "cost": 5,
+  "knowledge_cost": 0,
+  "desc": "Connaissez la signification des runes de pouvoir et créez des rituels. Demandez le document de runisme à l'animation.",
+  "prereq": null,
+  "sort_order": 23
+ },
+ {
+  "id": "meditation1",
+  "branch": "Magie & Religion",
+  "name": "Méditation I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Dans un lieu public, fermez les yeux 7 min (immobile): récupérez 2 pm.",
+  "prereq": null,
+  "sort_order": 24
+ },
+ {
+  "id": "meditation2",
+  "branch": "Magie & Religion",
+  "name": "Méditation II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "7 min: récupérez 3 pm.",
+  "prereq": "meditation1",
+  "sort_order": 25
+ },
+ {
+  "id": "meditation3",
+  "branch": "Magie & Religion",
+  "name": "Méditation III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "5 min: récupérez 3 pm. Nécessite l'autorisation de l'animation.",
+  "prereq": "meditation2",
+  "sort_order": 26
+ },
+ {
+  "id": "ecrparch1",
+  "branch": "Magie & Religion",
+  "name": "Écriture de parchemin",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis : Lecture/écriture et École de magie ou Prêtrise. Infusez un parchemin avec un sort (coûte autant de pm que lancer le sort, réduit votre max jusqu'au prochain cycle). Prend 2 min/niveau + 1 ressource tissu. Impossible pour les sorts rituels, passifs ou de concentration.",
+  "prereq": "lireerire1",
+  "sort_order": 27
+ },
+ {
+  "id": "volonte1",
+  "branch": "Social",
+  "name": "Volonté I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets mentaux de niveau 1 (si vous avez une raison de vous méfier).",
+  "prereq": null,
+  "sort_order": 1
+ },
+ {
+  "id": "volonte2",
+  "branch": "Social",
+  "name": "Volonté II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets mentaux de niveau 2.",
+  "prereq": "volonte1",
+  "sort_order": 2
+ },
+ {
+  "id": "volonte3",
+  "branch": "Social",
+  "name": "Volonté III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets mentaux de niveau 3.",
+  "prereq": "volonte2",
+  "sort_order": 3
+ },
+ {
+  "id": "volonte4",
+  "branch": "Social",
+  "name": "Volonté IV",
+  "cost": 4,
+  "knowledge_cost": 0,
+  "desc": "Résistez au niveau 4. Même sous l'emprise du sommeil ou de substances.",
+  "prereq": "volonte3",
+  "sort_order": 4
+ },
+ {
+  "id": "volonte5",
+  "branch": "Social",
+  "name": "Volonté V",
+  "cost": 5,
+  "knowledge_cost": 0,
+  "desc": "Résistez au niveau 5. Votre volonté est en alerte en tout temps.",
+  "prereq": "volonte4",
+  "sort_order": 5
+ },
+ {
+  "id": "courage1",
+  "branch": "Social",
+  "name": "Courage I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets de crainte, peur et horreur de niveau 1.",
+  "prereq": null,
+  "sort_order": 6
+ },
+ {
+  "id": "courage2",
+  "branch": "Social",
+  "name": "Courage II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets de niveau 2 et moins.",
+  "prereq": "courage1",
+  "sort_order": 7
+ },
+ {
+  "id": "courage3",
+  "branch": "Social",
+  "name": "Courage III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets de niveau 3 et moins.",
+  "prereq": "courage2",
+  "sort_order": 8
+ },
+ {
+  "id": "courage4",
+  "branch": "Social",
+  "name": "Courage IV",
+  "cost": 4,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets de niveau 4 et moins.",
+  "prereq": "courage3",
+  "sort_order": 9
+ },
+ {
+  "id": "courage5",
+  "branch": "Social",
+  "name": "Courage V",
+  "cost": 5,
+  "knowledge_cost": 0,
+  "desc": "Résistez aux effets de niveau 5 et moins.",
+  "prereq": "courage4",
+  "sort_order": 10
+ },
+ {
+  "id": "inspiration1",
+  "branch": "Social",
+  "name": "Inspiration I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: Courage. Discours de 2 min: jusqu'à 5 personnes gagnent votre niveau de courage pour résister à crainte/peur/horreur pendant 1h.",
+  "prereq": "courage1",
+  "sort_order": 11
+ },
+ {
+  "id": "inspiration2",
+  "branch": "Social",
+  "name": "Inspiration II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 10 personnes inspirées.",
+  "prereq": "inspiration1",
+  "sort_order": 12
+ },
+ {
+  "id": "inspiration3",
+  "branch": "Social",
+  "name": "Inspiration III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 15 personnes, gagnent aussi votre volonté.",
+  "prereq": "inspiration2",
+  "sort_order": 13
+ },
+ {
+  "id": "intimid1",
+  "branch": "Social",
+  "name": "Intimidation I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Crainte niv 1 pendant 3 min sur une cible, 2× par cycle.",
+  "prereq": null,
+  "sort_order": 14
+ },
+ {
+  "id": "intimid2",
+  "branch": "Social",
+  "name": "Intimidation II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Crainte niv 2 pendant 3 min, 2× par cycle.",
+  "prereq": "intimid1",
+  "sort_order": 15
+ },
+ {
+  "id": "intimid3",
+  "branch": "Social",
+  "name": "Intimidation III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Crainte niv 3. Masse: 1 pm par cible supplémentaire.",
+  "prereq": "intimid2",
+  "sort_order": 16
+ },
+ {
+  "id": "intimid4",
+  "branch": "Social",
+  "name": "Intimidation IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Crainte niv 4 (3 min) OU peur niv 4 (20 sec), 2× par cycle.",
+  "prereq": "intimid3",
+  "sort_order": 17
+ },
+ {
+  "id": "intimid5",
+  "branch": "Social",
+  "name": "Intimidation V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Crainte niv 5 (3 min) OU peur niv 5 (20 sec), 3× par cycle.",
+  "prereq": "intimid4",
+  "sort_order": 18
+ },
+ {
+  "id": "commerage1",
+  "branch": "Social",
+  "name": "Commérage I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "À l'inscription: pigez 1 rumeur supplémentaire OU soumettez une rumeur (au moins 1 semaine avant, approuvée).",
+  "prereq": null,
+  "sort_order": 19
+ },
+ {
+  "id": "commerage2",
+  "branch": "Social",
+  "name": "Commérage II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2 rumeurs supplémentaires. Maîtrise: -1 pm max pour faire les deux actions.",
+  "prereq": "commerage1",
+  "sort_order": 20
+ },
+ {
+  "id": "commerage3",
+  "branch": "Social",
+  "name": "Commérage III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "3 rumeurs supplémentaires.",
+  "prereq": "commerage2",
+  "sort_order": 21
+ },
+ {
+  "id": "plaisir1",
+  "branch": "Social",
+  "name": "Plaisir I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Après 10 min de conversation plaisante, posez 1 question à la cible (doit répondre honnêtement). Résistable par volonté.",
+  "prereq": null,
+  "sort_order": 22
+ },
+ {
+  "id": "plaisir2",
+  "branch": "Social",
+  "name": "Plaisir II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2 questions.",
+  "prereq": "plaisir1",
+  "sort_order": 23
+ },
+ {
+  "id": "plaisir3",
+  "branch": "Social",
+  "name": "Plaisir III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3 questions.",
+  "prereq": "plaisir2",
+  "sort_order": 24
+ },
+ {
+  "id": "plaisir4",
+  "branch": "Social",
+  "name": "Plaisir IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "4 questions.",
+  "prereq": "plaisir3",
+  "sort_order": 25
+ },
+ {
+  "id": "plaisir5",
+  "branch": "Social",
+  "name": "Plaisir V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "4 questions. De plus, la cible est automatiquement charmée par vous pour le reste de l'événement.",
+  "prereq": "plaisir4",
+  "sort_order": 26
+ },
+ {
+  "id": "lireerire1",
+  "branch": "Social",
+  "name": "Lecture/Écriture",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Vous savez lire et écrire toutes les langues que vous connaissez.",
+  "prereq": null,
+  "sort_order": 27
+ },
+ {
+  "id": "math1",
+  "branch": "Social",
+  "name": "Mathématique I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Multipliez et divisez rapidement. Utile dans plusieurs domaines.",
+  "prereq": null,
+  "sort_order": 28
+ },
+ {
+  "id": "math2",
+  "branch": "Social",
+  "name": "Mathématique II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Algèbre, architecture de base et construction.",
+  "prereq": "math1",
+  "sort_order": 29
+ },
+ {
+  "id": "math3",
+  "branch": "Social",
+  "name": "Mathématique III",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Lois de physique, cartographie (avec astrologie), renforcement de bâtiments.",
+  "prereq": "math2",
+  "sort_order": 30
+ },
+ {
+  "id": "revenu1",
+  "branch": "Social",
+  "name": "Revenu I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Gagnez 3 talents d'or à chaque début d'événement.",
+  "prereq": null,
+  "sort_order": 31
+ },
+ {
+  "id": "revenu2",
+  "branch": "Social",
+  "name": "Revenu II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "6 talents d'or par événement.",
+  "prereq": "revenu1",
+  "sort_order": 32
+ },
+ {
+  "id": "revenu3",
+  "branch": "Social",
+  "name": "Revenu III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "9 talents d'or par événement.",
+  "prereq": "revenu2",
+  "sort_order": 33
+ },
+ {
+  "id": "revenu4",
+  "branch": "Social",
+  "name": "Revenu IV",
+  "cost": 4,
+  "knowledge_cost": 0,
+  "desc": "12 talents d'or par événement.",
+  "prereq": "revenu3",
+  "sort_order": 34
+ },
+ {
+  "id": "revenu5",
+  "branch": "Social",
+  "name": "Revenu V",
+  "cost": 5,
+  "knowledge_cost": 0,
+  "desc": "15 talents d'or par événement.",
+  "prereq": "revenu4",
+  "sort_order": 35
+ },
+ {
+  "id": "messe1",
+  "branch": "Social",
+  "name": "Messe I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis : Volonté et prier une religion (fiche Personnage). Messe de 10 min : jusqu'à 5 croyants gagnent votre niveau de volonté pour résister à un effet pendant 1h.",
+  "prereq": "volonte1",
+  "sort_order": 36
+ },
+ {
+  "id": "messe2",
+  "branch": "Social",
+  "name": "Messe II",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 10 personnes.",
+  "prereq": "messe1",
+  "sort_order": 37
+ },
+ {
+  "id": "messe3",
+  "branch": "Social",
+  "name": "Messe III",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "Jusqu'à 15 personnes.",
+  "prereq": "messe2",
+  "sort_order": 38
+ },
+ {
+  "id": "proselytisme1",
+  "branch": "Social",
+  "name": "Prosélytisme I",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "Pré-requis: Prêtrise. 1× par personne par événement: accordez une bénédiction ou l'effet messe à un non-croyant.",
+  "prereq": "pretrise1",
+  "sort_order": 39
+ },
+ {
+  "id": "proselytisme2",
+  "branch": "Social",
+  "name": "Prosélytisme II",
+  "cost": 1,
+  "knowledge_cost": 0,
+  "desc": "2× par personne par événement.",
+  "prereq": "proselytisme1",
+  "sort_order": 40
+ },
+ {
+  "id": "proselytisme3",
+  "branch": "Social",
+  "name": "Prosélytisme III",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "3× par personne. Conversion: rituel de 15 min (2 pm) pour changer la religion d'un volontaire.",
+  "prereq": "proselytisme2",
+  "sort_order": 41
+ },
+ {
+  "id": "proselytisme4",
+  "branch": "Social",
+  "name": "Prosélytisme IV",
+  "cost": 2,
+  "knowledge_cost": 0,
+  "desc": "4× par personne.",
+  "prereq": "proselytisme3",
+  "sort_order": 42
+ },
+ {
+  "id": "proselytisme5",
+  "branch": "Social",
+  "name": "Prosélytisme V",
+  "cost": 3,
+  "knowledge_cost": 0,
+  "desc": "5× par personne.",
+  "prereq": "proselytisme4",
+  "sort_order": 43
+ }
+]

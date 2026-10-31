@@ -449,8 +449,13 @@ def init_db():
     c.executemany('''INSERT INTO knowledges VALUES (?,?,?,?)
                      ON CONFLICT(id) DO UPDATE SET category=excluded.category, name=excluded.name,
                                                    description=excluded.description''', KNOWLEDGES)
+    # Arbre de compétences de référence (skills.json) : ajouté s'il manque, par exemple sur une base neuve.
+    # Les compétences déjà présentes, dont celles ajoutées par l'Animation, ne sont pas touchées.
+    with open(os.path.join(BASE_DIR, 'skills.json'), encoding='utf-8') as f:
+        base_skills = [(s['id'], s['branch'], s['name'], s['cost'], s['knowledge_cost'], s['desc'], s['prereq'],
+                        s['sort_order']) for s in json.load(f)]
     c.executemany('''INSERT OR IGNORE INTO skills (id, branch, name, cost, knowledge_cost, desc, prereq, sort_order)
-                     VALUES (?,?,?,?,?,?,?,?)''', EXTRA_SKILLS)
+                     VALUES (?,?,?,?,?,?,?,?)''', base_skills + EXTRA_SKILLS)
     c.execute('UPDATE skills SET desc = ? WHERE id = ?', (WEAPON_SKILL_DESC, WEAPON_SKILL))
     # Les niveaux II et III de la spécialisation sont remplacés par des niveaux par catégorie d'arme
     c.execute('UPDATE skills SET name = ?, desc = ? WHERE id = ?', (SPEC_SKILL_NAME, SPEC_SKILL_DESC, SPEC_SKILL))
